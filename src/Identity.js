@@ -1,9 +1,9 @@
-import {map, id} from 'fjl';
-import {flatMap} from './operators';
-
 /**
  * Created by edlc on 12/9/16.
+ * Basic `Identity` class.  Used to extend from to create `Maybe` and `Either` module/classes.
  * @module Identity
+ * @see `Maybe` reference: http://hackage.haskell.org/package/base-4.10.1.0/docs/Data-Maybe.html
+ * @see `Either` reference: http://hackage.haskell.org/package/base-4.10.1.0/docs/Data-Either.html
  */
 export const isIdentity = value => value instanceof Identity;
 
@@ -14,12 +14,6 @@ export class Identity {
 
     static of (value) {
         new Identity(value);
-    }
-
-    static unwrap (value) {
-        if (isIdentity(value)) {
-            return Identity.unwrap(value.valueOf());
-        }
     }
 
     valueOf () {
