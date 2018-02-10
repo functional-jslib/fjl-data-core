@@ -1,14 +1,16 @@
 import Nothing from './Nothing';
 import Monad from '../monad/Monad';
-import {isset} from 'fjl-is';
+import {isset} from 'fjl';
 
 export const isJust = x => x instanceof Just;
 
 export function Just (x) {
     Monad.call(this, x);
 }
-Just.counterConstructor = Nothing;
+
+Just.of = x => new Just(x);
 Just.isJust = isJust;
+Just.counterConstructor = Nothing;
 
 Object.assign(Just.prototype, Monad.prototype);
 

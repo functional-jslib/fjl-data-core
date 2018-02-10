@@ -11,7 +11,7 @@ export function Monad (value) {
     if (!this || !(this instanceof Monad)) {
         return new Monad(value);
     }
-    this.value = value;
+    Object.defineProperty(this, 'value', {value: value});
 }
 
 const {prototype} = Monad;
@@ -37,7 +37,7 @@ prototype.flatMap = function (fn) {
 };
 
 // Set statics
-Monad.of  = () => new Monad();
+Monad.of  = (x) => new Monad(x);
 Monad.isMonad = isMonad;
 
 Object.freeze(Monad);

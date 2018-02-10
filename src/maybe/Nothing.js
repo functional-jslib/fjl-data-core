@@ -6,7 +6,7 @@ export function Nothing () {
     if (NothingSingleton) {
         return NothingSingleton;
     }
-    else if (!this || this instanceof Nothing === false) {
+    else if (!this || !(this instanceof Nothing)) {
         return new Nothing();
     }
     NothingSingleton = this;

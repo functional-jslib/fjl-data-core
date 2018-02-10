@@ -5,8 +5,8 @@
 'use strict';
 
 import {isset, curry2, map, subClass, subClassMulti} from 'fjl';
-import BiFunctor from './../functor/Bifunctor';
-import Monad from './Monad';
+import BiFunctor from '../functor/Bifunctor';
+import Monad from '../monad/Monad';
 
 export let Left = subClass(Monad, {
         constructor: function Left(value) {
