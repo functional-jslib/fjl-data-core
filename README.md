@@ -1,4 +1,4 @@
-# fjl-data-identity (W.I.P.)
+# fjl-data-identity (WIP (Work in progress))
 Fjl Data.Maybe and Data.Either implementations in javascript.
 
 ## Reasoning
