@@ -12,36 +12,29 @@ const _protected = {
     NothingSingletonCreated: null
 };
 
+let NothingSingleton;
+
 export const
 
     isJust = x => x instanceof Just,
 
-    isNothing = x => x === _protected.NothingSingleton;
+    isNothing = x => x === NothingSingleton;
 
-export class Nothing {
+class Nothing {
     static of() {
         return new Nothing();
     }
 
     constructor() {
-        let {NothingSingleton, NothingSingletonCreated} = _protected;
         if (NothingSingleton) {
             return NothingSingleton;
         }
-        else if (!NothingSingletonCreated) {
-            _protected.NothingSingletonCreated = true;
-            _protected.NothingSingleton = this;
-            Object.freeze(_protected);
-        }
-        if (!this.hasOwnProperty('value')) {
-            Object.defineProperty(this, 'value', {
-                value: null
-            });
-        }
+        NothingSingleton = this;
+        Object.freeze(NothingSingleton);
     }
 
     valueOf () {
-        return this.value;
+        return this;
     }
 
     map() {
