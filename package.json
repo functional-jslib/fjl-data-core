@@ -5,7 +5,11 @@
   "main": "dist/cjs/fjl-data-core.js",
   "module": "./dist/es6-module/fjl-data-core.js",
   "scripts": {
-    "test": "mocha tests/for-server/test-*.js --compilers js:babel-register --require babel-polyfill"
+    "build": "gulp clean && gulp build && yarn test-builds",
+    "docs": "gulp jsdoc",
+    "test-builds": "jest --testMatch **/tests/*-test-*.js",
+    "test": "jest --testMatch **/tests/test-*.js",
+    "eslint": "eslint"
   },
   "keywords": [
     "functional",
@@ -26,10 +30,121 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
     "jest": "^22.2.2"
   },
-  "repository": "git@github.com:functional-jslib/fjl-data-core.git"
+  "repository": "git@github.com:functional-jslib/fjl-data-core.git",
+  "jest": {
+    "testMatch": [
+      "**/tests/test-*.js"
+    ],
+    "testEnvironment": "node"
+  },
+  "rollupConfig": {
+    "external": [
+      "fjl",
+      "fjl-validator",
+      "fjl-mutable"
+    ]
+  },
+  "buildConfig": {
+    "inputModuleName": "fjlDataCore",
+    "inputFilePath": "./src/fjlDataCore.js",
+    "outputFileName": "fjl-data-core.js",
+    "outputFileNameMin": "fjl-data-core.min.js",
+    "srcsGlob": "./src/**/*.js",
+    "paths": {
+      "dist": "./dist",
+      "docs": "./docs"
+    },
+    "folderNames": {
+      "amd": "amd",
+      "cjs": "cjs",
+      "iife": "iife",
+      "umd": "umd",
+      "es6Module": "es6-module"
+    },
+    "es6ModuleRollup": {
+      "config": {
+        "input": "./src/fjlDataCore.js",
+        "external": [
+          "fjl",
+          "fjl-mutable"
+        ]
+      },
+      "write": {
+        "file": "./dist/es6-module/fjl-data-core.js",
+        "format": "es",
+        "sourcemap": true
+      }
+    },
+    "amdRollup": {
+      "babelPlugin": {
+        "babelrc": false,
+        "presets": [
+          [
+            "env",
+            {
+              "modules": false
+            }
+          ]
+        ],
+        "plugins": [
+          "transform-es2015-modules-amd"
+        ]
+      }
+    },
+    "cjsRollup": {
+      "babelPlugin": {
+        "babelrc": false,
+        "presets": [
+          [
+            "env",
+            {
+              "modules": false
+            }
+          ]
+        ],
+        "plugins": [
+          "babel-plugin-add-module-exports"
+        ]
+      }
+    },
+    "iifeRollup": {
+      "babelPlugin": {
+        "babelrc": false,
+        "presets": [
+          [
+            "env",
+            {
+              "modules": false
+            }
+          ]
+        ],
+        "plugins": [
+          "external-helpers"
+        ]
+      }
+    },
+    "umdRollup": {
+      "babelPlugin": {
+        "babelrc": false,
+        "presets": [
+          [
+            "env",
+            {
+              "modules": false
+            }
+          ]
+        ],
+        "plugins": [
+          "babel-plugin-add-module-exports",
+          "transform-es2015-modules-umd"
+        ]
+      }
+    }
+  }
 }
