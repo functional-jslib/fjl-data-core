@@ -7,12 +7,7 @@
  */
 export const isMonad = value => value instanceof Monad;
 
-export function Monad (value) {
-    if (!this || !(this instanceof Monad)) {
-        return new Monad(value);
-    }
-    Object.defineProperty(this, 'value', {value: value});
-}
+export function Monad () {}
 
 const {prototype} = Monad;
 

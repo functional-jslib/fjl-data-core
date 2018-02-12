@@ -1,11 +1,14 @@
-import Nothing from './Nothing';
+import Nothing, {isNothing} from './Nothing';
 import Monad from '../monad/Monad';
-import {isset} from 'fjl';
+import {assign, isset} from 'fjl';
 
 export const isJust = x => x instanceof Just;
 
-export function Just (x) {
-    Monad.call(this, x);
+function Just (x) {
+    if (!this || !isJust(this)) {
+        return new Just(x);
+    }
+    Object.defineProperty(this, 'value', {value: x});
 }
 
 Just.of = x => new Just(x);
@@ -17,7 +20,7 @@ Object.assign(Just.prototype, Monad.prototype);
 Just.prototype.map = function (fn) {
     const {constructor} = this,
         value = this.valueOf();
-    return isset(value) ? constructor.of(fn(value)) :
+    return isset(value) && !isNothing(value) ? constructor.of(fn(value)) :
         constructor.counterConstructor.of(value);
 };
 
