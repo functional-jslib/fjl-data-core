@@ -3,7 +3,6 @@ import Nothing, {isNothing} from './Nothing';
 import {isset, curry, id} from 'fjl';
 
 export * from './Just';
-
 export * from './Nothing';
 
 export const maybe = curry((replacement, fn, maybeInst) => {
@@ -12,5 +11,5 @@ export const maybe = curry((replacement, fn, maybeInst) => {
 });
 
 export default function Maybe (x) {
-    return !isset(x) ? Just(x) : Nothing();
+    return isset(x) ? Just(x) : Nothing();
 }
