@@ -1,9 +1,21 @@
 import {expect, assert} from 'chai';
-import Nothing from '../src/maybe/Nothing';
+import Nothing, {isNothing} from '../src/maybe/Nothing';
 import {all, map} from 'fjl';
 
 describe ('data.maybe.Nothing', () => {
     const methodNames = ['ap', 'map', 'flatMap', 'join'];
+    describe ('`isNothing`', () => {
+        test ('should return `true` when a value is of type `Nothing`', () => {
+            [Nothing(), new Nothing(), Nothing.of()].forEach(x => {
+                expect(isNothing(x)).to.equal(true);
+            });
+        });
+        test ('should return `false` when a value is not a `Nothing`', () => {
+            [false, 0, () => ({}), [], {}].forEach(x => {
+                expect(isNothing(x)).to.equal(false);
+            });
+        });
+    });
     test ('Should return singleton instance of `Nothing` whenever called with `new`', () => {
         expect(new Nothing() === new Nothing()).to.equal(true);
     });

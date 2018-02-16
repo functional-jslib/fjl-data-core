@@ -4,7 +4,7 @@ import {assign, isset} from 'fjl';
 
 export const isJust = x => x instanceof Just;
 
-function Just (x) {
+export function Just (x) {
     if (!this || !isJust(this)) {
         return new Just(x);
     }

@@ -5,7 +5,22 @@
  * @see `Maybe` reference: http://hackage.haskell.org/package/base-4.10.1.0/docs/Data-Maybe.html
  * @see `Either` reference: http://hackage.haskell.org/package/base-4.10.1.0/docs/Data-Either.html
  */
-export const isMonad = value => value instanceof Monad;
+
+import {isFunction, curry} from 'fjl';
+
+export {map, join} from 'fjl';
+
+export const
+
+    toFunction = x => isFunction(x) ? x : () => x,
+
+    isMonad = value => value instanceof Monad,
+
+    valueOf = x => x.valueOf(),
+
+    ap = curry((applicative, functor) => applicative.ap(functor)),
+
+    flatMap = curry((fn, monad) => monad.flatMap(fn));
 
 export function Monad () {}
 
@@ -26,17 +41,20 @@ prototype.map = function (fn) {
 };
 
 prototype.ap = function (x) {
-    return x.map(this.valueOf());
+    return x.map(toFunction(this.valueOf()));
 };
 
 prototype.flatMap = function (fn) {
     return this.map(fn).join();
 };
 
-// Set statics
+// Applicative `of` (same as Applicative `pure :: a -> f a` (lifts value to/into type))
 Monad.of  = (x) => new Monad(x);
+
+// Type check
 Monad.isMonad = isMonad;
 
+// Make statics and prototype unchangeable
 Object.freeze(Monad);
 
 export default Monad;

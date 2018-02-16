@@ -1,8 +1,21 @@
 import {expect, assert} from 'chai';
-import Just from '../src/maybe/Just';
+import Just, {isJust} from '../src/maybe/Just';
 import {all, map} from 'fjl';
 
 describe ('data.maybe.Just', () => {
+
+    describe ('`isJust`', () => {
+        test ('should return `true` when a value is of type `Just`', () => {
+            [Just(), new Just(), Just.of()].forEach(x => {
+                expect(isJust(x)).to.equal(true);
+            });
+        });
+        test ('should return `false` when a value is not a `Just`', () => {
+            [false, 0, () => ({}), [], {}].forEach(x => {
+                expect(isJust(x)).to.equal(false);
+            });
+        });
+    });
 
     test ('Should be constructable (called with `new`)', () => {
         expect(new Just()).to.be.instanceOf(Just);
@@ -66,6 +79,24 @@ describe ('data.maybe.Just', () => {
         });
     });
 
+    describe ('#`join`', () => {
+        test ('should always return a `Just` with one level monadic structure removed from contained value', () => {
+            Just(99).join().map(x => expect(x).to.equal(99));
+            Just(Just(99)).join().map(x => expect(x).to.equal(99));
+
+            // Thirdly nested 'just' should be `x`
+            Just(Just(Just(99)))
+                .join()             // Remove one layer of structure
+                .map(x =>           // Map over last contained `just`
+                    x.map(y => expect(y).to.equal(99))
+                );
+            const emptyJust = Just().join();
+            expect(emptyJust).to.be.instanceOf(Just);
+            emptyJust.map(x => expect(x).to.equal(undefined));
+        });
+
+    });
+
     describe ('#`map`', () => {
         test ('should return an instance of `Just` after map operation', () => {
             const control = 99,
@@ -102,5 +133,19 @@ describe ('data.maybe.Just', () => {
         });
     });
 
+    describe ('#`ap`', () => {
+        test ('should map contained value over passed in functor', () => {
+            const op = x => x * 2;
+            Just(op)
+                .ap(Just(2))
+                .map(x => expect(x).to.equal(op(2)));
+        });
+        test ('should be able to map contained value over functor even if it is not a ' +
+            'function (call should internally wrap non-function values in functions', () => {
+            Just()
+                .ap(Just(99))
+                .map(x => expect(x).to.equal(undefined));
+        });
+    });
 
 });
