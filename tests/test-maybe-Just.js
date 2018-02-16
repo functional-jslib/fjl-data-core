@@ -54,6 +54,18 @@ describe ('data.maybe.Just', () => {
         });
     });
 
+    describe ('#`valueOf`', () => {
+        test ('should return contained value of container (`undefined` or whatever was passed ' +
+            'on construction of container)', () => {
+            [Just(99), new Just(99), Just.of(99)].forEach(x => {
+                expect(x.valueOf()).to.equal(99);
+            });
+            [Just(), new Just(), Just.of()].forEach(x => {
+                expect(x.valueOf()).to.equal(undefined);
+            });
+        });
+    });
+
     describe ('#`map`', () => {
         test ('should return an instance of `Just` after map operation', () => {
             const control = 99,
@@ -71,5 +83,24 @@ describe ('data.maybe.Just', () => {
             assert.throws(() => Just(99).map(99), Error);
         });
     });
+
+    describe ('#`flatMap`', () => {
+        test ('should return an instance of `Just` after `flatMap` operation', () => {
+            const control = 99,
+                op = x => x * 2,
+                justResult = Just(control).flatMap(op);
+            expect(justResult instanceof Just).to.equal(true);
+            map(
+                x => expect(x).to.equal(op(control)),
+                justResult
+            );
+        });
+        test ('should throw an error when receiving anything other than a function as it\'s parameter', () => {
+            assert.throws(() => Just(99).flatMap(), Error);
+            assert.throws(() => Just(99).flatMap(null), Error);
+            assert.throws(() => Just(99).flatMap(99), Error);
+        });
+    });
+
 
 });

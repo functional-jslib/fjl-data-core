@@ -16,7 +16,9 @@ prototype.valueOf = function () {
 };
 
 prototype.join = function () {
-    return this.valueOf();
+    const out = this.valueOf();
+    return !(out instanceof this.constructor) ?
+        this.constructor.of(out) : out;
 };
 
 prototype.map = function (fn) {
