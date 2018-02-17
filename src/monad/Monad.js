@@ -23,7 +23,12 @@ export const
 
     flatMap = curry((fn, monad) => monad.flatMap(fn));
 
-export function Monad () {}
+export function Monad (value) {
+    if (!(this instanceof Monad)) {
+        return new Monad(value);
+    }
+    Applicative.call(this, value);
+}
 
 const {prototype} = Monad;
 

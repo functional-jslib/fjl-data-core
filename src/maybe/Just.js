@@ -1,6 +1,6 @@
 import Nothing, {isNothing} from './Nothing';
 import Monad from '../monad/Monad';
-import {assign, isset} from 'fjl';
+import {isset} from 'fjl';
 
 export const isJust = x => x instanceof Just;
 
