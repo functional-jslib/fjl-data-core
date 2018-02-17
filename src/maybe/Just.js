@@ -5,7 +5,7 @@ import {assign, isset} from 'fjl';
 export const isJust = x => x instanceof Just;
 
 export function Just (x) {
-    if (!this || !isJust(this)) {
+    if (!isJust(this)) {
         return new Just(x);
     }
     Object.defineProperty(this, 'value', {value: x});

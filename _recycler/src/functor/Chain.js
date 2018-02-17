@@ -5,7 +5,7 @@
  * Created by edlc on 12/9/16.
  */
 'use strict';
-import Apply from './Apply';
+import Apply from '../../../src/functor/Apply';
 import {subClass} from 'fjl';
 
 let Chain = subClass (Apply,

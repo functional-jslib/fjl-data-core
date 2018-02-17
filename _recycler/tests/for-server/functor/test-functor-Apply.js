@@ -13,7 +13,7 @@ import {expect} from 'chai';
 import {expectInstanceOf, expectEqual, expectFunction,
     expectTrue, hasOwnProperty, add} from '../utils';
 import Functor from '../../../src/functor/Functor';
-import Apply from '../../../src/functor/Apply';
+import Apply from '../../../../src/functor/Apply';
 // These variables get set at the top IIFE in the browser.
 // ~~~ /STRIP ~~~
 

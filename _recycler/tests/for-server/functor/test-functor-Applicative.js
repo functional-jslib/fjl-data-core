@@ -12,8 +12,8 @@
 import {expect} from 'chai';
 import {expectFunction, add, multiply, divide} from '../utils';
 import Functor from '../../../src/functor/Functor';
-import Apply from '../../../src/functor/Apply';
-import Applicative from '../../../src/functor/Applicative';
+import Apply from '../../../../src/functor/Apply';
+import Applicative from '../../../../src/functor/Applicative';
 // These variables get set at the top IIFE in the browser.
 // ~~~ /STRIP ~~~
 

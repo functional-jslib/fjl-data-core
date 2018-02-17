@@ -10,8 +10,8 @@ import {expect} from 'chai';
 import {expectEqual, expectInstanceOf, expectFunction, add, multiply} from '../utils';
 import {compose, __} from 'fjl';
 import Functor from '../../../src/functor/Functor';
-import Apply from '../../../src/functor/Apply';
-import Applicative from '../../../src/functor/Applicative';
+import Apply from '../../../../src/functor/Apply';
+import Applicative from '../../../../src/functor/Applicative';
 import Chain from '../../../src/functor/Chain';
 import Monad from '../../../src/monad/Monad';
 // These variables get set at the top IIFE in the browser.

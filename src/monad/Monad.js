@@ -7,6 +7,7 @@
  */
 
 import {isFunction, curry} from 'fjl';
+import Applicative from '../functor/Applicative';
 
 export {map, join} from 'fjl';
 
@@ -26,22 +27,12 @@ export function Monad () {}
 
 const {prototype} = Monad;
 
-prototype.valueOf = function () {
-    return this.value;
-};
+Object.assign(prototype, Applicative.prototype);
 
 prototype.join = function () {
     const out = this.valueOf();
     return !(out instanceof this.constructor) ?
         this.constructor.of(out) : out;
-};
-
-prototype.map = function (fn) {
-    return this.constructor.of(fn(this.valueOf()));
-};
-
-prototype.ap = function (x) {
-    return x.map(toFunction(this.valueOf()));
 };
 
 prototype.flatMap = function (fn) {
