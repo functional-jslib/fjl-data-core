@@ -12,9 +12,7 @@ import Applicative from '../functor/Applicative';
 export {map, join} from 'fjl';
 
 export const
-
-    toFunction = x => isFunction(x) ? x : () => x,
-
+    
     isMonad = value => value instanceof Monad,
 
     valueOf = x => x.valueOf(),

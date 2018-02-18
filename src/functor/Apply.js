@@ -2,7 +2,7 @@
  * Created by edlc on 12/9/16.
  */
 
-'use strict';
+import {toFunction} from '../utils';
 
 import Functor from './Functor';
 
@@ -14,7 +14,7 @@ function Apply (value) {
 }
 
 Apply.prototype.ap = function (x) {
-    return x.map(this.value);
+    return x.map(toFunction(this.valueOf()));
 };
 
 Object.assign(Apply.prototype, Functor.prototype);
