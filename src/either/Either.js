@@ -6,7 +6,7 @@ import {isset, instanceOf, curry, map} from 'fjl';
 import {Just, Nothing} from "../maybe/Maybe";
 
 export function Left (value) {
-    if (!(this instanceof Left)) {
+    if (!isLeft(this)) {
         return Left.of(value);
     }
     Object.defineProperty(this, 'value', {value: value});
@@ -18,8 +18,8 @@ Left.of = x => new Left(x);
 Object.assign(Left.prototype, Nothing.prototype);
 
 export function Right (value) {
-    if (!(this instanceof Right)) {
-        return new Right(value);
+    if (!isRight(this)) {
+        return Right.of(value);
     }
     Just.call(this, value);
 }
@@ -42,6 +42,7 @@ Right.prototype.map = function (fn) {
 };
 
 Right.of = x => new Right(x);
+
 Right.counterConstructor = Left;
 
 export const
@@ -54,10 +55,10 @@ export const
         let identity = map(x => x, monad),
             ctor = identity.constructor;
         if (isLeft(ctor)) {
-            return map(leftCallback, identity);
+            return map(leftCallback, identity).join();
         }
         else if (isRight(ctor)) {
-            return map(rightCallback, identity);
+            return map(rightCallback, identity).join();
         }
     });
 
