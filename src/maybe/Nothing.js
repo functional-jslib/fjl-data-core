@@ -6,7 +6,7 @@ export function Nothing () {
     if (NothingSingleton) {
         return NothingSingleton;
     }
-    else if (!this || !(this instanceof Nothing)) {
+    else if (!(this instanceof Nothing)) {
         return new Nothing();
     }
     NothingSingleton = this;
@@ -14,7 +14,7 @@ export function Nothing () {
 }
 
 // Prototypical stuff
-const returnThis = () => NothingSingleton,
+const returnThis = function () { return this; },
     {prototype} = Nothing;
 
 // Methods

@@ -61,5 +61,3 @@ export const
             return map(rightCallback, identity).join();
         }
     });
-
-export default Either;
