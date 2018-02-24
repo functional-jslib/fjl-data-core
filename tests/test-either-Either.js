@@ -7,7 +7,7 @@ describe('#Either', () => {
 
     describe('#Left', () => {
         test ('should return an instance when called with `new`, when called as a function, and when called via static `of` method', () => {
-            [Left(), new Left(), Left.of()].forEach(x => {
+            [new Left(), Left.of()].forEach(x => {
                 expect(x instanceof Left).to.equal(true);
             });
         });
@@ -20,7 +20,7 @@ describe('#Either', () => {
             expect(new Hello()).to.be.instanceOf(Left);
         });
         test ('Expect `map`, `ap`, `flatMap`, and `join` methods to exist', () => {
-            const left = Left();
+            const left = Left.of();
             expect(
                 all(methodName =>
                         (left[methodName] instanceof Function),
@@ -30,20 +30,20 @@ describe('#Either', () => {
                 .to.equal(true);
         });
         test ('Expect `map`, `flatMap`, and `join` methods to all return same constructed instance of `Left`', () => {
-            const left = Left('Only left');
+            const left = Left.of('Only left');
             expect(left.join()).to.equal(left);
             expect(left.map(x => x)).to.equal(left);
-            expect(left.flatMap(x => Left(x))).to.equal(left);
+            expect(left.flatMap(x => Left.of(x))).to.equal(left);
         });
         test ('Expect calling `ap` on a `#Left` to return containing value of `Left`', () => {
             const value = 'Hello World',
-                left = Left(value);
-            left.ap(Right(99)).map(x => expect(x).to.equal(value));
+                left = Left.of(value);
+            left.ap(Right.of(99)).map(x => expect(x).to.equal(value));
         });
 
         describe ('`isLeft`', () => {
             test ('should return `true` when value is a `Left`', () => {
-                [Left(), new Left(), Left.of()].forEach(x => {
+                [Left.of(), new Left(), Left.of()].forEach(x => {
                     expect(isLeft(x)).to.equal(true);
                 });
             });
@@ -57,7 +57,7 @@ describe('#Either', () => {
 
     describe('#Right', () => {
         test ('should return an instance when called with `new`, when called as a function, and when called via static `of` method', () => {
-            [Right(), new Right(), Right.of()].forEach(x => {
+            [Right.of(), new Right(), Right.of()].forEach(x => {
                 expect(x instanceof Right).to.equal(true);
             });
         });
@@ -70,7 +70,7 @@ describe('#Either', () => {
             expect(new Hello()).to.be.instanceOf(Right);
         });
         test ('Expect `map`, `ap`, `flatMap`, and `join` methods to exist', () => {
-            const right = Right();
+            const right = Right.of();
             expect(
                 all(methodName =>
                         (right[methodName] instanceof Function),

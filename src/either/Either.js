@@ -4,44 +4,33 @@
 
 import {isset, instanceOf, curry, map} from 'fjl';
 import {Just, Nothing} from "../maybe/Maybe";
+import Monad from '../monad/Monad';
 
-export function Left (value) {
-    if (!isLeft(this)) {
-        return Left.of(value);
-    }
-    Object.defineProperty(this, 'value', {value});
+export class Left extends Monad {
+    static of (x) { return new Left(x); }
 }
-
-Left.of = x => new Left(x);
 
 // Returns self from all monad methods/operations
 Object.assign(Left.prototype, Nothing.prototype);
 
-export function Right (value) {
-    if (!isRight(this)) {
-        return Right.of(value);
+export class Right extends Just {
+    map (fn) {
+        const {constructor} = this,
+            value = this.valueOf();
+        if (isLeft(value)) {
+            return value;
+        }
+        else if (!isset(value)) {
+            return constructor.counterConstructor.of(
+                `TypeError: Cannot operate on \`null\` and/or \`undefined\`.  ` +
+                `Value given \`${value}\`.`
+            );
+        }
+        return constructor.of(fn(value));
     }
-    Object.defineProperty(this, 'value', {value});
+
+    static of (x) { return new Right(x); }
 }
-
-Object.assign(Right.prototype, Just.prototype);
-
-Right.prototype.map = function (fn) {
-    const {constructor} = this,
-        value = this.valueOf();
-    if (isLeft(value)) {
-        return value;
-    }
-    else if (!isset(value)) {
-        return constructor.counterConstructor.of(
-            `TypeError: Cannot operate on \`null\` and/or \`undefined\`.  ` +
-            `Value given \`${value}\`.`
-        );
-    }
-    return constructor.of(fn(value));
-};
-
-Right.of = x => new Right(x);
 
 Right.counterConstructor = Left;
 
