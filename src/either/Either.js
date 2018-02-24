@@ -5,6 +5,7 @@
 import {isset, curry, id} from 'fjl';
 import {Just} from "../maybe/Maybe";
 import Monad from '../monad/Monad';
+import {alwaysFunctor, toFunction} from "../utils";
 
 class Left extends Monad {
     static of (x) { return new Left(x); }
@@ -35,12 +36,12 @@ export const
     isLeft = x => x instanceof Left,
 
     either = curry((leftCallback, rightCallback, monad) => {
-        const identity = monad.map(id);
+        const identity = alwaysFunctor(monad).map(id);
         switch (identity.constructor) {
             case Left:
-                return identity.map(leftCallback).join();
+                return identity.map(toFunction(leftCallback)).join();
             case Right:
-                return identity.map(rightCallback).join();
+                return identity.map(toFunction(rightCallback)).join();
             default:
                 return Left.of(monad).map(leftCallback).join();
         }

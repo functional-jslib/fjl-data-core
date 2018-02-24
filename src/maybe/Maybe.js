@@ -12,7 +12,7 @@ export const
      */
     maybe = curry((replacement, fn, maybeInst) => {
         const subject = isset(maybeInst) && isMaybe(maybeInst) ? maybeInst.map(id) : Nothing.of();
-        return isNothing(subject) ? replacement : subject.flatMap(fn).valueOf();
+        return isNothing(subject) ? replacement : subject.map(fn).join();
     }),
 
     isMaybe = x => isNothing(x) || isJust(x);
