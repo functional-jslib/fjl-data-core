@@ -4,7 +4,7 @@ import {isset} from 'fjl';
 
 export const isJust = x => x instanceof Just;
 
-class Just extends Monad {
+export default class Just extends Monad {
     map (fn) {
         const {constructor} = this,
             value = this.valueOf();
@@ -16,5 +16,3 @@ class Just extends Monad {
 }
 
 Just.counterConstructor = Nothing;
-
-export default Just;

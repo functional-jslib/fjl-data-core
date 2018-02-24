@@ -2,8 +2,7 @@ import Just, {isJust} from './Just';
 import Nothing, {isNothing} from './Nothing';
 import {isset, curry, id} from 'fjl';
 
-export * from './Just';
-export * from './Nothing';
+export {Just, isJust, isNothing, Nothing};
 
 export const
     /**

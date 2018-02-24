@@ -2,7 +2,7 @@ let NothingSingleton;
 
 export const isNothing = x => x === NothingSingleton;
 
-export function Nothing () {
+function Nothing () {
     if (NothingSingleton) {
         return NothingSingleton;
     }
