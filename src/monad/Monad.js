@@ -8,17 +8,12 @@
 
 import {isFunction, curry} from 'fjl';
 import Applicative from '../functor/Applicative';
-
 export {map, join} from 'fjl';
 
 export const
-    
     isMonad = value => value instanceof Monad,
-
     valueOf = x => x.valueOf(),
-
     ap = curry((applicative, functor) => applicative.ap(functor)),
-
     flatMap = curry((fn, monad) => monad.flatMap(fn));
 
 export function Monad (value) {
@@ -29,7 +24,6 @@ export function Monad (value) {
 }
 
 const {prototype} = Monad;
-
 Object.assign(prototype, Applicative.prototype);
 
 prototype.join = function () {
@@ -42,13 +36,7 @@ prototype.flatMap = function (fn) {
     return this.map(fn).join();
 };
 
-// Applicative `of` (same as Applicative `pure :: a -> f a` (lifts value to/into type))
 Monad.of  = (x) => new Monad(x);
-
-// Type check
 Monad.isMonad = isMonad;
-
-// Make statics and prototype unchangeable
 Object.freeze(Monad);
-
 export default Monad;

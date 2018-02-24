@@ -3,22 +3,10 @@
  */
 
 import {toFunction} from '../utils';
-
 import Functor from './Functor';
 
-function Apply (value) {
-    if (!(this instanceof Apply)) {
-        return new Apply(value);
+export default class Apply extends Functor {
+    ap (x) {
+        return x.map(toFunction(this.valueOf()));
     }
-    Functor.call(this, value);
 }
-
-Apply.prototype.ap = function (x) {
-    return x.map(toFunction(this.valueOf()));
-};
-
-Object.assign(Apply.prototype, Functor.prototype);
-
-Object.freeze(Apply);
-
-export default Apply;

@@ -9,7 +9,7 @@ export function Left (value) {
     if (!isLeft(this)) {
         return Left.of(value);
     }
-    Object.defineProperty(this, 'value', {value: value});
+    Object.defineProperty(this, 'value', {value});
 }
 
 Left.of = x => new Left(x);
@@ -21,7 +21,7 @@ export function Right (value) {
     if (!isRight(this)) {
         return Right.of(value);
     }
-    Just.call(this, value);
+    Object.defineProperty(this, 'value', {value});
 }
 
 Object.assign(Right.prototype, Just.prototype);
