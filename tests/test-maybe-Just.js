@@ -76,8 +76,8 @@ describe ('data.maybe.Just', () => {
     });
 
     describe ('#`join`', () => {
-        test ('should always return a `Just` with one level monadic structure removed from contained value', () => {
-            Just.of(99).join().map(x => expect(x).to.equal(99));
+        test ('should remove one level of monadic structure from container', () => {
+            expect(Just.of(99).join()).to.equal(99);
             Just.of(Just.of(99)).join().map(x => expect(x).to.equal(99));
 
             // Thirdly nested 'just' should be `x`
@@ -86,11 +86,9 @@ describe ('data.maybe.Just', () => {
                 .map(x =>           // Map over last contained `just`
                     x.map(y => expect(y).to.equal(99))
                 );
-            const emptyJust = Just.of().join();
-            expect(emptyJust).to.be.instanceOf(Just);
-            emptyJust.map(x => expect(x).to.equal(undefined));
+            const empty = Just.of().join();
+            expect(empty).to.equal(undefined);
         });
-
     });
 
     describe ('#`map`', () => {

@@ -6,24 +6,25 @@
  * @see `Either` reference: http://hackage.haskell.org/package/base-4.10.1.0/docs/Data-Either.html
  */
 
-import {isFunction, curry} from 'fjl';
+import {curry} from 'fjl';
 import Applicative from '../functor/Applicative';
-export {map, join} from 'fjl';
 
 export const
     isMonad = value => value instanceof Monad,
     valueOf = x => x.valueOf(),
+    join = x => x.join(),
+    fmap = curry((fn, x) => x.map(fn)),
     ap = curry((applicative, functor) => applicative.ap(functor)),
     flatMap = curry((fn, monad) => monad.flatMap(fn));
 
 export default class Monad extends Applicative {
     join () {
-        const out = this.valueOf();
-        return !(out instanceof this.constructor) ?
-            this.constructor.of(out) : out;
+        return this.valueOf();
     }
     flatMap (fn) {
-        return this.map(fn).join();
+        const out = this.map(fn).join();
+        return !(out instanceof this.constructor) ?
+            this.constructor.of(out) : out;
     }
     static of (x) { return new Monad(x); }
     static isMonad (x) { return isMonad(x); }
