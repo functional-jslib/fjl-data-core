@@ -16,27 +16,15 @@ export const
     ap = curry((applicative, functor) => applicative.ap(functor)),
     flatMap = curry((fn, monad) => monad.flatMap(fn));
 
-export function Monad (value) {
-    if (!(this instanceof Monad)) {
-        return new Monad(value);
+export default class Monad extends Applicative {
+    join () {
+        const out = this.valueOf();
+        return !(out instanceof this.constructor) ?
+            this.constructor.of(out) : out;
     }
-    Applicative.call(this, value);
+    flatMap (fn) {
+        return this.map(fn).join();
+    }
+    static of (x) { return new Monad(x); }
+    static isMonad (x) { return isMonad(x); }
 }
-
-const {prototype} = Monad;
-Object.assign(prototype, Applicative.prototype);
-
-prototype.join = function () {
-    const out = this.valueOf();
-    return !(out instanceof this.constructor) ?
-        this.constructor.of(out) : out;
-};
-
-prototype.flatMap = function (fn) {
-    return this.map(fn).join();
-};
-
-Monad.of  = (x) => new Monad(x);
-Monad.isMonad = isMonad;
-Object.freeze(Monad);
-export default Monad;
