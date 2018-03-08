@@ -5,3 +5,4 @@
  */
 export * from './monad/Monad';
 export * from './maybe/Maybe';
+export * from './either/Either';

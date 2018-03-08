@@ -8,7 +8,6 @@
 
 import {curry} from 'fjl';
 import Applicative from '../functor/Applicative';
-import Functor from '../functor/Functor';
 
 export const
     isMonad = value => value instanceof Monad,
