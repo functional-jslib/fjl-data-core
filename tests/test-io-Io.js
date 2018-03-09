@@ -8,29 +8,39 @@ describe('#Io', () => {
     test ('should return instances of `Monad`', () => {
         expect(new Io()).to.be.instanceOf(Monad);
     });
+
     describe ('#unsafePerformIo', () => {
         test ('should call stored operation when called', () => {
             const reverseStr = compose(x => peek('reverseStr', x), reverse),
                 otherStrOp = compose(x => peek('otherStrOp', x), concat, intersperse('-'), replicate(3)),
                 peekIo = Io.of(peek),
                 io = peekIo
-                    .flatMap(fn => Io.of(_ => fn(otherStrOp(_))))
-                    .flatMap(fn => Io.of( _ => fn(reverseStr(_))))
+                    .flatMap(fn => _ => fn(otherStrOp(_)))
+                    .flatMap(fn => Io.of(_ => fn(reverseStr(_))))
                 ;
 
-            // io.map(fn => expect(fn('hello')).to.be.instanceOf(Io));
-            io.unsafePerformIo('hello') // Transform 'hello' value
-                .map(fn => expect(fn()).to.equal('hello-hello-hello'));
-        });
-        test ('should be flat-mappable', () => {
-            const io = Io.of(compose(concat, intersperse('-'), replicate(3)));
-            const io2 = io.flatMap(fn => Io.of(fn().split('-').shift()))
-                    .flatMap(fn => peek('io2', fn('hello')));
+            io.map(fn => expect(fn('hello')).to.equal(
+                        io.unsafePerformIo('hello').join()()
+                    ));
 
-            io.map(fn => expect(fn()).to.equal('hello'));
+            io.unsafePerformIo('hello')
+                .map(fn => expect(fn()).to.equal(
+                        compose(otherStrOp, reverse)('hello')
+                    ));
+        });
+
+        test ('should be flat-mappable', () => {
+            const io = Io.of(compose(concat, intersperse('-'), replicate(3))),
+                io2 =
+                    io
+                        .flatMap(fn => Io.of(_ => fn(_).split('-').shift()))
+                        .flatMap(fn => _ => peek('io2', fn(_)));
+
+            io.map(fn => expect(fn('hello')).to.equal('hello-hello-hello'));
             io.unsafePerformIo('hello') // Transform 'hello' value
                 .map(fn => expect(fn()).to.equal('hello-hello-hello'));
         });
+
         test ('should be able to build up an operation from many smaller operations', () => {
             const ioAlphabet = Io.of((startChar, endChar) =>
                 [startChar, endChar].map(x => x.charCodeAt(0)))
@@ -49,7 +59,7 @@ describe('#Io', () => {
 
             // Check results
             ioAlphabet.unsafePerformIo('a', 'z')
-                .map(x => expect(x.join()()).to.equal(
+                .map(fn => expect(fn()).to.equal(
                     reverse('abcdefghijklmnopqrstuvwxyz')));
 
             // Test outputs

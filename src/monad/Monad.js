@@ -22,7 +22,7 @@ export default class Monad extends Applicative {
         return this.valueOf();
     }
     flatMap (fn) {
-        const out = this.map(fn).join();
+        const out = fn(this.join());
         return !(out instanceof this.constructor) ?
             this.constructor.of(out) : out;
     }
