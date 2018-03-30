@@ -5,14 +5,23 @@ import {log, peek} from "./utils";
 import Monad from "../src/monad/Monad";
 
 describe('#IO', () => {
+
+    const reverseStr = xs => xs.split('').reverse().join('');
+
     test ('should return instances of `Monad`', () => {
         expect(new IO()).to.be.instanceOf(Monad);
     });
 
     describe ('#unsafePerformIO', () => {
         test ('should call stored operation when called', () => {
-            const reverseStr = compose(x => peek('reverseStr', x), reverse),
-                otherStrOp = compose(x => peek('otherStrOp', x), concat, intersperse('-'), replicate(3)),
+            const otherStrOp = compose(
+                    xs => xs.join(''),
+                    x => peek('otherStrOp', x),
+                    concat,
+                    intersperse('-'),
+                    replicate(3),
+                    xs => xs.split('')
+                ),
                 peekIO = IO.of(peek),
                 io = peekIO
                     .flatMap(fn => _ => fn(otherStrOp(_)))
@@ -25,7 +34,7 @@ describe('#IO', () => {
 
             io.unsafePerformIO('hello')
                 .map(fn => expect(fn()).to.equal(
-                        compose(otherStrOp, reverse)('hello')
+                        compose(otherStrOp, reverseStr)('hello')
                     ));
         });
 
@@ -52,7 +61,7 @@ describe('#IO', () => {
                     }
                     return out;
                 })
-                .map(fn => (startChar, endChar) => reverse(fn(startChar, endChar)));
+                .map(fn => (startChar, endChar) => peek(reverseStr(fn(startChar, endChar))));
 
             // Instance of
             expect(ioAlphabet).to.be.instanceOf(IO);
@@ -60,7 +69,7 @@ describe('#IO', () => {
             // Check results
             ioAlphabet.unsafePerformIO('a', 'z')
                 .map(fn => expect(fn()).to.equal(
-                    reverse('abcdefghijklmnopqrstuvwxyz')));
+                    reverseStr('abcdefghijklmnopqrstuvwxyz')));
 
             // Test outputs
             log (

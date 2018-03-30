@@ -3,9 +3,9 @@
  */
 
 import {isset, curry, id} from 'fjl';
-import {Just} from "../maybe/Maybe";
+import {Just} from '../maybe/Maybe';
 import Monad from '../monad/Monad';
-import {alwaysFunctor, toFunction} from "../utils";
+import {alwaysFunctor, toFunction} from '../utils';
 
 class Left extends Monad {
     static of (x) { return new Left(x); }
