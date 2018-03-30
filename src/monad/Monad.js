@@ -26,6 +26,9 @@ export default class Monad extends Applicative {
         return !(out instanceof this.constructor) ?
             this.constructor.of(out) : out;
     }
+    chain (fn) {
+        return this.flatMap(fn);
+    }
     static of (x) { return new Monad(x); }
     static isMonad (x) { return isMonad(x); }
 }

@@ -28,7 +28,7 @@ prototype.flatMap   = returnThis;
 Nothing.of  = () => new Nothing();
 Nothing.isNothing = isNothing;
 
-// Object.freeze makes propers on object immutable
+// Object.freeze makes properties on object immutable
 // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
 // Saves us from having to do the following (great!):
 // Object.defineProperties(Nothing, {

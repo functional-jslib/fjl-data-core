@@ -6,3 +6,4 @@
 export * from './monad/Monad';
 export * from './maybe/Maybe';
 export * from './either/Either';
+export * from './io/IO';

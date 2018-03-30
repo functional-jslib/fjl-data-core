@@ -7,24 +7,28 @@
 import Monad from '../monad/Monad';
 import {toFunction} from '../utils';
 
-export default class Io extends Monad {
+export default class IO extends Monad {
     constructor(fn) {
         super(toFunction(fn));
     }
 
     static of(fn) {
-        return new Io(fn);
+        return new IO(fn);
     }
 
-    static isIo (x) {
-        return x instanceof Io;
+    static isIO (x) {
+        return x instanceof IO;
+    }
+
+    fork () {
+        return this.map(fn => fn());
     }
 
     do (...args) {
-        return Io.of(this.join()(...args));
+        return IO.of(this.join()(...args));
     }
 
-    unsafePerformIo (...args) {
+    unsafePerformIO (...args) {
         return this.do(...args);
     }
 }
