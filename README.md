@@ -1,9 +1,12 @@
 # fjl-data-identity (WIP (Work in progress))
-Fjl Data.Maybe and Data.Either implementations in javascript.
+Haskell's `data Maybe a`, `data Either a b`, and `data IO a * -> *` implementations in javascript.
 
 ## Reasoning
-- Mimick haskell's Maybe and Either data types.
+- Mimick haskell's Monad Maybe, Either, and IO data types.
 - Use the js platform's features to implement the required functionality.
+
+## Library members
+@todo add members here
 
 ## Testing
 - `jest` - @todo add url 
