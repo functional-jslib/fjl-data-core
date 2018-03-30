@@ -179,5 +179,5 @@ const either = curry((leftCallback, rightCallback, monad) => {
  * Core monad types (useful for javascript).
  */
 
-export { isMonad, valueOf, join, fmap, ap, flatMap, Just, isJust, isNothing, Nothing, maybe, isMaybe, isRight, isLeft, either, Left, Right };
+export { isMonad, valueOf, join, fmap, ap, flatMap, Just, isJust, isNothing, Nothing, maybe, isMaybe, isRight, isLeft, either, Left, Right, toFunction, alwaysFunctor };
 //# sourceMappingURL=fjl-data-core.js.map

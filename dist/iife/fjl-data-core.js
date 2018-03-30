@@ -430,6 +430,8 @@ exports.isLeft = isLeft;
 exports.either = either;
 exports.Left = Left;
 exports.Right = Right;
+exports.toFunction = toFunction;
+exports.alwaysFunctor = alwaysFunctor;
 
 return exports;
 

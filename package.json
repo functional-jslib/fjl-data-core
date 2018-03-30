@@ -5,7 +5,8 @@
   "main": "dist/cjs/fjl-data-core.js",
   "module": "./dist/es6-module/fjl-data-core.js",
   "scripts": {
-    "build": "gulp clean && gulp build && yarn test-builds",
+    "pre-publish": "npm test && npm run build",
+    "build": "gulp clean && gulp build && npm run test-builds",
     "docs": "gulp jsdoc",
     "test-builds": "jest --testMatch **/tests/*-test-*.js",
     "test": "jest --testMatch **/tests/test-*.js",
