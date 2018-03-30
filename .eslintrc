@@ -147,7 +147,7 @@
     "no-undef-init":          2,  // - disallow use of undefined when initializing variables
     "no-undefined":           0,  // - disallow use of undefined variable (off by default)
     "no-unused-vars":         1,  // - disallow declaration of variables that are not used in the code
-    "no-use-before-define":   2,  // - disallow use of variables before they are defined
+    "no-use-before-define":   0,  // - disallow use of variables before they are defined
 
     /** -------------------------------------------------------------------------------------------------------------------
      * Node.js:
@@ -196,7 +196,7 @@
     "operator-assignment":        0,  // - require assignment operator shorthand where possible or prohibit it entirely (off by default)
     "padded-blocks":              0,  // - enforce padding within blocks (off by default)
     "quote-props":                0,  // - require quotes around object literal property names (off by default)
-    "quotes":                     [2, "single", "avoid-escape"],  // - specify whether double or single quotes should be used
+    "quotes":                     [2, "single", {"allowTemplateLiterals": true}],  // - specify whether double or single quotes should be used
     "semi":                       2,  // - require or disallow use of semicolons instead of ASI
     "semi-spacing":               2,  // - enforce spacing before and after semicolons
     "sort-vars":                  0,  // - sort variables within the same declaration block (off by default)

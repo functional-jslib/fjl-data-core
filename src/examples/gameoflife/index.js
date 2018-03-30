@@ -33,10 +33,12 @@ class Pointer {
 }
 
 const
+    SIZE = 100,
+    SCALE = 8,
 
     posInBounds = pos =>
         pos.x >= 0 && pos.y >= 0 &&
-        pos.x < size && pos.y < size,
+        pos.x < SIZE && pos.y < SIZE,
 
     pointerNeighbours = pointer => {
         let offsets = [
@@ -79,9 +81,9 @@ const
     generateBoard = () =>
         IO.of(() => {
             let board = [], x, y;
-            for (x = 0; x < size; x++) {
+            for (x = 0; x < SIZE; x++) {
                 board[x] = [];
-                for (y = 0; y < size; y++) {
+                for (y = 0; y < SIZE; y++) {
                     board[x][y] = Math.random() > 0.5;
                 }
             }
@@ -109,20 +111,18 @@ const
     main = () => {
         const
             element = document.getElementById('game-of-comonads'),
-            canvas = element.getContext('2d'),
-            size = 100,
-            scale = 8;
+            canvas = element.getContext('2d');
 
         return IO.of(() => {
-            element.width = size * scale;
-            element.height = size * scale;
-            canvas.scale(scale, scale);
+            element.width = SIZE * SCALE;
+            element.height = SIZE * SCALE;
+            canvas.scale(SCALE, SCALE);
         })
             .flatMap(generateBoard)
             .flatMap(loop)
 
             // Perform effects!
-            .unsafePerformIO() // Could also call `do` here (instead)
+            .unsafePerformIO(); // Could also call `do` here (instead)
     };
 
 window.addEventListener('load', main.do.bind(main));

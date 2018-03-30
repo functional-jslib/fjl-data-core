@@ -1,31 +1,39 @@
-let NothingSingleton;
+"use strict";
 
-function Nothing () {
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var NothingSingleton = void 0;
+
+function Nothing() {
     if (NothingSingleton) {
         return NothingSingleton;
-    }
-    else if (!(this instanceof Nothing)) {
+    } else if (!(this instanceof Nothing)) {
         return new Nothing();
     }
     NothingSingleton = this;
     Object.freeze(NothingSingleton);
 }
 
-const isNothing = x => x === NothingSingleton,
-
-    // Prototypical stuff
-    returnThis = function () { return this; },
-    {prototype} = Nothing;
+var isNothing = function isNothing(x) {
+    return x === NothingSingleton;
+},
+    returnThis = function returnThis() {
+    return this;
+},
+    prototype = Nothing.prototype;
 
 // Methods
-prototype.valueOf   = returnThis;
-prototype.join      = returnThis;
-prototype.map       = returnThis;
-prototype.ap        = returnThis;
-prototype.flatMap   = returnThis;
+prototype.valueOf = returnThis;
+prototype.join = returnThis;
+prototype.map = returnThis;
+prototype.ap = returnThis;
+prototype.flatMap = returnThis;
 
 // Set statics
-Nothing.of  = () => new Nothing();
+Nothing.of = function () {
+    return new Nothing();
+};
 Nothing.isNothing = isNothing;
 
 // Object.freeze makes properties on object immutable
@@ -37,6 +45,5 @@ Nothing.isNothing = isNothing;
 // });
 Object.freeze(Nothing);
 
-export {isNothing};
-
-export default Nothing;
+exports.isNothing = isNothing;
+exports.default = Nothing;
