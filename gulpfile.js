@@ -186,9 +186,10 @@ gulp.task('build-examples', () => {
                 plugins: [
                     'external-helpers'
                 ],
-                // exclude: 'node_modules/**' // only transpile our source code
-            })
-        ]
+                exclude: 'node_modules/**' // only transpile our source code
+            }),
+        ],
+        // external: rollupConfig.external
     })
         .then(bundle => bundle.write({
             file: buildPath(examplesDir, 'index.js'),
@@ -223,11 +224,9 @@ gulp.task('build-docs', ['jsdoc']);
 
 gulp.task('build', ['build-js', 'build-examples']);
 
-gulp.task('watch', ['build'], () =>
-    gulp.watch(
-        [srcsGlob, './node_modules/**'],
-        ['build-js', 'build-examples']
-    )
-);
+gulp.task('watch', ['build'], () => {
+    gulp.watch([srcsGlob, './node_modules/**'], ['build-js', 'build-examples']);
+    gulp.watch(['./src/examples/**/*.@(html|js)'], ['build-examples']);
+});
 
 gulp.task('default', ['build', 'watch']);

@@ -28,7 +28,8 @@
   "author": "Ely De La Cruz <elycruz@elycruz.com>",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "fjl": "0.22.4"
+    "fjl": "0.22.4",
+    "fjl-mutable": "^0.16.5"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

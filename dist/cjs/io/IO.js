@@ -34,6 +34,17 @@ var IO = function (_Monad) {
     }
 
     _createClass(IO, [{
+        key: 'flatMap',
+        value: function flatMap(fn) {
+            var out = fn(this.join()());
+            return !(out instanceof this.constructor) ? IO.of(out) : out;
+        }
+
+        // map (fn) {
+        //     return this.flatMap(x => IO.of(fn(x)));
+        // }
+
+    }, {
         key: 'fork',
         value: function fork() {
             return this.map(function (fn) {
@@ -41,14 +52,9 @@ var IO = function (_Monad) {
             });
         }
     }, {
-        key: 'do',
-        value: function _do() {
-            return IO.of(this.join().apply(undefined, arguments));
-        }
-    }, {
         key: 'unsafePerformIO',
         value: function unsafePerformIO() {
-            return this.do.apply(this, arguments);
+            return IO.of(this.join().apply(undefined, arguments));
         }
     }], [{
         key: 'of',
@@ -59,6 +65,15 @@ var IO = function (_Monad) {
         key: 'isIO',
         value: function isIO(x) {
             return x instanceof IO;
+        }
+    }, {
+        key: 'do',
+        value: function _do(io) {
+            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                args[_key - 1] = arguments[_key];
+            }
+
+            return (IO.isIO(io) ? io : IO.of(io)).unsafePerformIO.apply(io, args);
         }
     }]);
 

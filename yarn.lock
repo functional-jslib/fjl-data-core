@@ -1809,9 +1809,26 @@ first-chunk-stream@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/first-chunk-stream/-/first-chunk-stream-1.0.0.tgz#59bfb50cd905f60d7c394cd3d9acaab4e6ad934e"
 
+fjl-error-throwing@^0.7.7:
+  version "0.7.7"
+  resolved "https://registry.yarnpkg.com/fjl-error-throwing/-/fjl-error-throwing-0.7.7.tgz#18e1dceb047f52016879e5ac7646fa08e7dc6ee1"
+  dependencies:
+    fjl "0.19.0"
+
+fjl-mutable@^0.16.5:
+  version "0.16.5"
+  resolved "https://registry.yarnpkg.com/fjl-mutable/-/fjl-mutable-0.16.5.tgz#380ce4e0db705422ef92db831cd61a18ab9e2a21"
+  dependencies:
+    fjl "0.19.0"
+    fjl-error-throwing "^0.7.7"
+
 fjl-range@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/fjl-range/-/fjl-range-1.0.4.tgz#f29172ad50690e433ae6f7b45bb9e9b72a0f52c8"
+
+fjl@0.19.0:
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/fjl/-/fjl-0.19.0.tgz#aeec6eb469a12f00c1204af2ab5fbd1f94a4e6c5"
 
 fjl@0.22.4:
   version "0.22.4"

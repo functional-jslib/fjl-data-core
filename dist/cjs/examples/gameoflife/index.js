@@ -15,16 +15,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Pos = function Pos(x, y) {
     _classCallCheck(this, Pos);
 
-    this.x = x;
-    this.y = y;
+    this.x = (0, _fjl.isset)(x) ? x : 0;
+    this.y = (0, _fjl.isset)(y) ? y : 0;
 };
 
 var Pointer = function () {
     function Pointer(board, pos) {
         _classCallCheck(this, Pointer);
 
-        this.board = board;
-        this.pos = pos;
+        this.board = board || [];
+        this.pos = pos || new Pos();
     }
 
     _createClass(Pointer, [{
@@ -63,9 +63,9 @@ var SIZE = 100,
 },
     pointerNeighbours = function pointerNeighbours(pointer) {
     var offsets = [new Pos(-1, -1), new Pos(-1, 0), new Pos(-1, 1), new Pos(0, -1), new Pos(0, 1), new Pos(1, -1), new Pos(1, 0), new Pos(1, 1)],
-        positions = (0, _fjl.filter)((0, _fjl.map)(function (offset) {
+        positions = (0, _fjl.filter)(posInBounds, (0, _fjl.map)(function (offset) {
         return new Pos(pointer.pos.x + offset.x, pointer.pos.y + offset.y);
-    }, offsets), posInBounds);
+    }, offsets));
     return (0, _fjl.map)(function (pos) {
         return pointer.updatePos(pos).extract();
     }, positions);
@@ -83,7 +83,7 @@ var SIZE = 100,
     return new Pointer(board, new Pos(0, 0)).extend(rules).board;
 },
     generateBoard = function generateBoard() {
-    return _IO2.default.of(function () {
+    return _IO2.default.do(_IO2.default.of(function () {
         var board = [],
             x = void 0,
             y = void 0;
@@ -94,10 +94,10 @@ var SIZE = 100,
             }
         }
         return board;
-    });
+    }));
 },
     drawBoard = function drawBoard(canvas, board) {
-    return _IO2.default.of(function () {
+    return _IO2.default.do(function () {
         var x = void 0,
             y = void 0;
         for (x = 0; x < board.length; x++) {
@@ -111,11 +111,11 @@ var SIZE = 100,
         }
     });
 },
-    loop = function loop(canvas, board) {
+    loop = (0, _fjl.curry)(function (canvas, board) {
     return drawBoard(canvas, board).flatMap(function () {
         return loop(canvas, step(board)).fork();
     });
-},
+}),
     main = function main() {
     var element = document.getElementById('game-of-comonads'),
         canvas = element.getContext('2d');
@@ -124,10 +124,10 @@ var SIZE = 100,
         element.width = SIZE * SCALE;
         element.height = SIZE * SCALE;
         canvas.scale(SCALE, SCALE);
-    }).flatMap(generateBoard).flatMap(loop)
+    }).flatMap(generateBoard).flatMap(loop(canvas))
 
     // Perform effects!
     .unsafePerformIO(); // Could also call `do` here (instead)
 };
 
-window.addEventListener('load', main.do.bind(main));
+window.addEventListener('load', main);

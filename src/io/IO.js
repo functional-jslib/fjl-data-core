@@ -2,8 +2,6 @@
  * Created by elydelacruz on 2/19/2017.
  */
 
-'use strict';
-
 import Monad from '../monad/Monad';
 import {toFunction} from '../utils';
 
@@ -20,15 +18,18 @@ export default class IO extends Monad {
         return x instanceof IO;
     }
 
-    fork () {
-        return this.map(fn => fn());
+    flatMap (fn) {
+        const out = fn(this.join()());
+        return !(out instanceof this.constructor) ?
+            IO.of(out) : IO.of(out.join()());
     }
 
-    do (...args) {
-        return IO.of(this.join()(...args));
+    static do (io, ...args) {
+        return (IO.isIO(io) ? io : IO.of(io)).fork(...args);
     }
 
-    unsafePerformIO (...args) {
-        return this.do(...args);
+    fork (...args) {
+        return IO.of(setTimeout(() => this.join()(...args), 0));
     }
+
 }

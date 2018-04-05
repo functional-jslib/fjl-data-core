@@ -1,18 +1,18 @@
-import {map, filter, length, id} from 'fjl';
+import {curry, isset, map, filter, length, id} from 'fjl';
 
 import IO from '../../io/IO';
 
 class Pos {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+        this.x = isset(x) ? x : 0;
+        this.y = isset(y) ? y : 0;
     }
 }
 
 class Pointer {
     constructor (board, pos) {
-        this.board = board;
-        this.pos = pos;
+        this.board = board || [];
+        this.pos = pos || new Pos();
     }
     updatePos (pos) {
         return new Pointer(this.board, pos);
@@ -52,14 +52,13 @@ const
                 new Pos(1, 1)
             ],
             positions = filter(
-                map(offset =>
-                    new Pos(
+                posInBounds,
+                map(offset => new Pos(
                         pointer.pos.x + offset.x,
                         pointer.pos.y + offset.y
                     ),
                     offsets
-                ),
-                posInBounds
+                )
             );
         return map(pos => pointer.updatePos(pos).extract(), positions);
     },
@@ -79,7 +78,7 @@ const
         new Pointer(board, new Pos(0, 0)).extend(rules).board,
 
     generateBoard = () =>
-        IO.of(() => {
+        IO.do(IO.of(() => {
             let board = [], x, y;
             for (x = 0; x < SIZE; x++) {
                 board[x] = [];
@@ -88,10 +87,10 @@ const
                 }
             }
             return board;
-        }),
+        })),
 
     drawBoard = (canvas, board) =>
-        IO.of(() => {
+        IO.do(() => {
             let x, y;
             for (x = 0; x < board.length; x++) {
                 for (y = 0; y < board[x].length; y++) {
@@ -104,9 +103,9 @@ const
             }
         }),
 
-    loop = (canvas, board) =>
+    loop = curry((canvas, board) =>
         drawBoard(canvas, board)
-            .flatMap(() => loop(canvas, step(board)).fork()),
+            .flatMap(() => loop(canvas, step(board)).fork())),
 
     main = () => {
         const
@@ -119,7 +118,7 @@ const
             canvas.scale(SCALE, SCALE);
         })
             .flatMap(generateBoard)
-            .flatMap(loop)
+            .flatMap(loop(canvas))
 
             // Perform effects!
             .unsafePerformIO(); // Could also call `do` here (instead)
