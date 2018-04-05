@@ -172,6 +172,36 @@ gulp.task('uglify', ['iife'], () => {
         .pipe(gulp.dest('./'));
 });
 
+gulp.task('build-examples', () => {
+    const examplesDir = 'examples/gameoflife';
+    return rollup.rollup({
+        input: `./src/${examplesDir}/index.js`,
+        plugins: [
+            rollupResolve(),
+            rollupBabel({
+                babelrc: false,
+                presets: [['env', {
+                    modules: false
+                }]],
+                plugins: [
+                    'external-helpers'
+                ],
+                // exclude: 'node_modules/**' // only transpile our source code
+            })
+        ]
+    })
+        .then(bundle => bundle.write({
+            file: buildPath(examplesDir, 'index.js'),
+            format: 'iife',
+            name: 'index',
+            sourcemap: true
+        }))
+        .then(() => gulp.src(`./src/${examplesDir}/index.html`)
+            .pipe(concat(`./dist/${examplesDir}/index.html`))
+            .pipe(gulp.dest('./'))
+        );
+});
+
 gulp.task('build-js', ['iife', 'uglify', 'cjs', 'amd', 'umd', 'es6-module']);
 
 gulp.task('jsdoc', () =>
@@ -191,14 +221,13 @@ gulp.task('jsdoc', () =>
 
 gulp.task('build-docs', ['jsdoc']);
 
-gulp.task('build', ['build-js']);
+gulp.task('build', ['build-js', 'build-examples']);
 
 gulp.task('watch', ['build'], () =>
-    gulp.watch([
-        srcsGlob,
-        './node_modules/**'
-    ], [
-        'build-js'
-    ]));
+    gulp.watch(
+        [srcsGlob, './node_modules/**'],
+        ['build-js', 'build-examples']
+    )
+);
 
 gulp.task('default', ['build', 'watch']);

@@ -8,6 +8,7 @@
     "pre-publish": "npm test && npm run build",
     "build": "gulp clean && gulp build && npm run test-builds",
     "docs": "gulp jsdoc",
+    "examples": "gulp build-examples",
     "test-builds": "jest --testMatch **/tests/*-test-*.js",
     "test": "jest --testMatch **/tests/test-*.js",
     "eslint": "eslint"
@@ -91,7 +92,8 @@
       "cjs": "cjs",
       "iife": "iife",
       "umd": "umd",
-      "es6Module": "es6-module"
+      "es6Module": "es6-module",
+      "examples": "examples"
     },
     "es6ModuleRollup": {
       "config": {

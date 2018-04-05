@@ -10,17 +10,17 @@ class Pos {
 }
 
 class Pointer {
-    constructor(board, pos) {
+    constructor (board, pos) {
         this.board = board;
         this.pos = pos;
     }
-    updatePos(pos) {
+    updatePos (pos) {
         return new Pointer(this.board, pos);
     }
-    extract() {
+    extract () {
         return this.board[this.pos.x][this.pos.y];
     }
-    extend(f) {
+    extend (f) {
         let board = [], x, y;
         for (x = 0; x < this.board.length; x++) {
             board[x] = [];
@@ -125,4 +125,4 @@ const
             .unsafePerformIO(); // Could also call `do` here (instead)
     };
 
-window.addEventListener('load', main.do.bind(main));
+window.addEventListener('load', main);
