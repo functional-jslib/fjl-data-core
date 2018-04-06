@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.flatMap = exports.ap = exports.fmap = exports.join = exports.valueOf = exports.isMonad = undefined;
+exports.trampoline = exports.getMonadUnWrapper = exports.flatMap = exports.ap = exports.fmap = exports.join = exports.valueOf = exports.isMonad = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -44,7 +44,28 @@ var _isMonad = function _isMonad(value) {
 }),
     flatMap = (0, _fjl.curry)(function (fn, monad) {
     return monad.flatMap(fn);
-});
+}),
+    getMonadUnWrapper = function getMonadUnWrapper(Type) {
+    var isTypeToUnWrap = (0, _fjl.instanceOf)(Type);
+    return function unWrapMonadByType(monad) {
+        return isTypeToUnWrap(monad) ? function trampolineCall() {
+            return unWrapMonadByType(monad.valueOf());
+        } : monad;
+    };
+},
+    trampoline = function trampoline(fn) {
+    return function () {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        var result = (0, _fjl.apply)(fn, args);
+        while ((0, _fjl.isset)(result) && result.name === 'trampolineCall' && (0, _fjl.isFunction)(result)) {
+            result = result();
+        }
+        return result;
+    };
+};
 
 exports.isMonad = _isMonad;
 exports.valueOf = valueOf;
@@ -52,6 +73,8 @@ exports.join = join;
 exports.fmap = fmap;
 exports.ap = ap;
 exports.flatMap = flatMap;
+exports.getMonadUnWrapper = getMonadUnWrapper;
+exports.trampoline = trampoline;
 
 var Monad = function (_Applicative) {
     _inherits(Monad, _Applicative);
@@ -65,13 +88,13 @@ var Monad = function (_Applicative) {
     _createClass(Monad, [{
         key: 'join',
         value: function join() {
-            return this.valueOf();
+            return Monad.unWrapMonadByType(this.constructor, this);
         }
     }, {
         key: 'flatMap',
         value: function flatMap(fn) {
-            var out = fn(this.join());
-            return !(out instanceof this.constructor) ? this.constructor.of(out) : out;
+            var out = Monad.unWrapMonadByType(this.constructor, fn(this.join()));
+            return this.constructor.of(out);
         }
     }, {
         key: 'chain',
@@ -79,6 +102,15 @@ var Monad = function (_Applicative) {
             return this.flatMap(fn);
         }
     }], [{
+        key: 'unWrapMonadByType',
+        value: function unWrapMonadByType(Type, monad) {
+            if (!(0, _fjl.isset)(monad)) {
+                return monad;
+            }
+            var unwrap = trampoline(getMonadUnWrapper(Type));
+            return unwrap(monad);
+        }
+    }, {
         key: 'of',
         value: function of(x) {
             return new Monad(x);

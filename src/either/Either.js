@@ -48,4 +48,3 @@ export const
     });
 
 export {Left, Right};
-

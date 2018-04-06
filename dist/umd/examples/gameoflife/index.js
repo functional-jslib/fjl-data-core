@@ -97,7 +97,7 @@ var SIZE = 100,
     }));
 },
     drawBoard = function drawBoard(canvas, board) {
-    return _IO2.default.do(function () {
+    return _IO2.default.do(_IO2.default.of(function () {
         var x = void 0,
             y = void 0;
         for (x = 0; x < board.length; x++) {
@@ -109,13 +109,15 @@ var SIZE = 100,
                 }
             }
         }
+    }));
+},
+    loop = function loop(canvas, board) {
+    return drawBoard(canvas, board).flatMap(function () {
+        return requestAnimationFrame(function () {
+            return loop(canvas, step(board));
+        });
     });
 },
-    loop = (0, _fjl.curry)(function (canvas, board) {
-    return drawBoard(canvas, board).flatMap(function () {
-        return loop(canvas, step(board)).fork();
-    });
-}),
     main = function main() {
     var element = document.getElementById('game-of-comonads'),
         canvas = element.getContext('2d');
@@ -124,7 +126,9 @@ var SIZE = 100,
         element.width = SIZE * SCALE;
         element.height = SIZE * SCALE;
         canvas.scale(SCALE, SCALE);
-    }).flatMap(generateBoard).flatMap(loop(canvas)));
+    }).flatMap(generateBoard).flatMap(function (board) {
+        return loop(canvas, board);
+    }));
 };
 
 window.addEventListener('load', main);

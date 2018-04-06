@@ -4,8 +4,8 @@
 
 import Monad from '../monad/Monad';
 import {toFunction} from '../utils';
-import {apply, compose, instanceOf} from 'fjl';
-import {defineEnumProps} from 'fjl-mutable';
+import {compose} from 'fjl';
+// import {defineEnumProps} from 'fjl-mutable';
 
 export default class IO extends Monad {
     static unWrapIO (io) {
@@ -31,7 +31,7 @@ export default class IO extends Monad {
     constructor(fn) {
         super(toFunction(fn));
         // Enforce `value` field validation
-        defineEnumProps([[Function, 'value', this.value]], this);
+        // defineEnumProps([[Function, 'value', this.value]], this);
     }
 
     flatMap (fn) {

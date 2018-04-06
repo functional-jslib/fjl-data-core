@@ -15,9 +15,7 @@ export const
     join = x => x.join(),
     fmap = curry((fn, x) => x.map(fn)),
     ap = curry((applicative, functor) => applicative.ap(functor)),
-    flatMap = curry((fn, monad) => monad.flatMap(fn));
-
-const
+    flatMap = curry((fn, monad) => monad.flatMap(fn)),
 
     getMonadUnWrapper = Type => {
         const isTypeToUnWrap = instanceOf(Type);
@@ -46,9 +44,6 @@ export default class Monad extends Applicative {
         if (!isset(monad)) { return monad; }
         const unwrap = trampoline(getMonadUnWrapper(Type));
         return unwrap(monad);
-    }
-    map (fn) {
-        return this.constructor.of()
     }
     join () {
         return Monad.unWrapMonadByType(this.constructor, this);

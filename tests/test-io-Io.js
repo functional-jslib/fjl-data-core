@@ -52,7 +52,7 @@ describe('#IO', () => {
             // io.map(fn => expect(fn('hello')).to.equal(compose(join, otherStrOp, reverseStr)('hello')));
         });
 
-        test ('should process no matter how many nested IO\'s are produced', () => {
+        test ('should process io no matter how many nested IO\'s are produced', () => {
             const ioAlphabet = IO.of(compose(
                 xs => peek(reverseStr(xs)),
                 ([start, end]) => {

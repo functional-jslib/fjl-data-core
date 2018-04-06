@@ -1,4 +1,4 @@
-import { curry, id, isFunction, isset } from 'fjl';
+import { apply, curry, id, instanceOf, isFunction, isset } from 'fjl';
 
 /**
  * Created by edlc on 12/9/16.
@@ -54,15 +54,39 @@ const join = x => x.join();
 const fmap = curry((fn, x) => x.map(fn));
 const ap = curry((applicative, functor) => applicative.ap(functor));
 const flatMap = curry((fn, monad) => monad.flatMap(fn));
+const getMonadUnWrapper = Type => {
+        const isTypeToUnWrap = instanceOf(Type);
+        return function unWrapMonadByType (monad) {
+            return isTypeToUnWrap(monad) ? function trampolineCall () {
+                return unWrapMonadByType(monad.valueOf());
+            } : monad;
+        };
+    };
+const trampoline = fn => {
+        return (...args) => {
+            let result = apply(fn, args);
+            while (isset(result) &&
+                result.name === 'trampolineCall' &&
+                isFunction(result)
+            ) {
+                result = result();
+            }
+            return result;
+        };
+    };
 
 class Monad extends Applicative {
+    static unWrapMonadByType (Type, monad) {
+        if (!isset(monad)) { return monad; }
+        const unwrap = trampoline(getMonadUnWrapper(Type));
+        return unwrap(monad);
+    }
     join () {
-        return this.valueOf();
+        return Monad.unWrapMonadByType(this.constructor, this);
     }
     flatMap (fn) {
-        const out = fn(this.join());
-        return !(out instanceof this.constructor) ?
-            this.constructor.of(out) : out;
+        const out = Monad.unWrapMonadByType(this.constructor, fn(this.join()));
+        return this.constructor.of(out);
     }
     chain (fn) {
         return this.flatMap(fn);
@@ -179,5 +203,5 @@ const either = curry((leftCallback, rightCallback, monad) => {
  * Core monad types (useful for javascript).
  */
 
-export { isMonad, valueOf, join, fmap, ap, flatMap, Just, isJust, isNothing, Nothing, maybe, isMaybe, isRight, isLeft, either, Left, Right, toFunction, alwaysFunctor };
+export { isMonad, valueOf, join, fmap, ap, flatMap, getMonadUnWrapper, trampoline, Just, isJust, isNothing, Nothing, maybe, isMaybe, isRight, isLeft, either, Left, Right, toFunction, alwaysFunctor };
 //# sourceMappingURL=fjl-data-core.js.map

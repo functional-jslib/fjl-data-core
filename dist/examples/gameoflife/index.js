@@ -62,6 +62,7 @@ const instanceOf$1 = (instanceConstructor, instance) =>
 const hasOwnProperty$1 = fPureTakesOne('hasOwnProperty');
 const length = x => x.length;
 const keys = obj => Object.keys(obj);
+const reduceRight = fPureTakes2('reduceRight');
 /**
  *  List operations that overlap (apart from globally overlapping props and functions like `length`)
  *      on both strings and arrays.
@@ -1014,6 +1015,17 @@ let __ = Object.freeze ? Object.freeze(placeHolderInstance) : placeHolderInstanc
 const id = x => x;
 
 /**
+ * Composes all functions passed in from right to left passing each functions return value to
+ * the functionOps on the left of itself.
+ * @function module:_functionOps.compose
+ * @type {Function}
+ * @param args {...{Function}}
+ * @returns {Function}
+ */
+const compose = (...args) =>
+        arg0 => reduceRight((value, fn) => fn(value), arg0, args);
+
+/**
  * Function operations: `
  * @module functionOps
  */
@@ -1299,12 +1311,11 @@ var ap = curry(function (applicative, functor) {
 var flatMap = curry(function (fn, monad) {
     return monad.flatMap(fn);
 });
-
 var getMonadUnWrapper = function getMonadUnWrapper(Type) {
     var isTypeToUnWrap = instanceOf$$1(Type);
     return function unWrapMonadByType(monad) {
         return isTypeToUnWrap(monad) ? function trampolineCall() {
-            unWrapMonadByType(monad.valueOf());
+            return unWrapMonadByType(monad.valueOf());
         } : monad;
     };
 };
@@ -1333,13 +1344,13 @@ var Monad = function (_Applicative) {
     createClass(Monad, [{
         key: 'join',
         value: function join() {
-            return Monad.unWrapMonadByType(this);
+            return Monad.unWrapMonadByType(this.constructor, this);
         }
     }, {
         key: 'flatMap',
         value: function flatMap(fn) {
-            var out = fn(this.join());
-            return !instanceOf$$1(this.constructor, out) ? this.constructor.of(out) : out;
+            var out = Monad.unWrapMonadByType(this.constructor, fn(this.join()));
+            return this.constructor.of(out);
         }
     }, {
         key: 'chain',
@@ -1348,9 +1359,12 @@ var Monad = function (_Applicative) {
         }
     }], [{
         key: 'unWrapMonadByType',
-        value: function unWrapMonadByType(monad) {
-            var unwrap = trampoline(getMonadUnWrapper(monad.constructor));
-            return unwrap(monad.valueOf());
+        value: function unWrapMonadByType(Type, monad) {
+            if (!isset(monad)) {
+                return monad;
+            }
+            var unwrap = trampoline(getMonadUnWrapper(Type));
+            return unwrap(monad);
         }
     }, {
         key: 'of',
@@ -1370,14 +1384,19 @@ var Monad = function (_Applicative) {
  * Created by elydelacruz on 2/19/2017.
  */
 
+// import {defineEnumProps} from 'fjl-mutable';
+
 var IO = function (_Monad) {
     inherits(IO, _Monad);
-    createClass(IO, [{
-        key: 'join',
-        value: function join$$1() {
-            return Monad.unWrapMonadByType(this)();
+    createClass(IO, null, [{
+        key: 'unWrapIO',
+        value: function unWrapIO(io) {
+            if (!IO.isIO(io)) {
+                return io;
+            }
+            return Monad.unWrapMonadByType(IO, io);
         }
-    }], [{
+    }, {
         key: 'of',
         value: function of$$1(fn) {
             return new IO(fn);
@@ -1390,25 +1409,32 @@ var IO = function (_Monad) {
     }, {
         key: 'do',
         value: function _do(io) {
-            var _ref;
+            var instance = !IO.isIO(io) ? new IO(io) : io;
 
             for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
                 args[_key - 1] = arguments[_key];
             }
 
-            return (_ref = !IO.isIO(io) ? IO.of(io) : io).fork.apply(_ref, args);
+            return compose(IO.of, IO.unWrapIO)(toFunction(instance.join()).apply(undefined, args));
         }
     }]);
 
     function IO(fn) {
         classCallCheck(this, IO);
         return possibleConstructorReturn(this, (IO.__proto__ || Object.getPrototypeOf(IO)).call(this, toFunction(fn)));
+        // Enforce `value` field validation
+        // defineEnumProps([[Function, 'value', this.value]], this);
     }
 
     createClass(IO, [{
-        key: 'fork',
-        value: function fork(args) {
-            return IO.of(apply$1(toFunction(this.join()), args));
+        key: 'flatMap',
+        value: function flatMap$$1(fn) {
+            return compose(this.constructor.of, IO.unWrapIO, fn, IO.unWrapIO)(toFunction(this.join())());
+        }
+    }, {
+        key: 'map',
+        value: function map(fn) {
+            return compose(this.constructor.of, fn)(toFunction(this.valueOf())());
         }
     }]);
     return IO;
