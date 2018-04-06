@@ -90,7 +90,7 @@ const
         })),
 
     drawBoard = (canvas, board) =>
-        IO.do(() => {
+        IO.do(IO.of(() => {
             let x, y;
             for (x = 0; x < board.length; x++) {
                 for (y = 0; y < board[x].length; y++) {
@@ -101,27 +101,26 @@ const
                     }
                 }
             }
-        }),
+        })),
 
-    loop = curry((canvas, board) =>
+    loop = (canvas, board) =>
         drawBoard(canvas, board)
-            .flatMap(() => loop(canvas, step(board)).fork())),
+            .flatMap(() => requestAnimationFrame(() => loop(canvas, step(board)))),
 
     main = () => {
         const
             element = document.getElementById('game-of-comonads'),
             canvas = element.getContext('2d');
 
-        return IO.of(() => {
-            element.width = SIZE * SCALE;
-            element.height = SIZE * SCALE;
-            canvas.scale(SCALE, SCALE);
-        })
+        return IO.do(
+            IO.of(() => {
+                element.width = SIZE * SCALE;
+                element.height = SIZE * SCALE;
+                canvas.scale(SCALE, SCALE);
+            })
             .flatMap(generateBoard)
-            .flatMap(loop(canvas))
-
-            // Perform effects!
-            .unsafePerformIO(); // Could also call `do` here (instead)
+            .flatMap(board => loop(canvas, board))
+        );
     };
 
 window.addEventListener('load', main);

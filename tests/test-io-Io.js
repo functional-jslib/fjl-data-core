@@ -12,9 +12,28 @@ describe('#IO', () => {
         expect(new IO()).to.be.instanceOf(Monad);
     });
 
-    describe ('#unsafePerformIO', () => {
-        test ('should call stored operation when called', () => {
+    test ('should be flat-mappable', () => {
+        const op1 = compose(concat, intersperse('-'), replicate(3)),
+            op2 = compose(xs => { let newXs = xs.split('-'); newXs.shift(); return newXs.join('-'); }, op1),
+            io = IO.of(compose(x => peek('io1', x), op1)),
+            io2 = IO.of(compose(x => peek('io2', x), op2));
+        IO.do(io, 'hello').flatMap(x => expect(peek(x)).to.equal(peek('should equal', op1('hello'))));
+        IO.do(io2, 'hello').flatMap(x => expect(x).to.equal(peek('should equal', op2('hello'))));
+    });
+
+    test ('should be mappable', () => {
+        const op1 = compose(concat, intersperse('-'), replicate(3)),
+            op2 = compose(xs => { let newXs = xs.split('-'); newXs.shift(); return newXs.join('-'); }, op1),
+            io = IO.of(compose(x => peek('io1', x), op1)),
+            io2 = IO.of(compose(x => peek('io2', x), op2));
+        IO.do(io, 'hello').map(x => expect(peek(x)).to.equal(peek('should equal', op1('hello'))));
+        IO.do(io2, 'hello').map(x => expect(x).to.equal(peek('should equal', op2('hello'))));
+    });
+
+    describe ('#do', () => {
+        test ('should run given IO instance with any args passed in', () => {
             const otherStrOp = compose(
+                    IO.of,
                     xs => xs.join(''),
                     x => peek('otherStrOp', x),
                     concat,
@@ -22,61 +41,43 @@ describe('#IO', () => {
                     replicate(3),
                     xs => xs.split('')
                 ),
-                peekIO = IO.of(peek),
-                io = peekIO
-                    .flatMap(fn => _ => fn(otherStrOp(_)))
-                    .flatMap(fn => IO.of(_ => fn(reverseStr(_))))
-                ;
+                op = compose(peek, otherStrOp, reverseStr),
+                io = IO.of(op);
 
-            io.map(fn => expect(fn('hello')).to.equal(
-                        io.unsafePerformIO('hello').join()()
-                    ));
-
-            io.unsafePerformIO('hello')
-                .map(fn => expect(fn()).to.equal(
-                        compose(otherStrOp, reverseStr)('hello')
-                    ));
+            IO.do(io, 'hello').map(x => peek('do', x));
+            IO.do(io, 'hello')
+                // .flatMap(x => IO.of(peek('do', x)))
+                // .flatMap(x => expect(x).to.equal(op('hello').join()()));
+            // expect(.join()()).to.equal(op('hello'));
+            // io.map(fn => expect(fn('hello')).to.equal(compose(join, otherStrOp, reverseStr)('hello')));
         });
 
-        test ('should be flat-mappable', () => {
-            const io = IO.of(compose(concat, intersperse('-'), replicate(3))),
-                io2 =
-                    io
-                        .flatMap(fn => IO.of(_ => fn(_).split('-').shift()))
-                        .flatMap(fn => _ => peek('io2', fn(_)));
-
-            io.map(fn => expect(fn('hello')).to.equal('hello-hello-hello'));
-            io.unsafePerformIO('hello') // Transform 'hello' value
-                .map(fn => expect(fn()).to.equal('hello-hello-hello'));
-        });
-
-        test ('should be able to build up an operation from many smaller operations', () => {
-            const ioAlphabet = IO.of((startChar, endChar) =>
-                [startChar, endChar].map(x => x.charCodeAt(0)))
-                .map(fn => (startChar, endChar) => {
-                    const [start, end] = fn(startChar, endChar);
+        test ('should process no matter how many nested IO\'s are produced', () => {
+            const ioAlphabet = IO.of(compose(
+                xs => peek(reverseStr(xs)),
+                ([start, end]) => {
                     let out = '';
                     for (let ind = start; ind <= end; ind += 1) {
                         out += String.fromCharCode(ind);
                     }
                     return out;
-                })
-                .map(fn => (startChar, endChar) => peek(reverseStr(fn(startChar, endChar))));
+                },
+                ([startChar, endChar]) => [startChar, endChar].map(x => x.charCodeAt(0)),
+            ));
 
             // Instance of
             expect(ioAlphabet).to.be.instanceOf(IO);
 
             // Check results
-            ioAlphabet.unsafePerformIO('a', 'z')
-                .map(fn => expect(fn()).to.equal(
+            IO.do(ioAlphabet, ['a', 'z'])
+                .flatMap(xs => expect(xs).to.equal(
                     reverseStr('abcdefghijklmnopqrstuvwxyz')));
 
             // Test outputs
             log (
                 ioAlphabet,
-                ioAlphabet
-                    .unsafePerformIO('a', 'z')
-                    .map(fn => log(fn()))
+                IO.do(ioAlphabet, ['a', 'z'])
+                    .flatMap(xs => log(xs))
             );
         });
     });

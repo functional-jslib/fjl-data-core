@@ -72,20 +72,15 @@ describe ('data.maybe.Just', () => {
             [new Just(), Just.of()].forEach(x => {
                 expect(x.valueOf()).to.equal(undefined);
             });
+            console.log(new Just(new Just(99)));
         });
     });
 
     describe ('#`join`', () => {
-        test ('should remove one level of monadic structure from container', () => {
-            expect(Just.of(99).join()).to.equal(99);
-            Just.of(Just.of(99)).join().map(x => expect(x).to.equal(99));
+        test ('should remove all layers of monadic structure from container', () => {
+            [Just.of(99), Just.of(Just.of(99)), Just.of(Just.of(Just.of(99)))]
+                .map(just => expect(just.join()).to.equal(99));
 
-            // Thirdly nested 'just' should be `x`
-            Just.of(Just.of(Just.of(99)))
-                .join()             // Remove one layer of structure
-                .map(x =>           // Map over last contained `just`
-                    x.map(y => expect(y).to.equal(99))
-                );
             const empty = Just.of().join();
             expect(empty).to.equal(undefined);
         });

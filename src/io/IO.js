@@ -4,32 +4,52 @@
 
 import Monad from '../monad/Monad';
 import {toFunction} from '../utils';
+import {apply, compose, instanceOf} from 'fjl';
+import {defineEnumProps} from 'fjl-mutable';
 
 export default class IO extends Monad {
-    constructor(fn) {
-        super(toFunction(fn));
+    static unWrapIO (io) {
+        if (!IO.isIO(io)) { return io; }
+        return Monad.unWrapMonadByType(IO, io);
     }
-
     static of(fn) {
         return new IO(fn);
     }
-
     static isIO (x) {
         return x instanceof IO;
     }
+    static do (io, ...args) {
+        const instance = !IO.isIO(io) ? new IO(io) : io;
+        return compose(
+            IO.of,
+            IO.unWrapIO
+        )(
+            toFunction(instance.join())(...args)
+        );
+    }
+
+    constructor(fn) {
+        super(toFunction(fn));
+        // Enforce `value` field validation
+        defineEnumProps([[Function, 'value', this.value]], this);
+    }
 
     flatMap (fn) {
-        const out = fn(this.join()());
-        return !(out instanceof this.constructor) ?
-            IO.of(out) : IO.of(out.join()());
+        return compose(
+            this.constructor.of,
+            IO.unWrapIO, fn,
+            IO.unWrapIO
+        )(
+            toFunction(this.join())()
+        );
     }
 
-    static do (io, ...args) {
-        return (IO.isIO(io) ? io : IO.of(io)).fork(...args);
+    map (fn) {
+        return compose(
+            this.constructor.of,
+            fn
+        )(
+            toFunction(this.valueOf())()
+        );
     }
-
-    fork (...args) {
-        return IO.of(setTimeout(() => this.join()(...args), 0));
-    }
-
 }

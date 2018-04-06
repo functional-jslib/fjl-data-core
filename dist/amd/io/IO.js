@@ -1,7 +1,3 @@
-/**
- * Created by elydelacruz on 2/19/2017.
- */
-
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -16,13 +12,17 @@ var _Monad3 = _interopRequireDefault(_Monad2);
 
 var _utils = require('../utils');
 
+var _fjl = require('fjl');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by elydelacruz on 2/19/2017.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
 var IO = function (_Monad) {
     _inherits(IO, _Monad);
@@ -37,24 +37,20 @@ var IO = function (_Monad) {
         key: 'flatMap',
         value: function flatMap(fn) {
             var out = fn(this.join()());
-            return !(out instanceof this.constructor) ? IO.of(out) : out;
+            return !(out instanceof this.constructor) ? IO.of(out) : IO.of(out.join()());
         }
-
-        // map (fn) {
-        //     return this.flatMap(x => IO.of(fn(x)));
-        // }
-
     }, {
         key: 'fork',
         value: function fork() {
-            return this.map(function (fn) {
-                return fn();
-            });
-        }
-    }, {
-        key: 'unsafePerformIO',
-        value: function unsafePerformIO() {
-            return IO.of(this.join().apply(undefined, arguments));
+            var _this2 = this;
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            return IO.of(setTimeout(function () {
+                return _this2.join().apply(undefined, args);
+            }, 0));
         }
     }], [{
         key: 'of',
@@ -69,11 +65,13 @@ var IO = function (_Monad) {
     }, {
         key: 'do',
         value: function _do(io) {
-            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-                args[_key - 1] = arguments[_key];
+            var _ref;
+
+            for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+                args[_key2 - 1] = arguments[_key2];
             }
 
-            return (IO.isIO(io) ? io : IO.of(io)).unsafePerformIO.apply(io, args);
+            return (_ref = IO.isIO(io) ? io : IO.of(io)).fork.apply(_ref, args);
         }
     }]);
 

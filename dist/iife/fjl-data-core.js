@@ -380,24 +380,20 @@ var IO = function (_Monad) {
         key: 'flatMap',
         value: function flatMap$$1(fn) {
             var out = fn(this.join()());
-            return !(out instanceof this.constructor) ? IO.of(out) : out;
+            return !(out instanceof this.constructor) ? IO.of(out) : IO.of(out.join()());
         }
-
-        // map (fn) {
-        //     return this.flatMap(x => IO.of(fn(x)));
-        // }
-
     }, {
         key: 'fork',
         value: function fork() {
-            return this.map(function (fn) {
-                return fn();
-            });
-        }
-    }, {
-        key: 'unsafePerformIO',
-        value: function unsafePerformIO() {
-            return IO.of(this.join().apply(undefined, arguments));
+            var _this2 = this;
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            return IO.of(setTimeout(function () {
+                return _this2.join().apply(undefined, args);
+            }, 0));
         }
     }], [{
         key: 'of',
@@ -412,11 +408,13 @@ var IO = function (_Monad) {
     }, {
         key: 'do',
         value: function _do(io) {
-            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-                args[_key - 1] = arguments[_key];
+            var _ref;
+
+            for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+                args[_key2 - 1] = arguments[_key2];
             }
 
-            return (IO.isIO(io) ? io : IO.of(io)).unsafePerformIO.apply(io, args);
+            return (_ref = IO.isIO(io) ? io : IO.of(io)).fork.apply(_ref, args);
         }
     }]);
     return IO;

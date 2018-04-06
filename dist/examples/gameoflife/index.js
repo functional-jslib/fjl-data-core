@@ -1300,6 +1300,28 @@ var flatMap = curry(function (fn, monad) {
     return monad.flatMap(fn);
 });
 
+var getMonadUnWrapper = function getMonadUnWrapper(Type) {
+    var isTypeToUnWrap = instanceOf$$1(Type);
+    return function unWrapMonadByType(monad) {
+        return isTypeToUnWrap(monad) ? function trampolineCall() {
+            unWrapMonadByType(monad.valueOf());
+        } : monad;
+    };
+};
+var trampoline = function trampoline(fn) {
+    return function () {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        var result = apply$1(fn, args);
+        while (isset(result) && result.name === 'trampolineCall' && isFunction(result)) {
+            result = result();
+        }
+        return result;
+    };
+};
+
 var Monad = function (_Applicative) {
     inherits(Monad, _Applicative);
 
@@ -1311,13 +1333,13 @@ var Monad = function (_Applicative) {
     createClass(Monad, [{
         key: 'join',
         value: function join() {
-            return this.valueOf();
+            return Monad.unWrapMonadByType(this);
         }
     }, {
         key: 'flatMap',
         value: function flatMap(fn) {
             var out = fn(this.join());
-            return !(out instanceof this.constructor) ? this.constructor.of(out) : out;
+            return !instanceOf$$1(this.constructor, out) ? this.constructor.of(out) : out;
         }
     }, {
         key: 'chain',
@@ -1325,6 +1347,12 @@ var Monad = function (_Applicative) {
             return this.flatMap(fn);
         }
     }], [{
+        key: 'unWrapMonadByType',
+        value: function unWrapMonadByType(monad) {
+            var unwrap = trampoline(getMonadUnWrapper(monad.constructor));
+            return unwrap(monad.valueOf());
+        }
+    }, {
         key: 'of',
         value: function of$$1(x) {
             return new Monad(x);
@@ -1344,34 +1372,14 @@ var Monad = function (_Applicative) {
 
 var IO = function (_Monad) {
     inherits(IO, _Monad);
-
-    function IO(fn) {
-        classCallCheck(this, IO);
-        return possibleConstructorReturn(this, (IO.__proto__ || Object.getPrototypeOf(IO)).call(this, toFunction(fn)));
-    }
-
     createClass(IO, [{
-        key: 'flatMap',
-        value: function flatMap$$1(fn) {
-            var out = fn(this.join()());
-            return !(out instanceof this.constructor) ? IO.of(out) : IO.of(out.join()());
-        }
-    }, {
-        key: 'fork',
-        value: function fork() {
-            var _this2 = this;
-
-            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-                args[_key] = arguments[_key];
-            }
-
-            return IO.of(setTimeout(function () {
-                return _this2.join().apply(undefined, args);
-            }, 0));
+        key: 'join',
+        value: function join$$1() {
+            return Monad.unWrapMonadByType(this)();
         }
     }], [{
         key: 'of',
-        value: function of(fn) {
+        value: function of$$1(fn) {
             return new IO(fn);
         }
     }, {
@@ -1384,11 +1392,23 @@ var IO = function (_Monad) {
         value: function _do(io) {
             var _ref;
 
-            for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-                args[_key2 - 1] = arguments[_key2];
+            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                args[_key - 1] = arguments[_key];
             }
 
-            return (_ref = IO.isIO(io) ? io : IO.of(io)).fork.apply(_ref, args);
+            return (_ref = !IO.isIO(io) ? IO.of(io) : io).fork.apply(_ref, args);
+        }
+    }]);
+
+    function IO(fn) {
+        classCallCheck(this, IO);
+        return possibleConstructorReturn(this, (IO.__proto__ || Object.getPrototypeOf(IO)).call(this, toFunction(fn)));
+    }
+
+    createClass(IO, [{
+        key: 'fork',
+        value: function fork(args) {
+            return IO.of(apply$1(toFunction(this.join()), args));
         }
     }]);
     return IO;
@@ -1478,7 +1498,7 @@ var generateBoard = function generateBoard() {
     }));
 };
 var drawBoard = function drawBoard(canvas, board) {
-    return IO.do(function () {
+    return IO.do(IO.of(function () {
         var x = void 0,
             y = void 0;
         for (x = 0; x < board.length; x++) {
@@ -1490,25 +1510,26 @@ var drawBoard = function drawBoard(canvas, board) {
                 }
             }
         }
+    }));
+};
+var loop = function loop(canvas, board) {
+    return drawBoard(canvas, board).flatMap(function () {
+        return requestAnimationFrame(function () {
+            return loop(canvas, step(board));
+        });
     });
 };
-var loop = curry(function (canvas, board) {
-    return drawBoard(canvas, board).flatMap(function () {
-        return loop(canvas, step(board)).fork();
-    });
-});
 var main = function main() {
     var element = document.getElementById('game-of-comonads'),
         canvas = element.getContext('2d');
 
-    return IO.of(function () {
+    return IO.do(IO.of(function () {
         element.width = SIZE * SCALE;
         element.height = SIZE * SCALE;
         canvas.scale(SCALE, SCALE);
-    }).flatMap(generateBoard).flatMap(loop(canvas))
-
-    // Perform effects!
-    .unsafePerformIO(); // Could also call `do` here (instead)
+    }).flatMap(generateBoard).flatMap(function (board) {
+        return loop(canvas, board);
+    }));
 };
 
 window.addEventListener('load', main);

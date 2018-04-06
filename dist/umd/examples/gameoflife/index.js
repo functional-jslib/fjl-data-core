@@ -120,14 +120,11 @@ var SIZE = 100,
     var element = document.getElementById('game-of-comonads'),
         canvas = element.getContext('2d');
 
-    return _IO2.default.of(function () {
+    return _IO2.default.do(_IO2.default.of(function () {
         element.width = SIZE * SCALE;
         element.height = SIZE * SCALE;
         canvas.scale(SCALE, SCALE);
-    }).flatMap(generateBoard).flatMap(loop(canvas))
-
-    // Perform effects!
-    .unsafePerformIO(); // Could also call `do` here (instead)
+    }).flatMap(generateBoard).flatMap(loop(canvas)));
 };
 
 window.addEventListener('load', main);
