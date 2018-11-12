@@ -1,5 +1,7 @@
-### `fjlMutable` methods
+### `fjlDataCore` members
  ```
-createTypedDescriptor, toEnumerableDescriptor, toTargetDescriptorTuple,
-defineProp, defineEnumProp, defineEnumProps, defineProps
+Functor, Apply, Applicative, Bifunctor, Monad, isMonad, valueOf, join,
+fmap, ap, flatMap, getMonadUnWrapper, trampoline, IO, Just, isJust,
+just, Nothing, isNothing, nothing, maybe, isMaybe, toMaybe, Left, Right,
+isRight, isLeft, either, toFunction, alwaysFunctor
 ```

@@ -1,7 +1,5 @@
 import {isLeft, isRight, Left, Right, either} from '../src/either/Either';
-import {expect, assert} from 'chai';
-import {all, map} from 'fjl';
-import {log} from "./utils";
+import {all} from 'fjl';
 
 describe('#Either', () => {
     const methodNames = ['ap', 'map', 'flatMap', 'join'];

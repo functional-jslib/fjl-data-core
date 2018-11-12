@@ -1,17 +1,16 @@
 /**
  * Created by elyde on 12/10/2016.
  */
-
 import {isset, curry, id} from 'fjl';
 import {Just} from '../maybe/Maybe';
 import Monad from '../monad/Monad';
 import {alwaysFunctor, toFunction} from '../utils';
 
-class Left extends Monad {
+export class Left extends Monad {
     static of (x) { return new Left(x); }
 }
 
-class Right extends Just {
+export class Right extends Just {
     map (fn) {
         const value = this.valueOf();
         if (isLeft(value)) {
@@ -46,5 +45,3 @@ export const
                 return Left.of(monad).map(leftCallback).join();
         }
     });
-
-export {Left, Right};

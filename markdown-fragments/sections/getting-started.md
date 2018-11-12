@@ -3,12 +3,12 @@
 ### In NodeJs: 
 #### Using es2015 modules:
 ```
-import {...} from 'fjl-mutable';
+import {...} from 'fjl-data-core';
 ```
 
 #### Using CommonJs modules:
 ```
-const {...} = require('fjl-mutable');
+const {...} = require('fjl-data-core');
 ```
 
 ### In Browser:

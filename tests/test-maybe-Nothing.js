@@ -1,4 +1,3 @@
-import {expect, assert} from 'chai';
 import Nothing, {isNothing} from '../src/maybe/Nothing';
 import {all, map} from 'fjl';
 

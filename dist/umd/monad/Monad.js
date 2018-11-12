@@ -1,128 +1,146 @@
-'use strict';
+(function (global, factory) {
+  if (typeof define === "function" && define.amd) {
+    define(["exports", "fjl", "../functor/Applicative"], factory);
+  } else if (typeof exports !== "undefined") {
+    factory(exports, require("fjl"), require("../functor/Applicative"));
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports, global.fjl, global.Applicative);
+    global.Monad = mod.exports;
+  }
+})(this, function (_exports, _fjl, _Applicative2) {
+  "use strict";
 
-Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(_exports, "__esModule", {
     value: true
-});
-exports.trampoline = exports.getMonadUnWrapper = exports.flatMap = exports.ap = exports.fmap = exports.join = exports.valueOf = exports.isMonad = undefined;
+  });
+  _exports.default = _exports.trampoline = _exports.getMonadUnWrapper = _exports.flatMap = _exports.ap = _exports.fmap = _exports.join = _exports.valueOf = _exports.isMonad = void 0;
+  _Applicative2 = _interopRequireDefault(_Applicative2);
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _fjl = require('fjl');
+  function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var _Applicative2 = require('../functor/Applicative');
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _Applicative3 = _interopRequireDefault(_Applicative2);
+  function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+  function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by edlc on 12/9/16.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Basic `Monad` class.  Used to extend from to create `Maybe` and `Either` module/classes.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @module Monad
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @see `Maybe` reference: http://hackage.haskell.org/package/base-4.10.1.0/docs/Data-Maybe.html
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @see `Either` reference: http://hackage.haskell.org/package/base-4.10.1.0/docs/Data-Either.html
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+  function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var _isMonad = function _isMonad(value) {
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+  function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+  var _isMonad = function isMonad(value) {
     return value instanceof Monad;
-},
-    valueOf = function valueOf(x) {
+  },
+      valueOf = function valueOf(x) {
     return x.valueOf();
-},
-    join = function join(x) {
+  },
+      join = function join(x) {
     return x.join();
-},
-    fmap = (0, _fjl.curry)(function (fn, x) {
+  },
+      fmap = (0, _fjl.curry)(function (fn, x) {
     return x.map(fn);
-}),
-    ap = (0, _fjl.curry)(function (applicative, functor) {
+  }),
+      ap = (0, _fjl.curry)(function (applicative, functor) {
     return applicative.ap(functor);
-}),
-    flatMap = (0, _fjl.curry)(function (fn, monad) {
+  }),
+      flatMap = (0, _fjl.curry)(function (fn, monad) {
     return monad.flatMap(fn);
-}),
-    getMonadUnWrapper = function getMonadUnWrapper(Type) {
+  }),
+      getMonadUnWrapper = function getMonadUnWrapper(Type) {
     var isTypeToUnWrap = (0, _fjl.instanceOf)(Type);
     return function unWrapMonadByType(monad) {
-        return isTypeToUnWrap(monad) ? function trampolineCall() {
-            return unWrapMonadByType(monad.valueOf());
-        } : monad;
+      return isTypeToUnWrap(monad) ? function trampolineCall() {
+        return unWrapMonadByType(monad.valueOf());
+      } : monad;
     };
-},
-    trampoline = function trampoline(fn) {
+  },
+      trampoline = function trampoline(fn) {
     return function () {
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
 
-        var result = (0, _fjl.apply)(fn, args);
-        while ((0, _fjl.isset)(result) && result.name === 'trampolineCall' && (0, _fjl.isFunction)(result)) {
-            result = result();
-        }
-        return result;
+      var result = (0, _fjl.apply)(fn, args);
+
+      while ((0, _fjl.isset)(result) && result.name === 'trampolineCall' && (0, _fjl.isFunction)(result)) {
+        result = result();
+      }
+
+      return result;
     };
-};
+  };
 
-exports.isMonad = _isMonad;
-exports.valueOf = valueOf;
-exports.join = join;
-exports.fmap = fmap;
-exports.ap = ap;
-exports.flatMap = flatMap;
-exports.getMonadUnWrapper = getMonadUnWrapper;
-exports.trampoline = trampoline;
+  _exports.trampoline = trampoline;
+  _exports.getMonadUnWrapper = getMonadUnWrapper;
+  _exports.flatMap = flatMap;
+  _exports.ap = ap;
+  _exports.fmap = fmap;
+  _exports.join = join;
+  _exports.valueOf = valueOf;
+  _exports.isMonad = _isMonad;
 
-var Monad = function (_Applicative) {
+  var Monad =
+  /*#__PURE__*/
+  function (_Applicative) {
     _inherits(Monad, _Applicative);
 
     function Monad() {
-        _classCallCheck(this, Monad);
+      _classCallCheck(this, Monad);
 
-        return _possibleConstructorReturn(this, (Monad.__proto__ || Object.getPrototypeOf(Monad)).apply(this, arguments));
+      return _possibleConstructorReturn(this, _getPrototypeOf(Monad).apply(this, arguments));
     }
 
     _createClass(Monad, [{
-        key: 'join',
-        value: function join() {
-            return Monad.unWrapMonadByType(this.constructor, this);
-        }
+      key: "join",
+      value: function join() {
+        return Monad.unWrapMonadByType(this.constructor, this);
+      }
     }, {
-        key: 'flatMap',
-        value: function flatMap(fn) {
-            var out = Monad.unWrapMonadByType(this.constructor, fn(this.join()));
-            return this.constructor.of(out);
-        }
+      key: "flatMap",
+      value: function flatMap(fn) {
+        var out = Monad.unWrapMonadByType(this.constructor, fn(this.join()));
+        return this.constructor.of(out);
+      }
     }, {
-        key: 'chain',
-        value: function chain(fn) {
-            return this.flatMap(fn);
-        }
+      key: "chain",
+      value: function chain(fn) {
+        return this.flatMap(fn);
+      }
     }], [{
-        key: 'unWrapMonadByType',
-        value: function unWrapMonadByType(Type, monad) {
-            if (!(0, _fjl.isset)(monad)) {
-                return monad;
-            }
-            var unwrap = trampoline(getMonadUnWrapper(Type));
-            return unwrap(monad);
+      key: "unWrapMonadByType",
+      value: function unWrapMonadByType(Type, monad) {
+        if (!(0, _fjl.isset)(monad)) {
+          return monad;
         }
+
+        var unwrap = trampoline(getMonadUnWrapper(Type));
+        return unwrap(monad);
+      }
     }, {
-        key: 'of',
-        value: function of(x) {
-            return new Monad(x);
-        }
+      key: "of",
+      value: function of(x) {
+        return new Monad(x);
+      }
     }, {
-        key: 'isMonad',
-        value: function isMonad(x) {
-            return _isMonad(x);
-        }
+      key: "isMonad",
+      value: function isMonad(x) {
+        return _isMonad(x);
+      }
     }]);
 
     return Monad;
-}(_Applicative3.default);
+  }(_Applicative2.default);
 
-exports.default = Monad;
+  _exports.default = Monad;
+});

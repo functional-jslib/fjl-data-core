@@ -1,23 +1,23 @@
-'use strict';
+define(["exports", "fjl", "./functor/Functor"], function (_exports, _fjl, _Functor) {
+  "use strict";
 
-Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(_exports, "__esModule", {
     value: true
-});
-exports.alwaysFunctor = exports.toFunction = undefined;
+  });
+  _exports.alwaysFunctor = _exports.toFunction = void 0;
+  _Functor = _interopRequireDefault(_Functor);
 
-var _fjl = require('fjl');
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _Functor = require('./functor/Functor');
-
-var _Functor2 = _interopRequireDefault(_Functor);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var toFunction = exports.toFunction = function toFunction(x) {
+  var toFunction = function toFunction(x) {
     return (0, _fjl.isFunction)(x) ? x : function () {
-        return x;
+      return x;
     };
-},
-    alwaysFunctor = exports.alwaysFunctor = function alwaysFunctor(x) {
-    return !x.map ? new _Functor2.default(x) : x;
-};
+  },
+      alwaysFunctor = function alwaysFunctor(x) {
+    return !x.map ? new _Functor.default(x) : x;
+  };
+
+  _exports.alwaysFunctor = alwaysFunctor;
+  _exports.toFunction = toFunction;
+});

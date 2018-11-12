@@ -2,7 +2,7 @@ import Just, {isJust, just} from './Just';
 import Nothing, {isNothing, nothing} from './Nothing';
 import {isset, curry, id} from 'fjl';
 
-export {Just, isJust, isNothing, Nothing};
+export {Just, isJust, isNothing, Nothing, just, nothing};
 
 export const
     /**
@@ -15,12 +15,8 @@ export const
         return isNothing(subject) ? replacement : subject.map(fn).join();
     }),
 
-    isMaybe = x => isNothing(x) || isJust(x);
+    isMaybe = x => isNothing(x) || isJust(x),
 
-function Maybe (x) {
-    return isset(x) ? just(x) : nothing();
-}
+    toMaybe = x => isset(x) ? just(x) : nothing()
 
-Maybe.of = x => Maybe(x);
-
-export default Maybe;
+;

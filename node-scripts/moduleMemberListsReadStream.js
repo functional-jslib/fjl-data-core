@@ -34,6 +34,9 @@ const
     updateMethodByArity = (moduleMeta, methodName, topLevelNamesByArity) => {
         const arity = moduleMeta.module[methodName].length,
             {methodNamesByArity} = moduleMeta;
+        if (arity === undefined) {
+            return;
+        }
         if (!methodNamesByArity[arity]) {
             methodNamesByArity[arity] = [];
         }
@@ -59,7 +62,7 @@ const
             _methodNames = methodNames.slice(0),
             colLen = 72,
             firstMethod = _methodNames.shift(),
-            methodNamesMd = _methodNames.reduce((agg, name) => {
+            memberNamesMd = _methodNames.reduce((agg, name) => {
                     const lineMetaEntry = agg[agg.length - 1],
                         [lineLen, line] = lineMetaEntry,
                         newLineLen = lineLen + (', ' + name).length,
@@ -76,12 +79,12 @@ const
 
                     return agg;
                 },
-                [[firstMethod.length, [firstMethod]]]
+                [[firstMethod ? firstMethod.length : 0, [firstMethod]]]
             )
                 .map(([_, line]) => line.join(', '))
                 .join(',\n')
         ;
-        return `### \`${moduleName}\` methods\n \`\`\`\n${methodNamesMd}\n\`\`\`\n`;
+        return `### \`${moduleName}\` members\n \`\`\`\n${memberNamesMd}\n\`\`\`\n`;
     }
 ;
 

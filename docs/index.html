@@ -2,23 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>Home | Home</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
 </head>
-
 <body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 144px; height: 55px">
+        
+            <a href="https://github.com/functional-jslib/fjl-data-core" rel="noopener noreferrer" target="_blank">
+                <img src="http://elycruz.com/fjl-data-core-logo.gif" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Home</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="fjlDataCore%250DCore%2520monad%2520types%2520(useful%2520for%2520javascript).module_.html">fjlDataCoreCore monad types (useful for javascript).</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="fjlDataCoreCore monad types (useful for javascript).module:_sub"></div></li><li><a href="module-Monad.html">Monad</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:Monad_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="module.exports.html">exports</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module.exports_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Global</h3><ul><li><a href="global.html#maybe">maybe</a></li></ul></div>
+</nav>
+<div id="resizer"></div>
 
-<div id="main">
-
-    <h1 class="page-title">Home</h1>
-
+<div class="main" id="main">
     
 
 
@@ -26,10 +46,6 @@
     
 
 
-    <h3> </h3>
-
-
-
 
 
 
@@ -38,21 +54,91 @@
 
 
     
-
-
 
 
     <section>
-        <article><h1>fjl-data-identity (WIP (Work in progress))</h1><p>Fjl Data.Maybe and Data.Either implementations in javascript.</p>
-<h2>Reasoning</h2><ul>
-<li>Mimick haskell's Maybe and Either data types.</li>
-<li>Use the js platform's features to implement the required functionality.</li>
+        <article class="readme"><p><a href="https://travis-ci.org/functional-jslib/fjl-data-core"><img src="https://travis-ci.org/functional-jslib/fjl-data-core.png" alt="Build Status"></a>
+<a href="http://badge.fury.io/gh/functional-jslib%2Ffjl-data-core"><img src="https://badge.fury.io/gh/functional-jslib%2Ffjl-data-core.svg" alt="GitHub version"></a>
+<a href="http://badge.fury.io/js/fjl-data-core"><img src="https://badge.fury.io/js/fjl-data-core.svg" alt="NPM version"></a>
+<a href="https://david-dm.org/functional-jslib/fjl-data-core"><img src="https://david-dm.org/functional-jslib/fjl-data-core.png" alt="Dependencies"></a></p>
+<h1>fjl-data-core</h1><p>Haskell's <code>data Maybe a</code>, <code>data Either a b</code>, and <code>data IO a * -&gt; *</code> implementations in javascript.</p>
+<h2>Sections in Readme:</h2><ul>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#docs">Docs</a></li>
+<li><a href="#motivations">Motivation</a></li>
+<li><a href="#development">Development</a></li>
+<li><a href="#supported-platforms">Supported Platforms</a></li>
+<li><a href="#license">License</a></li>
+<li><a href="#resources">Resources</a></li>
+<li><a href="#change-log">Change log</a></li>
 </ul>
-<h2>Testing</h2><ul>
-<li><code>jest</code> - @todo add url </li>
-<li><code>chai</code> - @todo add url</li>
+<h2>Requirements:</h2><ul>
+<li>Javascript Ecmascript 5+.</li>
 </ul>
-<h2>License</h2><p>BSD-3-Clause</p></article>
+<h3>Supported Platforms:</h3><h4>Browsers</h4><ul>
+<li>IE9+, and all other modern day browsers.</li>
+</ul>
+<h4>NodeJs</h4><ul>
+<li>8+</li>
+</ul>
+<h2>Getting Started:</h2><h3>In NodeJs:</h3><h4>Using es2015 modules:</h4><pre class="prettyprint source"><code>import {...} from 'fjl-data-core';</code></pre><h4>Using CommonJs modules:</h4><pre class="prettyprint source"><code>const {...} = require('fjl-data-core');</code></pre><h3>In Browser:</h3><p>See desired export type below:</p>
+<ul>
+<li>'./dist/amd/' - Asynchronous module format.</li>
+<li>'./dist/cjs/' - CommonJs module format.</li>
+<li>'./dist/umd/' - Universal module definition format.</li>
+<li>'./dist/iife/' - Immediately Invoked Function Execution - (exports <code>fjlMutable</code> as a global).</li>
+<li>'./dist/es6-module/' - Ecmascript 6 module format.</li>
+</ul>
+<h2>Docs</h2><p><strong>JSDocs</strong> are here (https://functional-jslib.github.io/fjl-data-core/) [https://functional-jslib.github.io/fjl-data-core/].</p>
+<h3><code>fjlDataCore</code> members</h3><pre class="prettyprint source"><code>Functor, Apply, Applicative, Bifunctor, Monad, isMonad, valueOf, join,
+fmap, ap, flatMap, getMonadUnWrapper, trampoline, IO, Just, isJust,
+just, Nothing, isNothing, nothing, maybe, isMaybe, toMaybe, Left, Right,
+isRight, isLeft, either, toFunction, alwaysFunctor</code></pre><p>Readme docs:</p>
+<h3>Just(x): Just{x}</h3><p>Wraps a value in a just;  E.g.,</p>
+<pre class="prettyprint source lang-javascript"><code>import {Just} from 'fjl-data-core';
+console.log(
+    (new Just(99)).map(x => x * 2).value === 99 * 2
+); // `true`</code></pre><h3>just(x): Just{x}</h3><p>Same as <code>Just</code> except in method form; E.g.:</p>
+<pre class="prettyprint source lang-javascript"><code>import {just} from 'fjl-data-core';
+console.log(
+    (just(99)).map(x => x * 2).value === 99 * 2
+); // `true`</code></pre><h3>isJust(x): boolean</h3><p><code>// Self explanatory</code></p>
+<h3>Nothing(): Nothing</h3><p>Always returns <code>Nothing</code> singleton; Even when called with <code>new</code>; E.g.:</p>
+<pre class="prettyprint source lang-javascript"><code>import {Nothing} from 'fjl-data-core';
+import {log} from 'fjl';
+log(
+    Nothing() === new Nothing()
+) // `true`</code></pre><h3>nothing(): Nothing</h3><p>Same as <code>Nothing</code> except in method form; E.g.:</p>
+<pre class="prettyprint source lang-javascript"><code>import {nothing} from 'fjl-data-core';
+import {log} from 'fjl';
+log(
+    nothing() === Nothing() && nothing() === new Nothing()
+) // `true`</code></pre><h3>isNothing(x): boolean</h3><p><code>// Self explanatory</code></p>
+<h3>maybe()</h3><ul>
+<li><code>Maybe</code> - Gives you an either of <code>Just a</code> or a <code>Nothing</code>.  Example:<pre class="prettyprint source"><code>log(Maybe(99)) // Just(99)
+log(Maybe(undefined)) // Nothing()</code></pre></li>
+<li><code>Maybe.Nothing</code> - Always gives you a <code>Nothing</code> whether you're <code>flatMap</code>ing <code>map</code>ing or other etc. you'll always 
+get a <code>Nothing</code> on <code>Nothing</code>.  Example:<pre class="prettyprint source"><code>Nothing.map(x => (console.log('Hello World Big Bird'), 99)) === Nothing // true</code></pre></li>
+<li><code>Maybe.Just</code> - @todo add description</li>
+<li><code>Either.Right</code> - @todo add description</li>
+<li><code>Either.Left</code> - @todo add description</li>
+<li><code>IO</code> - Functions similarly to es6 <code>Promise</code>s but currently, they do not have <code>bimap</code> (<code>then</code>) functionality
+and/or <code>catch</code> functionality (will add functionality later).</li>
+<li><code>Monad</code> - Class for easily creating other monads (inherits <code>Applicative</code>, <code>Apply</code> and <code>Functor</code> from './src/...'). </li>
+<li>@todo add other members</li>
+</ul>
+<h2>Development:</h2><ul>
+<li>For commands see './package.json' scripts.</li>
+</ul>
+<h3>Dir structure</h3><ul>
+<li>Everything is in './src'.</li>
+<li>Distribution is in './dist'.</li>
+<li>Docs are in './docs'.</li>
+</ul>
+<h3>Testing</h3><p>Using <code>jest</code> (see './package.json' scripts).</p>
+<h2>License:</h2><p>BSD 3 Clause - Included in sources.</p>
+<h2>Resources:</h2><h2>Change log</h2><h3>0.1.0</h3></article>
     </section>
 
 
@@ -62,17 +148,24 @@
 
 </div>
 
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="fjlDataCore%250DCore%2520monad%2520types%2520(useful%2520for%2520javascript).module_.html">fjlDataCoreCore monad types (useful for javascript).</a></li><li><a href="module-Monad.html">Monad</a></li></ul><h3>Classes</h3><ul><li><a href="module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#maybe">maybe</a></li></ul>
-</nav>
-
-<br class="clear">
-
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 30 2018 16:27:27 GMT-0400 (Eastern Daylight Time)
+    <img class="logo" src="http://elycruz.com/fjl-data-core-logo.gif" style="width: 144px; height: 55px">
+    <div class="footer-text">functional-jslib - BSD 3.0 License - JsDoc Template -> tui-jsdoc-template - by NHN Entertainment - Frontend Development Lab</div>
 </footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+    <script>
+        var id = 'package:undefined_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
 </body>
 </html>

@@ -1,46 +1,69 @@
-'use strict';
+define(["exports", "./Just", "./Nothing", "fjl"], function (_exports, _Just, _Nothing, _fjl) {
+  "use strict";
 
-Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(_exports, "__esModule", {
     value: true
-});
-exports.isMaybe = exports.maybe = exports.Nothing = exports.isNothing = exports.isJust = exports.Just = undefined;
+  });
+  Object.defineProperty(_exports, "Just", {
+    enumerable: true,
+    get: function get() {
+      return _Just.default;
+    }
+  });
+  Object.defineProperty(_exports, "isJust", {
+    enumerable: true,
+    get: function get() {
+      return _Just.isJust;
+    }
+  });
+  Object.defineProperty(_exports, "just", {
+    enumerable: true,
+    get: function get() {
+      return _Just.just;
+    }
+  });
+  Object.defineProperty(_exports, "Nothing", {
+    enumerable: true,
+    get: function get() {
+      return _Nothing.default;
+    }
+  });
+  Object.defineProperty(_exports, "isNothing", {
+    enumerable: true,
+    get: function get() {
+      return _Nothing.isNothing;
+    }
+  });
+  Object.defineProperty(_exports, "nothing", {
+    enumerable: true,
+    get: function get() {
+      return _Nothing.nothing;
+    }
+  });
+  _exports.toMaybe = _exports.isMaybe = _exports.maybe = void 0;
+  _Just = _interopRequireWildcard(_Just);
+  _Nothing = _interopRequireWildcard(_Nothing);
 
-var _Just = require('./Just');
+  function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-var _Just2 = _interopRequireDefault(_Just);
-
-var _Nothing = require('./Nothing');
-
-var _Nothing2 = _interopRequireDefault(_Nothing);
-
-var _fjl = require('fjl');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.Just = _Just2.default;
-exports.isJust = _Just.isJust;
-exports.isNothing = _Nothing.isNothing;
-exports.Nothing = _Nothing2.default;
-var
-/**
- * @param replacement {*}
- * @param fn {Function} - Some operation.
- * @param maybeInst {(Nothing|Just|*)} - Maybe instance or non
- */
-maybe = exports.maybe = (0, _fjl.curry)(function (replacement, fn, maybeInst) {
-    var subject = (0, _fjl.isset)(maybeInst) && isMaybe(maybeInst) ? maybeInst.map(_fjl.id) : _Nothing2.default.of();
+  var
+  /**
+   * @param replacement {*}
+   * @param fn {Function} - Some operation.
+   * @param maybeInst {(Nothing|Just|*)} - Maybe instance or non
+   */
+  maybe = (0, _fjl.curry)(function (replacement, fn, maybeInst) {
+    var subject = (0, _fjl.isset)(maybeInst) && isMaybe(maybeInst) ? maybeInst.map(_fjl.id) : _Nothing.default.of();
     return (0, _Nothing.isNothing)(subject) ? replacement : subject.map(fn).join();
-}),
-    isMaybe = exports.isMaybe = function isMaybe(x) {
+  }),
+      isMaybe = function isMaybe(x) {
     return (0, _Nothing.isNothing)(x) || (0, _Just.isJust)(x);
-};
+  },
+      toMaybe = function toMaybe(x) {
+    return (0, _fjl.isset)(x) ? (0, _Just.just)(x) : (0, _Nothing.nothing)();
+  };
 
-function Maybe(x) {
-    return (0, _fjl.isset)(x) ? _Just2.default.of(x) : _Nothing2.default.of();
-}
-
-Maybe.of = function (x) {
-    return Maybe(x);
-};
-
-exports.default = Maybe;
+  _exports.toMaybe = toMaybe;
+  _exports.isMaybe = isMaybe;
+  _exports.maybe = maybe;
+});

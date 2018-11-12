@@ -1,114 +1,70 @@
-
-In-line summary docs follow:
-
-### `defineProp(TypeRef, propName, targetOrTargetTuple, defaultValue = undefined) : Descriptor`
-Defines a property on target that is constricted to given Type (`TypeRef`).
-HaskellType: `defineProp :: TypeRef -> String -> TargetOrTargetTuple -> Any -> Descriptor`
-
-### `defineEnumProp(TypeRef, propName, targetOrTargetTuple, defaultValue = undefined) : Descriptor`
-Defines an enumerable property on target that is constricted to given Type (`TypeRef`).
-HaskellType: `defineEnumProp :: TypeRef -> String -> TargetOrTargetTuple -> Any -> Descriptor`
-```
-const someDefaultValue = 
-class User {
-    static defaultRole = 'guest';
-    constructor ({firstName, age}) {
-        defineEnumProp(String, 'firstName', this, firstName); // if `firstName` here is not of type `String`, detailed error thrown  
-        defineEnumProp(Number, 'age', this);
-        defineEnumProp(String, 'role', this, User.defaultRole);
-        this.age = age; // This is fine since our setter expects a number
-        this.age = 'hello world'; // This throws a detailed error ('`#User.age` 
-                                  //   ... expects type: "Number" ... Type received ...' etc.
-                                  // )
-    }
-}
-
-// Later..
-const user = new User();
-user.firstName = "Some name";
-user.age = '99'; // Throws (detailed) error since type does not match.
+Readme docs:
+### Just(x): Just{x}
+Wraps a value in a just;  E.g.,
+```javascript
+import {Just} from 'fjl-data-core';
+console.log(
+    (new Just(99)).map(x => x * 2).value === 99 * 2
+); // `true`
 ```
 
-### `defineEnumProps(argTuples, target) : Array<Array<Target, Descriptor>>`
-Defines enumerable properties all at once on specified target.
-#### Params:
-- `argTuples {Array}` - Array of argument lists of the same type that `defineEnumProps` takes: 
-    E.g., `Array.<TypeRef, String, TargetOrTargetTuple, Any>`  with one distinction: 3rd argument is optional (target argument).
-```
-const someTarget = {};
-defineEnumProps([
-    [String, 'someProp', someDefaultValue],
-    [String, 'someProp2', someDefaultValue2],
-    [String, 'someProp3', someTarget, someDefaultValue3],
-    [String, 'someProp4', [someTarget, somePropDescriptor], someDefaultValue4],
-], someTarget);
-
-```
-- `target {*}` - Target to define properties on.  
-
-Example usage:
-```
-const someDefaultValue = 'someValueHere';
-class User {
-    static defaultRole = 'guest';
-    constructor ({firstName, age}) {
-        defineEnumProps([
-            [String, 'firstName', firstName],   // if `firstName` here is not of 
-                                                // type `String`, detailed error thrown
-            [Number, 'age'],
-            [String, 'role', User.defaultRole]
-        ], target);
-        this.age = age;                         // This is fine since our setter expects a number
-        this.age = 'hello world';               // This throws a detailed error ('`#User.age` 
-                                                //   ... expects type: "Number" ... Type received ...' etc.
-                                                // )
-    }
-}
-
-// Later..
-const user = new User();
-user.firstName = "Some name";
-user.age = '99'; // Throws (detailed) error since type does not match.
+### just(x): Just{x}
+Same as `Just` except in method form; E.g.:
+```javascript
+import {just} from 'fjl-data-core';
+console.log(
+    (just(99)).map(x => x * 2).value === 99 * 2
+); // `true`
 ```
 
-### `defineProps(argTuples, target) : Array<Array<Target, Descriptor>>`
-Same as `defineEnumProps` though doesn't make props enumerable on target.  See params description and examples below:
-#### Params:
-- `argTuples {Array}` - Array of argument lists of the same type that `defineEnumProps` takes: 
-    E.g., `Array.<TypeRef, String, TargetOrTargetTuple, Any>`  with one distinction: 3rd argument is optional (target argument).
-```
-const someTarget = {};
-defineEnumProps([
-    [String, 'someProp', someDefaultValue],
-    [String, 'someProp2', someDefaultValue2],
-    [String, 'someProp3', someTarget, someDefaultValue3],
-    [String, 'someProp4', [someTarget, somePropDescriptor], someDefaultValue4],
-], someTarget);
+### isJust(x): boolean
+`// Self explanatory`
 
+### Nothing(): Nothing
+Always returns `Nothing` singleton; Even when called with `new`; E.g.:
+```javascript
+import {Nothing} from 'fjl-data-core';
+import {log} from 'fjl';
+log(
+    Nothing() === new Nothing()
+) // `true`
 ```
-- `target {*}` - Target to define properties on.  
+ 
+### nothing(): Nothing
+Same as `Nothing` except in method form; E.g.:
+```javascript
+import {nothing} from 'fjl-data-core';
+import {log} from 'fjl';
+log(
+    nothing() === Nothing() && nothing() === new Nothing()
+) // `true`
+```
 
-Example usage:
-```
-const someDefaultValue = 'someValueHere';
-class User {
-    static defaultRole = 'guest';
-    constructor ({firstName, age}) {
-        defineProps([
-            [String, 'firstName', firstName],   // if `firstName` here is not of 
-                                                // type `String`, detailed error thrown
-            [Number, 'age'],
-            [String, 'role', User.defaultRole]
-        ], target);
-        this.age = age;                         // This is fine since our setter expects a number
-        this.age = 'hello world';               // This throws a detailed error ('`#User.age` 
-                                                //   ... expects type: "Number" ... Type received ...' etc.
-                                                // )
-    }
-}
+### isNothing(x): boolean
+`// Self explanatory`
 
-// Later..
-const user = new User();
-user.firstName = "Some name";
-user.age = '99'; // Throws (detailed) error since type does not match.
+### `maybe(replacement: *, a => b, Maybe(a)): (b|replacement)`
+**Haskell Type**
+`maybe :: b -> (a -> b) -> Maybe a -> b`
+Returns `replacment` value if `Maybe(a)` is a `Nothing` else maps
+`a => b` operation on `Maybe(a)` 
+
+
+### Old docs below
+- `Maybe` - Gives you an either of `Just a` or a `Nothing`.  Example:
 ```
+log(Maybe(99)) // Just(99)
+log(Maybe(undefined)) // Nothing()
+```
+- `Maybe.Nothing` - Always gives you a `Nothing` whether you're `flatMap`ing `map`ing or other etc. you'll always 
+get a `Nothing` on `Nothing`.  Example:
+```
+Nothing.map(x => (console.log('Hello World Big Bird'), 99)) === Nothing // true
+``` 
+- `Maybe.Just` - @todo add description
+- `Either.Right` - @todo add description
+- `Either.Left` - @todo add description
+- `IO` - Functions similarly to es6 `Promise`s but currently, they do not have `bimap` (`then`) functionality
+and/or `catch` functionality (will add functionality later).
+- `Monad` - Class for easily creating other monads (inherits `Applicative`, `Apply` and `Functor` from './src/...'). 
+- @todo add other members

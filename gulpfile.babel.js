@@ -24,7 +24,7 @@ import del from 'del';
 import moduleMemberListsReadStream from './node-scripts/moduleMemberListsReadStream';
 
 /** Module's inner modules map (for members list stream) **/
-import * as fjlMutable from './src/fjlMutable';
+import * as fjlDataCore from './src/fjlDataCore';
 
 const
 
@@ -54,9 +54,7 @@ const
 
     {series, dest, src, parallel} = gulp,
 
-    innerModulesMap = {
-        fjlMutable
-    },
+    innerModulesMap = {fjlDataCore},
 
     deleteFilePaths = pathsToDelete =>
         del(pathsToDelete)

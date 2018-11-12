@@ -1,3 +1,3 @@
 ## Motivations:
-- Functional way of defining "typed" properties on objects (typed programming without requiring typescript or typescript type files).
-  
+- Mimick some of haskell's base Monads: Maybe, Either, and IO (for starters).
+- Use the js platform's features to implement the required functionality.

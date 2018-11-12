@@ -1,41 +1,48 @@
-"use strict";
+define(["exports"], function (_exports) {
+  "use strict";
 
-Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(_exports, "__esModule", {
     value: true
-});
+  });
+  _exports.default = void 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-/**
- * Created by edlc on 12/9/16.
- */
-var Functor = function () {
+  function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+  /**
+   * Created by edlc on 12/9/16.
+   */
+  var Functor =
+  /*#__PURE__*/
+  function () {
     function Functor(value) {
-        _classCallCheck(this, Functor);
+      _classCallCheck(this, Functor);
 
-        this.value = value;
+      this.value = value;
     }
 
     _createClass(Functor, [{
-        key: "valueOf",
-        value: function valueOf() {
-            return this.value;
-        }
+      key: "valueOf",
+      value: function valueOf() {
+        return this.value;
+      }
     }, {
-        key: "map",
-        value: function map(fn) {
-            return new this.constructor(fn(this.valueOf()));
-        }
+      key: "map",
+      value: function map(fn) {
+        return new this.constructor(fn(this.valueOf()));
+      }
     }, {
-        key: "fmap",
-        value: function fmap(fn) {
-            return this.map(fn);
-        }
+      key: "fmap",
+      value: function fmap(fn) {
+        return this.map(fn);
+      }
     }]);
 
     return Functor;
-}();
+  }();
 
-exports.default = Functor;
+  _exports.default = Functor;
+});

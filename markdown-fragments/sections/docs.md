@@ -1,3 +1,3 @@
 ## Docs
 
-**JSDocs** are here (https://functional-jslib.github.io/fjl-mutable/) [https://functional-jslib.github.io/fjl-mutable/].
+**JSDocs** are here (https://functional-jslib.github.io/fjl-data-core/) [https://functional-jslib.github.io/fjl-data-core/].

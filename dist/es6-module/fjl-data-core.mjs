@@ -299,4 +299,4 @@ const either = curry((leftCallback, rightCallback, monad) => {
  */
 
 export { Functor, Apply, Applicative, Bifunctor, IO, Monad, isMonad, valueOf, join, fmap, ap, flatMap, getMonadUnWrapper, trampoline, Just, isJust, isNothing, Nothing, just, nothing, maybe, isMaybe, toMaybe, Left, Right, isRight, isLeft, either, toFunction, alwaysFunctor };
-//# sourceMappingURL=fjl-data-core.js.map
+//# sourceMappingURL=fjl-data-core.mjs.map

@@ -1,24 +1,46 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: monad/Monad.js</title>
+    <title>Source: monad/Monad.js | Source: monad/Monad.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
 </head>
-
 <body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 144px; height: 55px">
+        
+            <a href="https://github.com/functional-jslib/fjl-data-core" rel="noopener noreferrer" target="_blank">
+                <img src="http://elycruz.com/fjl-data-core-logo.gif" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Source: monad/Monad.js</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="fjlDataCore%250DCore%2520monad%2520types%2520(useful%2520for%2520javascript).module_.html">fjlDataCoreCore monad types (useful for javascript).</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="fjlDataCoreCore monad types (useful for javascript).module:_sub"></div></li><li><a href="module-Monad.html">Monad</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:Monad_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="module.exports.html">exports</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module.exports_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Global</h3><ul><li><a href="global.html#maybe">maybe</a></li></ul></div>
+</nav>
+<div id="resizer"></div>
 
-<div id="main">
-
-    <h1 class="page-title">Source: monad/Monad.js</h1>
-
+<div class="main" id="main">
     
 
 
@@ -34,7 +56,7 @@
  * @see `Either` reference: http://hackage.haskell.org/package/base-4.10.1.0/docs/Data-Either.html
  */
 
-import {curry} from 'fjl';
+import {apply, isset, curry, isFunction, instanceOf} from 'fjl';
 import Applicative from '../functor/Applicative';
 
 export const
@@ -43,16 +65,42 @@ export const
     join = x => x.join(),
     fmap = curry((fn, x) => x.map(fn)),
     ap = curry((applicative, functor) => applicative.ap(functor)),
-    flatMap = curry((fn, monad) => monad.flatMap(fn));
+    flatMap = curry((fn, monad) => monad.flatMap(fn)),
+
+    getMonadUnWrapper = Type => {
+        const isTypeToUnWrap = instanceOf(Type);
+        return function unWrapMonadByType (monad) {
+            return isTypeToUnWrap(monad) ? function trampolineCall () {
+                return unWrapMonadByType(monad.valueOf());
+            } : monad;
+        };
+    },
+
+    trampoline = fn => {
+        return (...args) => {
+            let result = apply(fn, args);
+            while (isset(result) &amp;&amp;
+                result.name === 'trampolineCall' &amp;&amp;
+                isFunction(result)
+            ) {
+                result = result();
+            }
+            return result;
+        };
+    };
 
 export default class Monad extends Applicative {
+    static unWrapMonadByType (Type, monad) {
+        if (!isset(monad)) { return monad; }
+        const unwrap = trampoline(getMonadUnWrapper(Type));
+        return unwrap(monad);
+    }
     join () {
-        return this.valueOf();
+        return Monad.unWrapMonadByType(this.constructor, this);
     }
     flatMap (fn) {
-        const out = fn(this.join());
-        return !(out instanceof this.constructor) ?
-            this.constructor.of(out) : out;
+        const out = Monad.unWrapMonadByType(this.constructor, fn(this.join()));
+        return this.constructor.of(out);
     }
     chain (fn) {
         return this.flatMap(fn);
@@ -69,17 +117,24 @@ export default class Monad extends Applicative {
 
 </div>
 
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="fjlDataCore%250DCore%2520monad%2520types%2520(useful%2520for%2520javascript).module_.html">fjlDataCoreCore monad types (useful for javascript).</a></li><li><a href="module-Monad.html">Monad</a></li></ul><h3>Classes</h3><ul><li><a href="module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#maybe">maybe</a></li></ul>
-</nav>
-
-<br class="clear">
-
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 30 2018 16:27:27 GMT-0400 (Eastern Daylight Time)
+    <img class="logo" src="http://elycruz.com/fjl-data-core-logo.gif" style="width: 144px; height: 55px">
+    <div class="footer-text">functional-jslib - BSD 3.0 License - JsDoc Template -> tui-jsdoc-template - by NHN Entertainment - Frontend Development Lab</div>
 </footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
 </body>
 </html>

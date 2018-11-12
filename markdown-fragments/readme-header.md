@@ -1,9 +1,6 @@
-[![Build Status](https://travis-ci.org/functional-jslib/fjl-mutable.png)](https://travis-ci.org/functional-jslib/fjl-mutable)
-[![GitHub version](https://badge.fury.io/gh/functional-jslib%2Ffjl-mutable.svg)](http://badge.fury.io/gh/functional-jslib%2Ffjl-mutable)
-[![NPM version](https://badge.fury.io/js/fjl-mutable.svg)](http://badge.fury.io/js/fjl-mutable)
-[![Dependencies](https://david-dm.org/functional-jslib/fjl-mutable.png)](https://david-dm.org/functional-jslib/fjl-mutable)
-# fjl-mutable
-Functional and "typed" `defineProp`, `defineEnumProp`, `defineProps`, `defineEnumProps` functionality.
-
-## Deprecated
-This library now lives on as part of the [fjl library](https://github.com/functional-jslib/fjl).
+[![Build Status](https://travis-ci.org/functional-jslib/fjl-data-core.png)](https://travis-ci.org/functional-jslib/fjl-data-core)
+[![GitHub version](https://badge.fury.io/gh/functional-jslib%2Ffjl-data-core.svg)](http://badge.fury.io/gh/functional-jslib%2Ffjl-data-core)
+[![NPM version](https://badge.fury.io/js/fjl-data-core.svg)](http://badge.fury.io/js/fjl-data-core)
+[![Dependencies](https://david-dm.org/functional-jslib/fjl-data-core.png)](https://david-dm.org/functional-jslib/fjl-data-core)
+# fjl-data-core (W.I.P. (work-in-progress))
+Haskell's `data Maybe a`, `data Either a b`, and `data IO a * -> *` implementations in javascript.

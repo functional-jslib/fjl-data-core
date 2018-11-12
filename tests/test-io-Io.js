@@ -1,7 +1,5 @@
 import IO from '../src/io/IO';
-import {expect, assert} from 'chai';
-import {all, map, reverse, intersperse, replicate, concat, compose} from 'fjl';
-import {log, peek} from "./utils";
+import {intersperse, replicate, concat, compose, peek, log} from 'fjl';
 import Monad from "../src/monad/Monad";
 
 describe('#IO', () => {

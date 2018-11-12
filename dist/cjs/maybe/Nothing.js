@@ -1,49 +1,55 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-var NothingSingleton = void 0;
+exports.default = exports.nothing = exports.isNothing = void 0;
+var NothingSingleton;
 
 function Nothing() {
-    if (NothingSingleton) {
-        return NothingSingleton;
-    } else if (!(this instanceof Nothing)) {
-        return new Nothing();
-    }
-    NothingSingleton = this;
-    Object.freeze(NothingSingleton);
+  if (NothingSingleton) {
+    return NothingSingleton;
+  } else if (!(this instanceof Nothing)) {
+    return new Nothing();
+  }
+
+  NothingSingleton = this;
+  Object.freeze(NothingSingleton);
 }
 
 var isNothing = function isNothing(x) {
-    return x === NothingSingleton;
+  return x === NothingSingleton;
+},
+    nothing = function nothing() {
+  return new Nothing();
 },
     returnThis = function returnThis() {
-    return this;
+  return this;
 },
-    prototype = Nothing.prototype;
+    prototype = Nothing.prototype; // Methods
 
-// Methods
+
+exports.nothing = nothing;
+exports.isNothing = isNothing;
 prototype.valueOf = returnThis;
 prototype.join = returnThis;
 prototype.map = returnThis;
 prototype.ap = returnThis;
-prototype.flatMap = returnThis;
+prototype.flatMap = returnThis; // Set statics
 
-// Set statics
 Nothing.of = function () {
-    return new Nothing();
+  return new Nothing();
 };
-Nothing.isNothing = isNothing;
 
-// Object.freeze makes properties on object immutable
+Nothing.isNothing = isNothing;
+Nothing.nothing = nothing; // Object.freeze makes properties on object immutable
 // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
 // Saves us from having to do the following (great!):
 // Object.defineProperties(Nothing, {
 //     of: {value: () => new Nothing(), enumerable: true},
 //     isNothing: {value: isNothing, enumerable: true}
 // });
-Object.freeze(Nothing);
 
-exports.isNothing = isNothing;
-exports.default = Nothing;
+Object.freeze(Nothing);
+var _default = Nothing;
+exports.default = _default;
