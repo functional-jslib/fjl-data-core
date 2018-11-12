@@ -1,5 +1,4 @@
 ### `isJust`
-
-@todo - Added documentation here.
+**Signature**: `isJust(x: any): boolean`
 
 [Back to members list](#fjldatacore-members)

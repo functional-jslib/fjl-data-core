@@ -1,5 +1,5 @@
-### `unWrapJust`
+### `unWrapJust(x: Just): (Just|*)`
 
-@todo - Added documentation here.
+Removes one layer of structure from a `Just`.
 
 [Back to members list](#fjldatacore-members)

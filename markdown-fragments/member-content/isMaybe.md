@@ -1,5 +1,4 @@
 ### `isMaybe`
-
-@todo - Added documentation here.
+**Signature**: `isMaybe(x: any): boolean`
 
 [Back to members list](#fjldatacore-members)
