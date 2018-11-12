@@ -6,8 +6,11 @@
 const
 
     fs = require('fs'),
-
+    path = require('path'),
     {Readable} = require('stream'),
+    {promisify} = require('util'),
+
+    ioDoesFilePathExists = promisify(fs.access),
 
     newModuleMeta = _module => ({module: _module, methodNames: [], methodNamesByArity: {}}),
 
@@ -66,17 +69,17 @@ const
                     const lineMetaEntry = agg[agg.length - 1],
                         [lineLen, line] = lineMetaEntry,
                         newLineLen = lineLen + (', ' + name).length,
-                        greaterThanColLen = newLineLen >= colLen
+                        greaterThanColLen = newLineLen >= colLen,
+                        linkMd = `[${name}](#${name.toLowerCase()})`
                     ;
                     if (greaterThanColLen) {
                         const newLine = [];
-                        newLine.push(name);
+                        newLine.push(linkMd);
                         agg.push([name.length, newLine]);
                     } else {
-                        line.push(name);
+                        line.push(linkMd);
                         lineMetaEntry[0] = newLineLen;
                     }
-
                     return agg;
                 },
                 [[firstMethod ? firstMethod.length : 0, [firstMethod]]]
@@ -84,9 +87,32 @@ const
                 .map(([_, line]) => line.join(', '))
                 .join(',\n')
         ;
-        return `### \`${moduleName}\` members\n \`\`\`\n${memberNamesMd}\n\`\`\`\n`;
-    }
-;
+        return `### \`${moduleName}\` members` + '\n```\n' + memberNamesMd + '\n```\n';
+    },
+
+    ioEnsureMdDocFileForModule = (moduleName, moduleMeta, pathPrefix) =>
+        !moduleMeta ? Promise.resolve() : Promise.all(
+            moduleMeta.methodNames.map(memberName => new Promise((resolve, reject) => {
+                const expectedFilePath = path.join(pathPrefix, `${memberName}.md`);
+                ioDoesFilePathExists(expectedFilePath)
+
+                    // File exists, resolve outer promise
+                    .then(resolve)
+
+                    // File doesn't exist create it
+                    .catch(() => {
+                        const fileContent = `### \`${memberName}\`` +
+                            '\n\n@todo - Added documentation here.' +
+                            `\n\n[Back to members list](#${moduleName.toLowerCase()}-members)\n`;
+                        fs.writeFile(expectedFilePath, fileContent, err => {
+                            if (err) { reject(err); }
+                            resolve();
+                        });
+                    })
+                ;
+            }))
+        )
+    ;
 
 /**
  * Readstream for pumping out the contents of the "expected" markdown file.
@@ -94,24 +120,32 @@ const
  * @extends stream.Readable
  */
 class ModuleMemberListsReadStream extends Readable {
-    constructor(options, modNamesAndModMap) {
+    /**
+     * @param streamOptions {Object}
+     * @param moduleNameModuleMap
+     * @param memberDocFragmentsPath
+     */
+    constructor({moduleNameModuleMap, memberDocFragmentsPath}, streamOptions) {
         super(Object.assign({
             encoding: 'utf8',
             objectMode: false,
             highWaterMark: 100000
-        }, options));
-        this.topMeta = populateMeta(newTopLevelMeta(modNamesAndModMap));
+        }, streamOptions));
+        this.topMeta = populateMeta(newTopLevelMeta(moduleNameModuleMap));
         this.moduleMetaNames = Object.keys(this.topMeta.moduleMetas);
         this.currIndex = 0;
+        this.memberDocFragmentPath = memberDocFragmentsPath;
     }
     _nextKey () {
         return this.moduleMetaNames[this.currIndex++];
     }
     _read () {
-        const nextKey = this._nextKey();
+        const nextKey = this._nextKey(),
+            moduleMeta = this.topMeta.moduleMetas[nextKey];
+        ioEnsureMdDocFileForModule(nextKey, moduleMeta, this.memberDocFragmentPath);
         this.push(
             nextKey ?
-            methodNamesMdTmpl(nextKey, this.topMeta.moduleMetas[nextKey]) :
+            methodNamesMdTmpl(nextKey, moduleMeta) :
             null
         );
     }
@@ -120,4 +154,5 @@ class ModuleMemberListsReadStream extends Readable {
 /**
  * @returns {ModuleMemberListsReadStream}
  */
-export default moduleNameAndModuleHashMap => new ModuleMemberListsReadStream({}, moduleNameAndModuleHashMap);
+export default (moduleNameModuleHashMap, streamOptions) =>
+    new ModuleMemberListsReadStream(moduleNameModuleHashMap, streamOptions);

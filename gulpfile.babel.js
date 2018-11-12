@@ -165,13 +165,17 @@ const
     buildTask = series(cleanTask, buildJsTask),
 
     readmeTask = () => {
-        const moduleMemberListOutputPath = './markdown-fragments-generated/module-and-member-list.md';
+        const moduleMemberListOutputPath = './markdown-fragments-generated/module-and-member-list.md',
+            memberDocFragmentsPath = './markdown-fragments/member-content';
 
         return deleteFilePaths([
             './markdown-fragments-generated/*.md',
             './README.md'
         ])
-            .then(() => new Promise((resolve, reject) => moduleMemberListsReadStream(innerModulesMap)
+            .then(() => new Promise((resolve, reject) => moduleMemberListsReadStream({
+                    moduleNameModuleMap: innerModulesMap,
+                    memberDocFragmentsPath
+            })
                 .pipe(fs.createWriteStream(moduleMemberListOutputPath))
                 .on('finish', getReadStreamFinish(resolve, reject))
             ))

@@ -1,4 +1,5 @@
 import Just, {isJust, just} from '../src/maybe/Just';
+import {join} from '../src/monad/Monad';
 import {all, map} from 'fjl';
 
 describe ('data.maybe.Just', () => {
@@ -76,12 +77,19 @@ describe ('data.maybe.Just', () => {
     });
 
     describe ('#`join`', () => {
-        test ('should remove all layers of monadic structure from container', () => {
-            [Just.of(99), Just.of(Just.of(99)), Just.of(Just.of(Just.of(99)))]
-                .map(j => expect(j.join()).toEqual(99));
-
-            const empty = Just.of().join();
-            expect(empty).toEqual(undefined);
+        test ('should remove one layer of monadic structure from container', () => {
+            [
+                [just(), undefined],
+                [just(null), null],
+                [just(false), false],
+                [just(''), ''],
+                [just(99), 99],
+                [just(just(99)), just(99)],
+                [just(just(just(99))), just(just(99))],
+            ]
+                .forEach(([arg, expected]) => {
+                    expect(join(arg)).toEqual(expected); // does deep equality check here
+                });
         });
     });
 

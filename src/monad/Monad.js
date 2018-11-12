@@ -12,7 +12,7 @@ import Applicative from '../functor/Applicative';
 export const
     isMonad = value => value instanceof Monad,
     valueOf = x => x.valueOf(),
-    join = x => x.join(),
+    join = valueOf,
     fmap = curry((fn, x) => x.map(fn)),
     ap = curry((applicative, functor) => applicative.ap(functor)),
     flatMap = curry((fn, monad) => monad.flatMap(fn)),
@@ -46,7 +46,7 @@ export default class Monad extends Applicative {
         return unwrap(monad);
     }
     join () {
-        return Monad.unWrapMonadByType(this.constructor, this);
+        return this.valueOf();
     }
     flatMap (fn) {
         const out = Monad.unWrapMonadByType(this.constructor, fn(this.join()));
