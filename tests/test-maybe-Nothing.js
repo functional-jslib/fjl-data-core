@@ -7,25 +7,25 @@ describe ('data.maybe.Nothing', () => {
     describe ('`isNothing`', () => {
         test ('should return `true` when a value is of type `Nothing`', () => {
             [Nothing(), new Nothing(), Nothing.of()].forEach(x => {
-                expect(isNothing(x)).to.equal(true);
+                expect(isNothing(x)).toEqual(true);
             });
         });
         test ('should return `false` when a value is not a `Nothing`', () => {
             [false, 0, () => ({}), [], {}].forEach(x => {
-                expect(isNothing(x)).to.equal(false);
+                expect(isNothing(x)).toEqual(false);
             });
         });
     });
     test ('Should return singleton instance of `Nothing` whenever called with `new`', () => {
-        expect(new Nothing() === new Nothing()).to.equal(true);
+        expect(new Nothing() === new Nothing()).toEqual(true);
     });
     test ('Should return singleton instance when called as a function', () => {
         expect(Nothing() === Nothing() && Nothing() === new Nothing())
-            .to.equal(true);
+            .toEqual(true);
     });
     test ('Should return singleton instance when called with via static factory (`of`)', () => {
         expect(Nothing.of() === Nothing.of() && Nothing.of() === new Nothing())
-            .to.equal(true);
+            .toEqual(true);
     });
     test ('Expect calling `Nothing` as a function, with `new` keyword, or via static `of` method, to all ' +
         'equate to same singleton instance of `Nothing`', () => {
@@ -36,7 +36,7 @@ describe ('data.maybe.Nothing', () => {
                 [Nothing(), new Nothing(), Nothing.of()]
             )
         )
-            .to.equal(true);
+            .toEqual(true);
     });
     test ('Expect it to be extendable via es6 `class` syntax', () => {
         class Hello extends Nothing {
@@ -44,7 +44,7 @@ describe ('data.maybe.Nothing', () => {
                 super(something);
             }
         }
-        expect(new Hello() === new Nothing()).to.equal(true);
+        expect(new Hello() === new Nothing()).toEqual(true);
     });
     test ('Expect `map`, `ap`, `flatMap`, and `join` methods to exist', () => {
         const nothing = Nothing();
@@ -54,7 +54,7 @@ describe ('data.maybe.Nothing', () => {
                 methodNames
             )
         )
-            .to.equal(true);
+            .toEqual(true);
     });
     test ('Expect `map`, `ap`, `flatMap`, and `join` methods to all return same singleton instance of `Nothing`', () => {
         const nothing = Nothing();
@@ -64,6 +64,6 @@ describe ('data.maybe.Nothing', () => {
                 map(methodName => nothing[methodName](), methodNames)
             )
         )
-            .to.equal(true);
+            .toEqual(true);
     })
 });

@@ -13,6 +13,8 @@ function Nothing () {
 
 const isNothing = x => x === NothingSingleton,
 
+    nothing = () => new Nothing(),
+
     // Prototypical stuff
     returnThis = function () { return this; },
     {prototype} = Nothing;
@@ -27,6 +29,7 @@ prototype.flatMap   = returnThis;
 // Set statics
 Nothing.of  = () => new Nothing();
 Nothing.isNothing = isNothing;
+Nothing.nothing = nothing;
 
 // Object.freeze makes properties on object immutable
 // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
@@ -37,6 +40,6 @@ Nothing.isNothing = isNothing;
 // });
 Object.freeze(Nothing);
 
-export {isNothing};
+export {isNothing, nothing};
 
 export default Nothing;

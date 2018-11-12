@@ -1,5 +1,5 @@
-import Just, {isJust} from './Just';
-import Nothing, {isNothing} from './Nothing';
+import Just, {isJust, just} from './Just';
+import Nothing, {isNothing, nothing} from './Nothing';
 import {isset, curry, id} from 'fjl';
 
 export {Just, isJust, isNothing, Nothing};
@@ -18,7 +18,7 @@ export const
     isMaybe = x => isNothing(x) || isJust(x);
 
 function Maybe (x) {
-    return isset(x) ? Just.of(x) : Nothing.of();
+    return isset(x) ? just(x) : nothing();
 }
 
 Maybe.of = x => Maybe(x);

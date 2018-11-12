@@ -9,7 +9,7 @@ describe('#IO', () => {
     const reverseStr = xs => xs.split('').reverse().join('');
 
     test ('should return instances of `Monad`', () => {
-        expect(new IO()).to.be.instanceOf(Monad);
+        expect(new IO()).toBeInstanceOf(Monad);
     });
 
     test ('should be flat-mappable', () => {
@@ -17,8 +17,8 @@ describe('#IO', () => {
             op2 = compose(xs => { let newXs = xs.split('-'); newXs.shift(); return newXs.join('-'); }, op1),
             io = IO.of(compose(x => peek('io1', x), op1)),
             io2 = IO.of(compose(x => peek('io2', x), op2));
-        IO.do(io, 'hello').flatMap(x => expect(peek(x)).to.equal(peek('should equal', op1('hello'))));
-        IO.do(io2, 'hello').flatMap(x => expect(x).to.equal(peek('should equal', op2('hello'))));
+        IO.do(io, 'hello').flatMap(x => expect(peek(x)).toEqual(peek('should equal', op1('hello'))));
+        IO.do(io2, 'hello').flatMap(x => expect(x).toEqual(peek('should equal', op2('hello'))));
     });
 
     test ('should be mappable', () => {
@@ -26,8 +26,8 @@ describe('#IO', () => {
             op2 = compose(xs => { let newXs = xs.split('-'); newXs.shift(); return newXs.join('-'); }, op1),
             io = IO.of(compose(x => peek('io1', x), op1)),
             io2 = IO.of(compose(x => peek('io2', x), op2));
-        IO.do(io, 'hello').map(x => expect(peek(x)).to.equal(peek('should equal', op1('hello'))));
-        IO.do(io2, 'hello').map(x => expect(x).to.equal(peek('should equal', op2('hello'))));
+        IO.do(io, 'hello').map(x => expect(peek(x)).toEqual(peek('should equal', op1('hello'))));
+        IO.do(io2, 'hello').map(x => expect(x).toEqual(peek('should equal', op2('hello'))));
     });
 
     describe ('#do', () => {
@@ -47,9 +47,9 @@ describe('#IO', () => {
             IO.do(io, 'hello').map(x => peek('do', x));
             IO.do(io, 'hello')
                 // .flatMap(x => IO.of(peek('do', x)))
-                // .flatMap(x => expect(x).to.equal(op('hello').join()()));
-            // expect(.join()()).to.equal(op('hello'));
-            // io.map(fn => expect(fn('hello')).to.equal(compose(join, otherStrOp, reverseStr)('hello')));
+                // .flatMap(x => expect(x).toEqual(op('hello').join()()));
+            // expect(.join()()).toEqual(op('hello'));
+            // io.map(fn => expect(fn('hello')).toEqual(compose(join, otherStrOp, reverseStr)('hello')));
         });
 
         test ('should process io no matter how many nested IO\'s are produced', () => {
@@ -66,11 +66,11 @@ describe('#IO', () => {
             ));
 
             // Instance of
-            expect(ioAlphabet).to.be.instanceOf(IO);
+            expect(ioAlphabet).toBeInstanceOf(IO);
 
             // Check results
             IO.do(ioAlphabet, ['a', 'z'])
-                .flatMap(xs => expect(xs).to.equal(
+                .flatMap(xs => expect(xs).toEqual(
                     reverseStr('abcdefghijklmnopqrstuvwxyz')));
 
             // Test outputs

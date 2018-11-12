@@ -9,15 +9,15 @@ describe ('Maybe', () => {
         test ('Should return a `Nothing` when receiving `null` or `undefined`', () => {
             [null, undefined].forEach(value => {
                 const result = Maybe(value);
-                expect(result).to.be.instanceOf(Nothing);
-                result.map(x => expect(x).to.equal(undefined));
+                expect(result).toBeInstanceOf(Nothing);
+                result.map(x => expect(x).toEqual(undefined));
             });
         });
         test ('Should return a `Just` when receiving anything other than `null` or `undefined`', () => {
             [false, 0, () => ({}), [], {}].forEach(value => {
                 const result = Maybe(value);
-                expect(result).to.be.instanceOf(Just);
-                result.map(x => expect(x).to.equal(value));
+                expect(result).toBeInstanceOf(Just);
+                result.map(x => expect(x).toEqual(value));
             });
         });
     });
@@ -26,12 +26,12 @@ describe ('Maybe', () => {
             concat([99, undefined].map(x => [Maybe(x), new Maybe(x), Maybe.of(x)]))
                 .forEach(x => {
                     // log (x);
-                    expect(isMaybe(x)).to.equal(true);
+                    expect(isMaybe(x)).toEqual(true);
                 });
         });
         test ('should return `false` when a value is not a `Maybe`', () => {
             [false, 0, () => ({}), [], {}].forEach(x => {
-                expect(isMaybe(x)).to.equal(false);
+                expect(isMaybe(x)).toEqual(false);
             });
         });
     });
@@ -54,7 +54,7 @@ describe ('Maybe', () => {
             cases.forEach(([args, expectedValue, monad]) => {
                 const [replacement, operation] = args;
                 expect(maybe(replacement, operation, monad))
-                    .to.equal(expectedValue);
+                    .toEqual(expectedValue);
             });
         });
 

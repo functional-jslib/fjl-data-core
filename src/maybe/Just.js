@@ -2,7 +2,10 @@ import Nothing, {isNothing} from './Nothing';
 import Monad from '../monad/Monad';
 import {isset} from 'fjl';
 
-export const isJust = x => x instanceof Just;
+export const
+    isJust = x => x instanceof Just,
+    just = x => new Just(x)
+;
 
 export default class Just extends Monad {
     map (fn) {
@@ -11,7 +14,7 @@ export default class Just extends Monad {
         return isset(value) && !isNothing(value) ? constructor.of(fn(value)) :
             constructor.counterConstructor.of(value);
     }
-    static of (x) { return new Just(x); }
+    static of (x) { return just(x); }
     static isJust (x) { return isJust(x); }
 }
 

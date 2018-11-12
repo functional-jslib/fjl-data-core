@@ -2,7 +2,7 @@
 Haskell's `data Maybe a`, `data Either a b`, and `data IO a * -> *` implementations in javascript.
 
 ## Reasoning
-- Mimick haskell's Monad Maybe, Either, and IO data types.
+- Mimick some of haskell's base Monads: Maybe, Either, and IO (for starters).
 - Use the js platform's features to implement the required functionality.
 
 ## Basic usage
