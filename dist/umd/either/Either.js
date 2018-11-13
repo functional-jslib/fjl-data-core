@@ -1,25 +1,25 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(["exports", "fjl", "../maybe/Maybe", "../monad/Monad", "../utils"], factory);
+    define(["exports", "fjl", "../maybe/Maybe", "../monad/Monad"], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require("fjl"), require("../maybe/Maybe"), require("../monad/Monad"), require("../utils"));
+    factory(exports, require("fjl"), require("../maybe/Maybe"), require("../monad/Monad"));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.fjl, global.Maybe, global.Monad, global.utils);
+    factory(mod.exports, global.fjl, global.Maybe, global.Monad);
     global.Either = mod.exports;
   }
-})(this, function (_exports, _fjl, _Maybe, _Monad2, _utils) {
+})(this, function (_exports, _fjl, _Maybe, _Monad2) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.either = _exports.isLeft = _exports.isRight = _exports.Right = _exports.Left = void 0;
-  _Monad2 = _interopRequireDefault(_Monad2);
+  _exports.toLeft = _exports.toRight = _exports.either = _exports.isLeft = _exports.isRight = _exports.Right = _exports.Left = void 0;
+  _Monad2 = _interopRequireWildcard(_Monad2);
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
   function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -39,6 +39,12 @@
 
   function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+  /**
+   * `Left` representation of `Either` construct.
+   * @class Left
+   * @param x {any}
+   * @property value {any}
+   */
   var Left =
   /*#__PURE__*/
   function (_Monad) {
@@ -59,6 +65,12 @@
 
     return Left;
   }(_Monad2.default);
+  /**
+   * @class Right
+   * @param x {any}
+   * @property value {any}
+   */
+
 
   _exports.Left = Left;
 
@@ -81,7 +93,7 @@
         if (isLeft(value)) {
           return value;
         } else if (!(0, _fjl.isset)(value)) {
-          return Left.of("TypeError: Cannot operate on `null` and/or `undefined`.  " + "Value given `".concat(value, "`."));
+          return Left.of("TypeError: Cannot operate on `".concat(value, "`."));
         }
 
         return Right.of(fn(value));
@@ -98,27 +110,54 @@
 
   _exports.Right = Right;
 
-  var isRight = function isRight(x) {
+  var
+  /**
+   * Checks for instance of `Right` constructor.
+   * @function module:either.isRight
+   * @param x {any}
+   * @returns {boolean}
+   */
+  isRight = function isRight(x) {
     return x instanceof Right;
   },
-      isLeft = function isLeft(x) {
+
+  /**
+   * Checks for instance of `Left` constructor.
+   * @function module:either.isLeft
+   * @param x {any}
+   * @returns {boolean}
+   */
+  isLeft = function isLeft(x) {
     return x instanceof Left;
   },
-      either = (0, _fjl.curry)(function (leftCallback, rightCallback, monad) {
-    var identity = (0, _utils.alwaysFunctor)(monad).map(_fjl.id);
 
-    switch (identity.constructor) {
-      case Left:
-        return identity.map((0, _utils.toFunction)(leftCallback)).join();
+  /**
+   * Calls matching callback on incoming `Either`'s type;  If is a `Left` (after mapping identity func on it) then calls left-callback and unwraps result
+   * else calls right-callback and does the same.  Think of it like a functional
+   * ternary statement (lol).
+   * @function module:either.either
+   * @param leftCallback {Function} - Mapped over value of `monad`'s identity.
+   * @param rightCallback {Function} - "".
+   * @return {any} - Value of unwrapped resulting value of `flatMap`ped, passed-in callback's on passed in monad.
+   * @example
+   * expect(
+       either(() => 404, () => 200, compose(right, right, right, right)(true))
+     ).toEqual(undefined);
+   */
+  either = (0, _fjl.curry)(function (leftCallback, rightCallback, monad) {
+    var identity = (0, _Monad2.alwaysMonad)(monad).flatMap(_fjl.id),
+        out = isRight(monad) ? identity.flatMap((0, _fjl.toFunction)(rightCallback)) : Left.of(identity).flatMap(leftCallback);
+    return (0, _fjl.isset)(out) ? out.join() : out;
+  }),
+      toRight = function toRight(x) {
+    return isRight(x) ? x : new Right(x);
+  },
+      toLeft = function toLeft(x) {
+    return isLeft(x) ? x : new Left(x);
+  };
 
-      case Right:
-        return identity.map((0, _utils.toFunction)(rightCallback)).join();
-
-      default:
-        return Left.of(monad).map(leftCallback).join();
-    }
-  });
-
+  _exports.toLeft = toLeft;
+  _exports.toRight = toRight;
   _exports.either = either;
   _exports.isLeft = isLeft;
   _exports.isRight = isRight;

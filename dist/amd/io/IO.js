@@ -1,4 +1,4 @@
-define(["exports", "../monad/Monad", "../utils", "fjl"], function (_exports, _Monad2, _utils, _fjl) {
+define(["exports", "../monad/Monad", "fjl"], function (_exports, _Monad2, _fjl) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -27,7 +27,6 @@ define(["exports", "../monad/Monad", "../utils", "fjl"], function (_exports, _Mo
 
   function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-  // import {defineEnumProps} from 'fjl-mutable';
   var IO =
   /*#__PURE__*/
   function (_Monad) {
@@ -61,26 +60,25 @@ define(["exports", "../monad/Monad", "../utils", "fjl"], function (_exports, _Mo
           args[_key - 1] = arguments[_key];
         }
 
-        return (0, _fjl.compose)(IO.of, IO.unWrapIO)((0, _utils.toFunction)(instance.join()).apply(void 0, args));
+        return (0, _fjl.compose)(IO.of, IO.unWrapIO)((0, _fjl.toFunction)(instance.join()).apply(void 0, args));
       }
     }]);
 
     function IO(fn) {
       _classCallCheck(this, IO);
 
-      return _possibleConstructorReturn(this, _getPrototypeOf(IO).call(this, (0, _utils.toFunction)(fn))); // Enforce `value` field validation
-      // defineEnumProps([[Function, 'value', this.value]], this);
+      return _possibleConstructorReturn(this, _getPrototypeOf(IO).call(this, (0, _fjl.toFunction)(fn)));
     }
 
     _createClass(IO, [{
       key: "flatMap",
       value: function flatMap(fn) {
-        return (0, _fjl.compose)(this.constructor.of, IO.unWrapIO, fn, IO.unWrapIO)((0, _utils.toFunction)(this.join())());
+        return (0, _fjl.compose)(this.constructor.of, IO.unWrapIO, fn, IO.unWrapIO)((0, _fjl.toFunction)(this.join())());
       }
     }, {
       key: "map",
       value: function map(fn) {
-        return (0, _fjl.compose)(this.constructor.of, fn)((0, _utils.toFunction)(this.valueOf())());
+        return (0, _fjl.compose)(this.constructor.of, fn)((0, _fjl.toFunction)(this.valueOf())());
       }
     }]);
 

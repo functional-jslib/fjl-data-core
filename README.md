@@ -55,10 +55,9 @@ See desired export type below:
 ### `fjlDataCore` members
 ```
 Functor, [Apply](#apply), [Applicative](#applicative), [Bifunctor](#bifunctor), [Monad](#monad), [isMonad](#ismonad), [valueOf](#valueof), [join](#join),
-[fmap](#fmap), [ap](#ap), [flatMap](#flatmap), [getMonadUnWrapper](#getmonadunwrapper), [trampoline](#trampoline), [IO](#io), [Just](#just), [isJust](#isjust),
-[just](#just), [Nothing](#nothing), [isNothing](#isnothing), [nothing](#nothing), [maybe](#maybe), [unWrapJust](#unwrapjust), [unWrapMaybe](#unwrapmaybe),
-[maybeEqual](#maybeequal), [isMaybe](#ismaybe), [toMaybe](#tomaybe), [Left](#left), [Right](#right), [isRight](#isright), [isLeft](#isleft), [either](#either),
-[toFunction](#tofunction), [alwaysFunctor](#alwaysfunctor)
+[fmap](#fmap), [ap](#ap), [flatMap](#flatmap), [getMonadUnWrapper](#getmonadunwrapper), [IO](#io), [Just](#just), [isJust](#isjust), [just](#just), [Nothing](#nothing),
+[isNothing](#isnothing), [nothing](#nothing), [maybe](#maybe), [unWrapJust](#unwrapjust), [unWrapMaybe](#unwrapmaybe), [maybeEqual](#maybeequal), [isMaybe](#ismaybe),
+[toMaybe](#tomaybe), [Left](#left), [Right](#right), [isRight](#isright), [isLeft](#isleft), [either](#either), [toRight](#toright), [toLeft](#toleft)
 ```
 
 ### `alwaysFunctor`
@@ -128,20 +127,17 @@ Functor, [Apply](#apply), [Applicative](#applicative), [Bifunctor](#bifunctor), 
 [Back to members list](#fjldatacore-members)
 
 ### `isJust`
-
-@todo - Added documentation here.
+**Signature**: `isJust(x: any): boolean`
 
 [Back to members list](#fjldatacore-members)
 
 ### `isLeft`
-
-@todo - Added documentation here.
+**Signature**: `isLeft(x: any): boolean`
 
 [Back to members list](#fjldatacore-members)
 
 ### `isMaybe`
-
-@todo - Added documentation here.
+**Signature**: `isMaybe(x: any): boolean`
 
 [Back to members list](#fjldatacore-members)
 
@@ -169,9 +165,25 @@ Functor, [Apply](#apply), [Applicative](#applicative), [Bifunctor](#bifunctor), 
 
 [Back to members list](#fjldatacore-members)
 
-### `just`
+### `Just`
+**Signature**: `class Just(x): Just<x>`
 
-@todo - Added documentation here.
+`Just` monad - Wraps given value in a `Just` and gives 
+you a monad interface (functor + apply + applicative + monad);
+
+[Back to members list](#fjldatacore-members)
+
+### `just`
+**Signature**: `just (x: any): Just<x>`
+
+Wraps given value in a `Just` (same as `Just` except in method form); E.g.:
+
+```javascript
+import {just} from 'fjl-data-core';
+console.log(
+    just(99).map(x => x * 2).value === 99 * 2
+); // `true`
+```
 
 [Back to members list](#fjldatacore-members)
 
@@ -182,8 +194,13 @@ Functor, [Apply](#apply), [Applicative](#applicative), [Bifunctor](#bifunctor), 
 [Back to members list](#fjldatacore-members)
 
 ### `maybe`
+**Signature:** `maybe(replacement :*, a => b, Maybe(a)) :(b|replacement)`
 
-@todo - Added documentation here.
+Returns `replacment` value if `Maybe(a)` is a `Nothing` else maps
+`a => b` operation on `Maybe(a)`;
+
+**Haskell Type (fyi):**
+`maybe :: b -> (a -> b) -> Maybe a -> b`
 
 [Back to members list](#fjldatacore-members)
 
@@ -199,9 +216,30 @@ Functor, [Apply](#apply), [Applicative](#applicative), [Bifunctor](#bifunctor), 
 
 [Back to members list](#fjldatacore-members)
 
-### `nothing`
+### `Nothing`
+**Signature**: `Nothing(): Nothing`
 
-@todo - Added documentation here.
+Always returns `Nothing` singleton; Even when called with `new`; E.g.:
+
+```javascript
+import {Nothing} from 'fjl-data-core';
+import {log} from 'fjl';
+log(
+    Nothing() === new Nothing()
+) // `true`
+```
+
+[Back to members list](#fjldatacore-members)
+
+### `nothing(): Nothing`
+Same as `Nothing` except in method form; E.g.:
+```javascript
+import {nothing} from 'fjl-data-core';
+import {log} from 'fjl';
+log(
+    nothing() === Nothing() && nothing() === new Nothing()
+) // `true`
+```
 
 [Back to members list](#fjldatacore-members)
 
@@ -211,7 +249,7 @@ Functor, [Apply](#apply), [Applicative](#applicative), [Bifunctor](#bifunctor), 
 
 [Back to members list](#fjldatacore-members)
 
-### `toFunction`
+### `toLeft`
 
 @todo - Added documentation here.
 
@@ -223,15 +261,21 @@ Functor, [Apply](#apply), [Applicative](#applicative), [Bifunctor](#bifunctor), 
 
 [Back to members list](#fjldatacore-members)
 
+### `toRight`
+
+@todo - Added documentation here.
+
+[Back to members list](#fjldatacore-members)
+
 ### `trampoline`
 
 @todo - Added documentation here.
 
 [Back to members list](#fjldatacore-members)
 
-### `unWrapJust`
+### `justUnWrapper(x: Just): (Just|*)`
 
-@todo - Added documentation here.
+Removes one layer of structure from a `Just`.
 
 [Back to members list](#fjldatacore-members)
 
@@ -247,55 +291,6 @@ Functor, [Apply](#apply), [Applicative](#applicative), [Bifunctor](#bifunctor), 
 
 [Back to members list](#fjldatacore-members)
 
-Readme docs:
-### `class Just(x): Just<x>`
-Wraps a value in a `Just` functor;  E.g.,
-```javascript
-import {Just} from 'fjl-data-core';
-console.log(
-    (new Just(99)).map(x => x * 2).value === 99 * 2
-); // `true`
-```
-
-### `just(x) :Just<x>`
-Same as `Just` except in method form; E.g.:
-```javascript
-import {just} from 'fjl-data-core';
-console.log(
-    (just(99)).map(x => x * 2).value === 99 * 2
-); // `true`
-```
-
-### `isJust(x) :boolean`
-
-### `Nothing() :Nothing`
-Always returns `Nothing` singleton; Even when called with `new`; E.g.:
-```javascript
-import {Nothing} from 'fjl-data-core';
-import {log} from 'fjl';
-log(
-    Nothing() === new Nothing()
-) // `true`
-```
- 
-### `nothing() :Nothing`
-Same as `Nothing` except in method form; E.g.:
-```javascript
-import {nothing} from 'fjl-data-core';
-import {log} from 'fjl';
-log(
-    nothing() === Nothing() && nothing() === new Nothing()
-) // `true`
-```
-
-### `isNothing(x) :boolean`
-
-### `maybe(replacement :*, a => b, Maybe(a)) :(b|replacement)`
-Returns `replacment` value if `Maybe(a)` is a `Nothing` else maps
-`a => b` operation on `Maybe(a)`;
-
-**Haskell Type**
-`maybe :: b -> (a -> b) -> Maybe a -> b`
 
 ### `isMaybe(x) :boolean`
 ### `isMonad(x) :boolean`

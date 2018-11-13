@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: fjlDataCore.js | Source: fjlDataCore.js</title>
+    <title>Source: functor/Applicative.js | Source: functor/Applicative.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -28,7 +28,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Source: fjlDataCore.js</a></h1>
+        <h1><a href="index.html" class="link">Source: functor/Applicative.js</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -49,32 +49,28 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Makes all module members in library accessible via itself (is also the main export of the library).
- * Created by elydelacruz on 2/19/2017.
- * @module fjlDataCore
+ * Created by edlc on 12/9/16.
+ * Applicative class module.
+ * @memberOf module:functor
  */
-import Functor from './functor/Functor';
-import Apply from './functor/Apply';
-import Applicative from './functor/Applicative';
-import Bifunctor from './functor/Bifunctor';
-import Monad, {isMonad, valueOf, join, fmap,
-    ap, flatMap, getMonadUnWrapper} from './monad/Monad';
-import IO from './io/IO';
+import Apply from './Apply';
 
-export {
-    Functor, Apply, Applicative, Bifunctor, IO, Monad,
-    isMonad, valueOf, join, fmap, ap, flatMap, getMonadUnWrapper
-};
-
-export * from './maybe/Maybe';
-export * from './either/Either';
-
-/* ==================================== */
-/* Virtual types */
-/* ==================================== */
 /**
- * @typedef {Function} UnaryOperation
+ * @class module:functor.Applicative
+ * @extends module:functor.Apply
  */
+export default class Applicative extends Apply {
+    /**
+     * Constructs an applicative with given `value`.
+     * @function module:functor.Applicative.of
+     * @static
+     * @param value {any}
+     * @returns {Applicative}
+     */
+    static of (value) {
+        return new Applicative(value);
+    }
+}
 </code></pre>
         </article>
     </section>

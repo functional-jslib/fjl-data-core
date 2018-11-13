@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: fjlDataCore.js | Source: fjlDataCore.js</title>
+    <title>Source: functor/Apply.js | Source: functor/Apply.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -28,7 +28,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Source: fjlDataCore.js</a></h1>
+        <h1><a href="index.html" class="link">Source: functor/Apply.js</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -49,32 +49,32 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Makes all module members in library accessible via itself (is also the main export of the library).
- * Created by elydelacruz on 2/19/2017.
- * @module fjlDataCore
+ * Contains `Applicative`'s `Apply` class (class that contains `ap` (a.k.a. `pure`) method).
+ * Created by edlc on 12/9/16.
+ * @memberOf module:functor
  */
-import Functor from './functor/Functor';
-import Apply from './functor/Apply';
-import Applicative from './functor/Applicative';
-import Bifunctor from './functor/Bifunctor';
-import Monad, {isMonad, valueOf, join, fmap,
-    ap, flatMap, getMonadUnWrapper} from './monad/Monad';
-import IO from './io/IO';
 
-export {
-    Functor, Apply, Applicative, Bifunctor, IO, Monad,
-    isMonad, valueOf, join, fmap, ap, flatMap, getMonadUnWrapper
-};
+import {toFunction} from 'fjl';
+import Functor from './Functor';
 
-export * from './maybe/Maybe';
-export * from './either/Either';
-
-/* ==================================== */
-/* Virtual types */
-/* ==================================== */
 /**
- * @typedef {Function} UnaryOperation
+ * Apply construct.
+ * @class module:functor.Apply
+ * @param fn {Function|*}
+ * @property value {any}
+ * @extends module:functor.Functor
  */
+export default class Apply extends Functor {
+    /**
+     * Applicative apply operation - applies contained function over passed in functor.
+     * @memberOf module:functor.Apply
+     * @param x {Functor}
+     * @returns {Apply}
+     */
+    ap (x) {
+        return x.map(toFunction(this.valueOf()));
+    }
+}
 </code></pre>
         </article>
     </section>

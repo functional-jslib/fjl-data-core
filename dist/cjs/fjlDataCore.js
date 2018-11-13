@@ -16,7 +16,6 @@ var _exportNames = {
   ap: true,
   flatMap: true,
   getMonadUnWrapper: true,
-  trampoline: true,
   IO: true
 };
 Object.defineProperty(exports, "Functor", {
@@ -91,12 +90,6 @@ Object.defineProperty(exports, "getMonadUnWrapper", {
     return _Monad.getMonadUnWrapper;
   }
 });
-Object.defineProperty(exports, "trampoline", {
-  enumerable: true,
-  get: function get() {
-    return _Monad.trampoline;
-  }
-});
 Object.defineProperty(exports, "IO", {
   enumerable: true,
   get: function get() {
@@ -138,19 +131,6 @@ Object.keys(_Either).forEach(function (key) {
     enumerable: true,
     get: function get() {
       return _Either[key];
-    }
-  });
-});
-
-var _utils = require("./utils");
-
-Object.keys(_utils).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _utils[key];
     }
   });
 });

@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: fjlDataCore.js | Source: fjlDataCore.js</title>
+    <title>Class: Apply | Class: Apply</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -28,7 +26,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Source: fjlDataCore.js</a></h1>
+        <h1><a href="index.html" class="link">Class: Apply</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -45,39 +43,413 @@
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Makes all module members in library accessible via itself (is also the main export of the library).
- * Created by elydelacruz on 2/19/2017.
- * @module fjlDataCore
- */
-import Functor from './functor/Functor';
-import Apply from './functor/Apply';
-import Applicative from './functor/Applicative';
-import Bifunctor from './functor/Bifunctor';
-import Monad, {isMonad, valueOf, join, fmap,
-    ap, flatMap, getMonadUnWrapper} from './monad/Monad';
-import IO from './io/IO';
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="module-functor.html">functor</a>.</span>Apply<span class="signature">(fn)</span><span class="type-signature"></span></h2>
+        
+    
+</header>
 
-export {
-    Functor, Apply, Applicative, Bifunctor, IO, Monad,
-    isMonad, valueOf, join, fmap, ap, flatMap, getMonadUnWrapper
-};
+<article>
+    
+        <div class="container-overview">
+        
+            
 
-export * from './maybe/Maybe';
-export * from './either/Either';
+<dt>
+    
+        <h4 class="name" id="Apply">
+            
+                new <span class="type-signature"></span>Apply<span class="signature">(fn)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="functor_Apply.js.html">functor/Apply.js</a></code>,
+                <code><a href="functor_Apply.js.html#line10">line 10</a></code>
+            </div>
+            
+        </h4>
 
-/* ==================================== */
-/* Virtual types */
-/* ==================================== */
-/**
- * @typedef {Function} UnaryOperation
- */
-</code></pre>
-        </article>
-    </section>
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Apply construct.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+|
+
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">any</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        
+        </div>
+    
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="module-functor.Functor.html">module:functor.Functor</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+                
+
+<dt>
+    
+        <h4 class="name" id=".ap">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>ap<span class="signature">(x)</span><span class="type-signature"> &rarr; {Apply}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="functor_Apply.js.html">functor/Apply.js</a></code>,
+                <code><a href="functor_Apply.js.html#line24">line 24</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Applicative apply operation - applies contained function over passed in functor.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Functor</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Apply</span>
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -94,7 +466,7 @@ export * from './either/Either';
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = '_sub'.replace(/"/g, '_');
+        var id = 'module:functor.Apply_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

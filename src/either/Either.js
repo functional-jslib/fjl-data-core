@@ -1,15 +1,27 @@
 /**
+ * Contains `Either` constructs (`Right`, `Left`,  `either` etc.) and associated operations.
  * Created by elyde on 12/10/2016.
+ * @module either
  */
-import {isset, curry, id} from 'fjl';
+import {isset, curry, id, toFunction} from 'fjl';
 import {Just} from '../maybe/Maybe';
-import Monad from '../monad/Monad';
-import {alwaysFunctor, toFunction} from '../utils';
+import Monad, {alwaysMonad} from '../monad/Monad';
 
+/**
+ * `Left` representation of `Either` construct.
+ * @class Left
+ * @param x {any}
+ * @property value {any}
+ */
 export class Left extends Monad {
     static of (x) { return new Left(x); }
 }
 
+/**
+ * @class Right
+ * @param x {any}
+ * @property value {any}
+ */
 export class Right extends Just {
     map (fn) {
         const value = this.valueOf();
@@ -18,8 +30,7 @@ export class Right extends Just {
         }
         else if (!isset(value)) {
             return Left.of(
-                `TypeError: Cannot operate on \`null\` and/or \`undefined\`.  ` +
-                `Value given \`${value}\`.`
+                `TypeError: Cannot operate on \`${value}\`.`
             );
         }
         return Right.of(fn(value));
@@ -29,19 +40,46 @@ export class Right extends Just {
 }
 
 export const
-
+    /**
+     * Checks for instance of `Right` constructor.
+     * @function module:either.isRight
+     * @param x {any}
+     * @returns {boolean}
+     */
     isRight = x => x instanceof Right,
 
+    /**
+     * Checks for instance of `Left` constructor.
+     * @function module:either.isLeft
+     * @param x {any}
+     * @returns {boolean}
+     */
     isLeft = x => x instanceof Left,
 
+    /**
+     * Calls matching callback on incoming `Either`'s type;  If is a `Left` (after mapping identity func on it) then calls left-callback and unwraps result
+     * else calls right-callback and does the same.  Think of it like a functional
+     * ternary statement (lol).
+     * @function module:either.either
+     * @param leftCallback {Function} - Mapped over value of `monad`'s identity.
+     * @param rightCallback {Function} - "".
+     * @return {any} - Value of unwrapped resulting value of `flatMap`ped, passed-in callback's on passed in monad.
+     * @example
+     * expect(
+         either(() => 404, () => 200, compose(right, right, right, right)(true))
+       ).toEqual(undefined);
+     */
     either = curry((leftCallback, rightCallback, monad) => {
-        const identity = alwaysFunctor(monad).map(id);
-        switch (identity.constructor) {
-            case Left:
-                return identity.map(toFunction(leftCallback)).join();
-            case Right:
-                return identity.map(toFunction(rightCallback)).join();
-            default:
-                return Left.of(monad).map(leftCallback).join();
-        }
-    });
+        const identity = alwaysMonad(monad).flatMap(id),
+            out = isRight(monad) ?
+                identity.flatMap(toFunction(rightCallback)) :
+                Left.of(identity).flatMap(leftCallback)
+            ;
+        return isset(out) ? out.join() : out;
+    }),
+
+    toRight = x => isRight(x) ? x : new Right(x),
+
+    toLeft = x => isLeft(x) ? x : new Left(x)
+
+;

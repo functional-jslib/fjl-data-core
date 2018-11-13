@@ -1,4 +1,4 @@
-### `unWrapJust(x: Just): (Just|*)`
+### `justUnWrapper(x: Just): (Just|*)`
 
 Removes one layer of structure from a `Just`.
 

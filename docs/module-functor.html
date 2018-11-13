@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: fjlDataCore.js | Source: fjlDataCore.js</title>
+    <title>Module: functor | Module: functor</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -28,7 +26,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Source: fjlDataCore.js</a></h1>
+        <h1><a href="index.html" class="link">Module: functor</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -45,39 +43,491 @@
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Makes all module members in library accessible via itself (is also the main export of the library).
- * Created by elydelacruz on 2/19/2017.
- * @module fjlDataCore
- */
-import Functor from './functor/Functor';
-import Apply from './functor/Apply';
-import Applicative from './functor/Applicative';
-import Bifunctor from './functor/Bifunctor';
-import Monad, {isMonad, valueOf, join, fmap,
-    ap, flatMap, getMonadUnWrapper} from './monad/Monad';
-import IO from './io/IO';
+        <h2>functor</h2>
+        
+            
+        
+    
+</header>
 
-export {
-    Functor, Apply, Applicative, Bifunctor, IO, Monad,
-    isMonad, valueOf, join, fmap, ap, flatMap, getMonadUnWrapper
-};
+<article>
+    
+        <div class="container-overview">
+        
+            
+                <div class="description"><p>Functor class and associated operations.
+Created by edlc on 12/9/16.</p></div>
+            
 
-export * from './maybe/Maybe';
-export * from './either/Either';
+            
+                
 
-/* ==================================== */
-/* Virtual types */
-/* ==================================== */
-/**
- * @typedef {Function} UnaryOperation
- */
-</code></pre>
-        </article>
-    </section>
+<dt>
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+            <h3 class="subsection-title">Classes</h3>
+            
+
+<dl>
+    
+        <dt>
+            <h4 class="name">
+                <a href="module-functor.Applicative.html">Applicative</a>
+                <div class="container-source members">
+                    <code><a href="module-functor.Applicative.html">module:functor.Applicative</a></code>
+                </div>
+            </h4>
+        </dt>
+        
+    
+        <dt>
+            <h4 class="name">
+                <a href="module-functor.Apply.html">Apply</a>
+                <div class="container-source members">
+                    <code><a href="module-functor.Apply.html">module:functor.Apply</a></code>
+                </div>
+            </h4>
+        </dt>
+        
+    
+        <dt>
+            <h4 class="name">
+                <a href="module-functor.Functor.html">Functor</a>
+                <div class="container-source members">
+                    <code><a href="module-functor.Functor.html">module:functor.Functor</a></code>
+                </div>
+            </h4>
+        </dt>
+        
+    
+</dl>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+                
+
+<dt>
+    
+        <h4 class="name" id=".alwaysFunctor">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>alwaysFunctor<span class="signature">(x)</span><span class="type-signature"> &rarr; {any}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="functor_Functor.js.html">functor/Functor.js</a></code>,
+                <code><a href="functor_Functor.js.html#line8">line 8</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Always returns a functor;  If given value is not
+a functor creates one and passes given value to it.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">any</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Functor or any.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">any</span>
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".alwaysMonad">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>alwaysMonad<span class="signature">(x)</span><span class="type-signature"> &rarr; {any}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="monad_Monad.js.html">monad/Monad.js</a></code>,
+                <code><a href="monad_Monad.js.html#line25">line 25</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Always returns a monad;  If given value is not
+a monad creates using given value.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Monad</span>
+|
+
+<span class="param-type">any</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Monad or any.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">any</span>
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -94,7 +544,7 @@ export * from './either/Either';
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = '_sub'.replace(/"/g, '_');
+        var id = 'module:functor_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

@@ -39,6 +39,10 @@
 
   function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+  /**
+   * @class module:functor.Applicative
+   * @extends module:functor.Apply
+   */
   var Applicative =
   /*#__PURE__*/
   function (_Apply) {
@@ -52,6 +56,14 @@
 
     _createClass(Applicative, null, [{
       key: "of",
+
+      /**
+       * Constructs an applicative with given `value`.
+       * @function module:functor.Applicative.of
+       * @static
+       * @param value {any}
+       * @returns {Applicative}
+       */
       value: function of(value) {
         return new Applicative(value);
       }

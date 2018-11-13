@@ -1,7 +1,7 @@
 {
   "name": "fjl-data-core",
   "version": "1.0.0",
-  "description": "Fjl data core constructors (`Monad`, `Maybe`, `Either`, and other associated packages).",
+  "description": "Fjl data core constructors (`Monad`, `Maybe`, `Either`, and other associated methods/operations).",
   "main": "dist/cjs/fjl-data-core.js",
   "module": "./dist/es6-module/fjl-data-core.js",
   "scripts": {
@@ -28,7 +28,7 @@
   "license": "BSD-3-Clause",
   "repository": "git@github.com:functional-jslib/fjl-data-core.git",
   "dependencies": {
-    "fjl": "^1.7.0"
+    "fjl": "^1.9.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -178,6 +178,16 @@
       ]
     },
     "jsdoc": {
+      "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": [
+          "jsdoc",
+          "closure"
+        ]
+      },
+      "plugins": [
+        "plugins/markdown"
+      ],
       "opts": {
         "template": "node_modules/tui-jsdoc-template",
         "encoding": "utf8",
@@ -189,7 +199,7 @@
       },
       "templates": {
         "logo": {
-          "url": "http://elycruz.com/fjl-data-core-logo.gif",
+          "url": "http://elycruz.com/fjl-logo.gif",
           "width": "144px",
           "height": "55px",
           "link": "https://github.com/functional-jslib/fjl-data-core"

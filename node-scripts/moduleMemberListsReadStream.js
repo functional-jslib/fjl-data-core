@@ -154,5 +154,5 @@ class ModuleMemberListsReadStream extends Readable {
 /**
  * @returns {ModuleMemberListsReadStream}
  */
-export default (moduleNameModuleHashMap, streamOptions) =>
-    new ModuleMemberListsReadStream(moduleNameModuleHashMap, streamOptions);
+export default (moduleMemberOptions, streamOptions) =>
+    new ModuleMemberListsReadStream(moduleMemberOptions, streamOptions);

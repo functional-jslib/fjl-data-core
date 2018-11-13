@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(["exports", "../utils", "./Functor"], factory);
+    define(["exports", "fjl", "./Functor"], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require("../utils"), require("./Functor"));
+    factory(exports, require("fjl"), require("./Functor"));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.utils, global.Functor);
+    factory(mod.exports, global.fjl, global.Functor);
     global.Apply = mod.exports;
   }
-})(this, function (_exports, _utils, _Functor2) {
+})(this, function (_exports, _fjl, _Functor2) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -39,6 +39,13 @@
 
   function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+  /**
+   * Apply construct.
+   * @class module:functor.Apply
+   * @param fn {Function|*}
+   * @property value {any}
+   * @extends module:functor.Functor
+   */
   var Apply =
   /*#__PURE__*/
   function (_Functor) {
@@ -52,8 +59,15 @@
 
     _createClass(Apply, [{
       key: "ap",
+
+      /**
+       * Applicative apply operation - applies contained function over passed in functor.
+       * @memberOf module:functor.Apply
+       * @param x {Functor}
+       * @returns {Apply}
+       */
       value: function ap(x) {
-        return x.map((0, _utils.toFunction)(this.valueOf()));
+        return x.map((0, _fjl.toFunction)(this.valueOf()));
       }
     }]);
 

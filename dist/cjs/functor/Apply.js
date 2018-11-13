@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _utils = require("../utils");
+var _fjl = require("fjl");
 
 var _Functor2 = _interopRequireDefault(require("./Functor"));
 
@@ -29,6 +29,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+/**
+ * Apply construct.
+ * @class module:functor.Apply
+ * @param fn {Function|*}
+ * @property value {any}
+ * @extends module:functor.Functor
+ */
 var Apply =
 /*#__PURE__*/
 function (_Functor) {
@@ -42,8 +49,15 @@ function (_Functor) {
 
   _createClass(Apply, [{
     key: "ap",
+
+    /**
+     * Applicative apply operation - applies contained function over passed in functor.
+     * @memberOf module:functor.Apply
+     * @param x {Functor}
+     * @returns {Apply}
+     */
     value: function ap(x) {
-      return x.map((0, _utils.toFunction)(this.valueOf()));
+      return x.map((0, _fjl.toFunction)(this.valueOf()));
     }
   }]);
 

@@ -1,4 +1,5 @@
-import {isLeft, isRight, Left, Right, either} from '../src/either/Either';
+import {isLeft, isRight, Left, Right, either, toLeft, toRight} from '../src/either/Either';
+import Monad from '../src/monad/Monad';
 import {all} from 'fjl';
 
 describe('#Either', () => {
@@ -106,18 +107,24 @@ describe('#Either', () => {
     });
 
     describe ('#either', () => {
+        const successMessage = 'Success message.',
+            errorMessage = 'Error message.',
+            testCaseValues = [null, undefined, 0, '', false,
+                'a', 99, true, {}, [], () => undefined],
+            testCases = [].concat(
+                testCaseValues.map(x => [toRight(x), successMessage]),
+                testCaseValues.map(x => [toLeft(x), errorMessage]),
+                [
+                    [toRight(), successMessage],
+                    [toLeft(), errorMessage]
+                ]);
         test ('should return an "#Either" (a `Right` or an `Left`)', () => {
-            const rightOp = x => x * 2,
-                expectedLeft = 'incoming value ignored',
-                expectedRight = rightOp(99);
-
-            expect(
-                either(() => expectedLeft, () => undefined, Right.of())
-            ).toEqual(expectedLeft);
-
-            expect(
-                either(x => x, rightOp, Right.of(99))
-            ).toEqual(expectedRight);
+            testCases.forEach(([arg, expected]) => {
+                const result = either(() => errorMessage, () => successMessage, arg),
+                    result2 = either(x => x, x => x, arg);
+                expect(result).toEqual(expected);
+                return [arg, expected, result, result2];
+            });
         });
     });
 

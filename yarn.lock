@@ -2968,10 +2968,10 @@ fined@^1.0.1:
     object.pick "^1.2.0"
     parse-filepath "^1.0.1"
 
-fjl@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/fjl/-/fjl-1.7.0.tgz#f8fc7a99deb79ec2333d1f5938b387ce2b61fde7"
-  integrity sha512-TZXs5nP1VvDl8OoaKIclQ75EMi+4KbuU7xGInEFM7wabbso9YRT9S800bT9ycyqRqCaV2Tlza8+mPuVjb/sHpA==
+fjl@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/fjl/-/fjl-1.9.0.tgz#86852d2f494a8568cf409da8d4fadcdcefa67225"
+  integrity sha512-F8BW1eeeGYcwkXd2Ye3vL27ryFXpWG2ilEJ06kGtspPoHET/mEEE2KlCXwzQXCqkwcG6uooU1vKP97uPq6yW6Q==
 
 flagged-respawn@^1.0.0:
   version "1.0.0"

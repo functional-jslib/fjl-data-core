@@ -1,5 +1,6 @@
 /**
  * Created by edlc on 12/9/16.
+ * @memberOf module:functor
  */
 import Functor from './Functor';
 

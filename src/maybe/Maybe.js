@@ -1,9 +1,16 @@
 import Just, {isJust, just} from './Just';
 import Nothing, {isNothing, nothing} from './Nothing';
-import {isset, curry, id} from 'fjl';
+import {isset, curry, id, trampoline} from 'fjl';
 import {getMonadUnWrapper} from '../monad/Monad';
 
 export {Just, isJust, isNothing, Nothing, just, nothing};
+
+const
+    /**
+     * @private
+     */
+    [justUnWrapper, justUnWrapperTailCallName] = getMonadUnWrapper(Just)
+;
 
 export const
     /**
@@ -16,7 +23,7 @@ export const
         return isNothing(subject) ? replacement : subject.map(fn).join();
     }),
 
-    unWrapJust = getMonadUnWrapper(Just),
+    unWrapJust = trampoline(justUnWrapper, justUnWrapperTailCallName),
 
     unWrapMaybe = x => isNothing(x) ? nothing() : unWrapJust(x),
 

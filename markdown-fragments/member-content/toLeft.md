@@ -1,4 +1,4 @@
-### `toFunction`
+### `toLeft`
 
 @todo - Added documentation here.
 

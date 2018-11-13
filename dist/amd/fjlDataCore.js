@@ -1,4 +1,4 @@
-define(["exports", "./functor/Functor", "./functor/Apply", "./functor/Applicative", "./functor/Bifunctor", "./monad/Monad", "./io/IO", "./maybe/Maybe", "./either/Either", "./utils"], function (_exports, _Functor, _Apply, _Applicative, _Bifunctor, _Monad, _IO, _Maybe, _Either, _utils) {
+define(["exports", "./functor/Functor", "./functor/Apply", "./functor/Applicative", "./functor/Bifunctor", "./monad/Monad", "./io/IO", "./maybe/Maybe", "./either/Either"], function (_exports, _Functor, _Apply, _Applicative, _Bifunctor, _Monad, _IO, _Maybe, _Either) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -17,7 +17,6 @@ define(["exports", "./functor/Functor", "./functor/Apply", "./functor/Applicativ
     ap: true,
     flatMap: true,
     getMonadUnWrapper: true,
-    trampoline: true,
     IO: true
   };
   Object.defineProperty(_exports, "Functor", {
@@ -92,12 +91,6 @@ define(["exports", "./functor/Functor", "./functor/Apply", "./functor/Applicativ
       return _Monad.getMonadUnWrapper;
     }
   });
-  Object.defineProperty(_exports, "trampoline", {
-    enumerable: true,
-    get: function get() {
-      return _Monad.trampoline;
-    }
-  });
   Object.defineProperty(_exports, "IO", {
     enumerable: true,
     get: function get() {
@@ -127,16 +120,6 @@ define(["exports", "./functor/Functor", "./functor/Apply", "./functor/Applicativ
       enumerable: true,
       get: function get() {
         return _Either[key];
-      }
-    });
-  });
-  Object.keys(_utils).forEach(function (key) {
-    if (key === "default" || key === "__esModule") return;
-    if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-    Object.defineProperty(_exports, key, {
-      enumerable: true,
-      get: function get() {
-        return _utils[key];
       }
     });
   });

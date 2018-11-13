@@ -7,8 +7,6 @@ exports.default = void 0;
 
 var _Monad2 = _interopRequireDefault(require("../monad/Monad"));
 
-var _utils = require("../utils");
-
 var _fjl = require("fjl");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -31,7 +29,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-// import {defineEnumProps} from 'fjl-mutable';
 var IO =
 /*#__PURE__*/
 function (_Monad) {
@@ -65,26 +62,25 @@ function (_Monad) {
         args[_key - 1] = arguments[_key];
       }
 
-      return (0, _fjl.compose)(IO.of, IO.unWrapIO)((0, _utils.toFunction)(instance.join()).apply(void 0, args));
+      return (0, _fjl.compose)(IO.of, IO.unWrapIO)((0, _fjl.toFunction)(instance.join()).apply(void 0, args));
     }
   }]);
 
   function IO(fn) {
     _classCallCheck(this, IO);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(IO).call(this, (0, _utils.toFunction)(fn))); // Enforce `value` field validation
-    // defineEnumProps([[Function, 'value', this.value]], this);
+    return _possibleConstructorReturn(this, _getPrototypeOf(IO).call(this, (0, _fjl.toFunction)(fn)));
   }
 
   _createClass(IO, [{
     key: "flatMap",
     value: function flatMap(fn) {
-      return (0, _fjl.compose)(this.constructor.of, IO.unWrapIO, fn, IO.unWrapIO)((0, _utils.toFunction)(this.join())());
+      return (0, _fjl.compose)(this.constructor.of, IO.unWrapIO, fn, IO.unWrapIO)((0, _fjl.toFunction)(this.join())());
     }
   }, {
     key: "map",
     value: function map(fn) {
-      return (0, _fjl.compose)(this.constructor.of, fn)((0, _utils.toFunction)(this.valueOf())());
+      return (0, _fjl.compose)(this.constructor.of, fn)((0, _fjl.toFunction)(this.valueOf())());
     }
   }]);
 

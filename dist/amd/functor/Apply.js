@@ -1,4 +1,4 @@
-define(["exports", "../utils", "./Functor"], function (_exports, _utils, _Functor2) {
+define(["exports", "fjl", "./Functor"], function (_exports, _fjl, _Functor2) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -27,6 +27,13 @@ define(["exports", "../utils", "./Functor"], function (_exports, _utils, _Functo
 
   function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+  /**
+   * Apply construct.
+   * @class module:functor.Apply
+   * @param fn {Function|*}
+   * @property value {any}
+   * @extends module:functor.Functor
+   */
   var Apply =
   /*#__PURE__*/
   function (_Functor) {
@@ -40,8 +47,15 @@ define(["exports", "../utils", "./Functor"], function (_exports, _utils, _Functo
 
     _createClass(Apply, [{
       key: "ap",
+
+      /**
+       * Applicative apply operation - applies contained function over passed in functor.
+       * @memberOf module:functor.Apply
+       * @param x {Functor}
+       * @returns {Apply}
+       */
       value: function ap(x) {
-        return x.map((0, _utils.toFunction)(this.valueOf()));
+        return x.map((0, _fjl.toFunction)(this.valueOf()));
       }
     }]);
 
