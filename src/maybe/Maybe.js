@@ -31,6 +31,10 @@ export const
 
     isMaybe = x => isNothing(x) || isJust(x),
 
-    toMaybe = x => isset(x) ? just(x) : nothing()
-
+    toMaybe = x => {
+        if (!isset(x)) {
+            return nothing();
+        }
+        return isMaybe(x) ? x : just(x);
+    }
 ;
