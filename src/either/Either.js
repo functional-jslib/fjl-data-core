@@ -78,8 +78,20 @@ export const
         return isset(out) ? out.join() : out;
     }),
 
+    /**
+     * Returns a `Right` - if not a `Right` creates one from given, else returns given.
+     * @function module:either.toRight
+     * @param x {any}
+     * @returns {Right}
+     */
     toRight = x => isRight(x) ? x : new Right(x),
 
+    /**
+     * Returns a `Left` - if not a `Left` creates one from given, else returns given.
+     * @function module:either.toLeft
+     * @param x {any}
+     * @returns {Left}
+     */
     toLeft = x => isLeft(x) ? x : new Left(x)
 
 ;

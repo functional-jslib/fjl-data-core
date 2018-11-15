@@ -9,7 +9,6 @@
 
 import {isset, curry, instanceOf, trampoline} from 'fjl';
 import Applicative from '../functor/Applicative';
-import Functor from '../functor/Functor';
 
 export const
 

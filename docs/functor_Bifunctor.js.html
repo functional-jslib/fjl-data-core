@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Class: Left | Class: Left</title>
+    <title>Source: functor/Bifunctor.js | Source: functor/Bifunctor.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -26,7 +28,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Class: Left</a></h1>
+        <h1><a href="index.html" class="link">Source: functor/Bifunctor.js</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -43,237 +45,71 @@
 
 
 
-
-<section>
-
-<header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-either.html">either</a>~</span>Left<span class="signature">(x)</span><span class="type-signature"></span></h2>
-        
-    
-</header>
-
-<article>
-    
-        <div class="container-overview">
-        
-            
-
-<dt>
-    
-        <h4 class="name" id="Left">
-            
-                new <span class="type-signature"></span>Left<span class="signature">(x)</span><span class="type-signature"></span>
-                
-            
-            <div class="container-source members">
-                <code><a href="either_Either.js.html">either/Either.js</a></code>,
-                <code><a href="either_Either.js.html#line10">line 10</a></code>
-            </div>
-            
-        </h4>
-
-        
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p><code>Left</code> representation of <code>Either</code> construct.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-    <div class="container-params">
-        <h5>Parameters:</h5>
-        
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-        
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Created by edlc on 12/9/16.
+ * @memberOf module:functor
+ */
+import Functor from './Functor';
+
+/**
+ * Bifunctor class;  Mostly useful for eithers and/or maybes.
+ * @class module:functor.Bifunctor
+ */
+export default class Bifunctor extends Functor {
+    constructor(value1, value2) {
+        super(value1);
+        this.value2 = value2;
+    }
+
+    /**
+     * Returns wrapped 'second' value.
+     * @memberOf module:functor.Bifunctor
+     * @returns {any}
+     */
+    value2Of() {
+        return this.value2;
+    }
+
+    /**
+     * Allows you to map over first 'contained' value.
+     * @memberOf module:functor.Bifunctor
+     * @param fn {Function} - Unary operation.
+     * @returns {Bifunctor}
+     */
+    first (fn) {
+        return new this.constructor(fn(this.valueOf()), this.value2Of());
+    }
+
+    /**
+     * Allows you to map over second 'contained' value.
+     * @memberOf module:functor.Bifunctor
+     * @param fn {Function} - Unary operation.
+     * @returns {Bifunctor}
+     */
+    second (fn) {
+        return new this.constructor(this.valueOf(), fn(this.value2Of()));
+    }
+
+    /**
+     * Allows you to map 2 functions over contained values - One function over each value.
+     * @memberOf module:functor.Bifunctor
+     * @param fn1 {Function} - Unary op.
+     * @param fn2 {Function} - Unary op.
+     * @returns {Bifunctor}
+     */
+    bimap (fn1, fn2) {
+        return new this.constructor(
+            fn1(this.valueOf()),
+            fn2(this.value2Of())
+        );
+    }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 
@@ -290,7 +126,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'module:either~Left_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 
