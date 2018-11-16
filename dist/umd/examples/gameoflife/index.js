@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(["fjl", "../../io/IO"], factory);
+    define(["fjl", "../../functor/Bifunctor", "../../io/IO"], factory);
   } else if (typeof exports !== "undefined") {
-    factory(require("fjl"), require("../../io/IO"));
+    factory(require("fjl"), require("../../functor/Bifunctor"), require("../../io/IO"));
   } else {
     var mod = {
       exports: {}
     };
-    factory(global.fjl, global.IO);
+    factory(global.fjl, global.Bifunctor, global.IO);
     global.index = mod.exports;
   }
-})(this, function (_fjl, _IO) {
+})(this, function (_fjl, _Bifunctor, _IO) {
   "use strict";
 
   _IO = _interopRequireDefault(_IO);
@@ -41,8 +41,8 @@
     }
 
     _createClass(Pointer, [{
-      key: "updatePos",
-      value: function updatePos(pos) {
+      key: "map",
+      value: function map(pos) {
         return new Pointer(this.board, pos);
       }
     }, {
@@ -52,7 +52,7 @@
       }
     }, {
       key: "extend",
-      value: function extend(f) {
+      value: function extend(fn) {
         var board = [],
             x,
             y;
@@ -61,7 +61,7 @@
           board[x] = [];
 
           for (y = 0; y < this.board[x].length; y++) {
-            board[x][y] = f(new Pointer(this.board, new Pos(x, y)));
+            board[x][y] = fn(new Pointer(this.board, new Pos(x, y)));
           }
         }
 
@@ -83,7 +83,7 @@
       return new Pos(pointer.pos.x + offset.x, pointer.pos.y + offset.y);
     }, offsets));
     return (0, _fjl.map)(function (pos) {
-      return pointer.updatePos(pos).extract();
+      return pointer.map(pos).extract();
     }, positions);
   },
       liveNeighbours = function liveNeighbours(pointer) {
@@ -115,7 +115,7 @@
     }));
   },
       drawBoard = function drawBoard(canvas, board) {
-    return _IO.default.do(_IO.default.of(function () {
+    return _IO.default.do(function () {
       var x, y;
 
       for (x = 0; x < board.length; x++) {
@@ -127,7 +127,7 @@
           }
         }
       }
-    }));
+    });
   },
       loop = function loop(canvas, board) {
     return drawBoard(canvas, board).flatMap(function () {
@@ -139,13 +139,13 @@
       main = function main() {
     var element = document.getElementById('game-of-comonads'),
         canvas = element.getContext('2d');
-    return _IO.default.do(_IO.default.of(function () {
+    return _IO.default.do(function () {
       element.width = SIZE * SCALE;
       element.height = SIZE * SCALE;
       canvas.scale(SCALE, SCALE);
     }).flatMap(generateBoard).flatMap(function (board) {
       return loop(canvas, board);
-    }));
+    });
   };
 
   window.addEventListener('load', main);

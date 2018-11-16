@@ -4,27 +4,26 @@
  * @module functor
  */
 
-
 /**
  * Always returns a functor;  If given value is not
- * a functor creates one and passes given value to it.
- * @function module:functor.alwaysFunctor
- * @param x {{map: Function}|any} - Functor or any.
- * @returns {any}
+ * a functor creates one from given value to it.
+ * @function module:functor.toFunctor
+ * @param x {{map: Function}|*} - Functor or any.
+ * @returns {*}
  */
-export const alwaysFunctor = x => !x.map ? new Functor(x) : x;
+export const toFunctor = x => !x.map ? new Functor(x) : x;
 
 /**
  * Plain old functor class.
  * @class module:functor.Functor
- * @param value {any}
- * @property value {any}
+ * @param value {*}
+ * @property value {*}
  */
 export default class Functor {
 
     /**
-     * @memberOf module:functor.Functor
-     * @param value {any}
+     * @constructor
+     * @param value {*}
      */
     constructor(value) {
         this.value = value;
@@ -32,8 +31,8 @@ export default class Functor {
 
     /**
      * Extracts value of functor (same as monadic `join`).
-     * @memberOf module:functor.Functor
-     * @returns {any}
+     * @method module:functor.Functor#valueOf
+     * @returns {*}
      */
     valueOf() {
         return this.value;
@@ -41,7 +40,7 @@ export default class Functor {
 
     /**
      * Maps a function over contents of functor.
-     * @memberOf module:functor.Functor
+     * @method module:functor.Functor#map
      * @param fn {Function} - Function that takes one `any` and returns one `any`.
      * @returns {Functor}
      */
@@ -51,7 +50,7 @@ export default class Functor {
 
     /**
      * Same as `#Functor.map`.
-     * @memberOf module:functor.Functor
+     * @method module:functor.Functor#fmap
      * @param fn {Function}
      * @returns {Functor}
      */

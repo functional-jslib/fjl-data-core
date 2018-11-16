@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Module: fjlDataCore | Module: fjlDataCore</title>
+    <title>Class: Right | Class: Right</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -26,7 +26,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Module: fjlDataCore</a></h1>
+        <h1><a href="index.html" class="link">Class: Right</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -48,9 +48,8 @@
 
 <header>
     
-        <h2>fjlDataCore</h2>
-        
-            
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="module-either.html">either</a>.</span>Right<span class="signature">(x)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -60,14 +59,22 @@
         <div class="container-overview">
         
             
-                <div class="description"><p>Makes all module members in library accessible via itself (is also the main export of the library).
-Created by elydelacruz on 2/19/2017.</p></div>
-            
-
-            
-                
 
 <dt>
+    
+        <h4 class="name" id="Right">
+            
+                new <span class="type-signature"></span>Right<span class="signature">(x)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="either_Either.js.html">either/Either.js</a></code>,
+                <code><a href="either_Either.js.html#line28">line 28</a></code>
+            </div>
+            
+        </h4>
+
+        
     
 </dt>
 <dd>
@@ -81,7 +88,55 @@ Created by elydelacruz on 2/19/2017.</p></div>
     
 
     
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
 
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
     
 
     
@@ -95,6 +150,60 @@ Created by elydelacruz on 2/19/2017.</p></div>
     
 
     
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
 
 
 <dl class="details">
@@ -135,12 +244,20 @@ Created by elydelacruz on 2/19/2017.</p></div>
 
 </dd>
 
-            
         
         </div>
     
 
     
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="module-maybe.Just.html">module:maybe.Just</a></li>
+    </ul>
+
 
     
 
@@ -154,6 +271,175 @@ Created by elydelacruz on 2/19/2017.</p></div>
 
     
 
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+                
+
+<dt>
+    
+        <h4 class="name" id="map">
+            
+                <span class="type-signature"></span>map<span class="signature">(fn)</span><span class="type-signature"> &rarr; {<a href="global.html#Either">Either</a>}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="either_Either.js.html">either/Either.js</a></code>,
+                <code><a href="either_Either.js.html#line35">line 35</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Maps a function over contained value and returns result wrapped.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Unary operation.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type"><a href="global.html#Either">Either</a></span>
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="module-maybe.Just.html#map">module:maybe.Just#map</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
     
 
     
@@ -178,7 +464,7 @@ Created by elydelacruz on 2/19/2017.</p></div>
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'module:fjlDataCore_sub'.replace(/"/g, '_');
+        var id = 'module:either.Right_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

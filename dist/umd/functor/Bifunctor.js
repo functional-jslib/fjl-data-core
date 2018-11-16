@@ -39,11 +39,25 @@
 
   function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+  /**
+   * Bifunctor class;  Mostly useful for eithers and/or maybes.
+   * @class module:functor.Bifunctor
+   * @param value1 {*}
+   * @param value2 {*}
+   * @property value {*}
+   * @property value2 {*}
+   */
   var Bifunctor =
   /*#__PURE__*/
   function (_Functor) {
     _inherits(Bifunctor, _Functor);
 
+    /**
+     * @param value1 {*}
+     * @param value2 {*}
+     * @private
+     * @returns {Bifunctor}
+     */
     function Bifunctor(value1, value2) {
       var _this;
 
@@ -53,22 +67,50 @@
       _this.value2 = value2;
       return _this;
     }
+    /**
+     * Returns wrapped 'second' value.
+     * @method module:functor.Bifunctor#value2Of
+     * @returns {*}
+     */
+
 
     _createClass(Bifunctor, [{
       key: "value2Of",
       value: function value2Of() {
         return this.value2;
       }
+      /**
+       * Allows you to map over first 'contained' value.
+       * @method module:functor.Bifunctor#first
+       * @param fn {Function} - Unary operation.
+       * @returns {Bifunctor}
+       */
+
     }, {
       key: "first",
       value: function first(fn) {
         return new this.constructor(fn(this.valueOf()), this.value2Of());
       }
+      /**
+       * Allows you to map over second 'contained' value.
+       * @method module:functor.Bifunctor#second
+       * @param fn {Function} - Unary operation.
+       * @returns {Bifunctor}
+       */
+
     }, {
       key: "second",
       value: function second(fn) {
         return new this.constructor(this.valueOf(), fn(this.value2Of()));
       }
+      /**
+       * Allows you to map 2 functions over contained values - One function over each value.
+       * @method module:functor.Bifunctor#bimap
+       * @param fn1 {Function} - Unary op.
+       * @param fn2 {Function} - Unary op.
+       * @returns {Bifunctor}
+       */
+
     }, {
       key: "bimap",
       value: function bimap(fn1, fn2) {

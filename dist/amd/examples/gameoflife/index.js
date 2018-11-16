@@ -1,4 +1,4 @@
-define(["fjl", "../../io/IO"], function (_fjl, _IO) {
+define(["fjl", "../../functor/Bifunctor", "../../io/IO"], function (_fjl, _Bifunctor, _IO) {
   "use strict";
 
   _IO = _interopRequireDefault(_IO);
@@ -29,8 +29,8 @@ define(["fjl", "../../io/IO"], function (_fjl, _IO) {
     }
 
     _createClass(Pointer, [{
-      key: "updatePos",
-      value: function updatePos(pos) {
+      key: "map",
+      value: function map(pos) {
         return new Pointer(this.board, pos);
       }
     }, {
@@ -40,7 +40,7 @@ define(["fjl", "../../io/IO"], function (_fjl, _IO) {
       }
     }, {
       key: "extend",
-      value: function extend(f) {
+      value: function extend(fn) {
         var board = [],
             x,
             y;
@@ -49,7 +49,7 @@ define(["fjl", "../../io/IO"], function (_fjl, _IO) {
           board[x] = [];
 
           for (y = 0; y < this.board[x].length; y++) {
-            board[x][y] = f(new Pointer(this.board, new Pos(x, y)));
+            board[x][y] = fn(new Pointer(this.board, new Pos(x, y)));
           }
         }
 
@@ -71,7 +71,7 @@ define(["fjl", "../../io/IO"], function (_fjl, _IO) {
       return new Pos(pointer.pos.x + offset.x, pointer.pos.y + offset.y);
     }, offsets));
     return (0, _fjl.map)(function (pos) {
-      return pointer.updatePos(pos).extract();
+      return pointer.map(pos).extract();
     }, positions);
   },
       liveNeighbours = function liveNeighbours(pointer) {
@@ -103,7 +103,7 @@ define(["fjl", "../../io/IO"], function (_fjl, _IO) {
     }));
   },
       drawBoard = function drawBoard(canvas, board) {
-    return _IO.default.do(_IO.default.of(function () {
+    return _IO.default.do(function () {
       var x, y;
 
       for (x = 0; x < board.length; x++) {
@@ -115,7 +115,7 @@ define(["fjl", "../../io/IO"], function (_fjl, _IO) {
           }
         }
       }
-    }));
+    });
   },
       loop = function loop(canvas, board) {
     return drawBoard(canvas, board).flatMap(function () {
@@ -127,13 +127,13 @@ define(["fjl", "../../io/IO"], function (_fjl, _IO) {
       main = function main() {
     var element = document.getElementById('game-of-comonads'),
         canvas = element.getContext('2d');
-    return _IO.default.do(_IO.default.of(function () {
+    return _IO.default.do(function () {
       element.width = SIZE * SCALE;
       element.height = SIZE * SCALE;
       canvas.scale(SCALE, SCALE);
     }).flatMap(generateBoard).flatMap(function (board) {
       return loop(canvas, board);
-    }));
+    });
   };
 
   window.addEventListener('load', main);

@@ -2,6 +2,8 @@
 
 var _fjl = require("fjl");
 
+var _Bifunctor = require("../../functor/Bifunctor");
+
 var _IO = _interopRequireDefault(require("../../io/IO"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -30,8 +32,8 @@ function () {
   }
 
   _createClass(Pointer, [{
-    key: "updatePos",
-    value: function updatePos(pos) {
+    key: "map",
+    value: function map(pos) {
       return new Pointer(this.board, pos);
     }
   }, {
@@ -41,7 +43,7 @@ function () {
     }
   }, {
     key: "extend",
-    value: function extend(f) {
+    value: function extend(fn) {
       var board = [],
           x,
           y;
@@ -50,7 +52,7 @@ function () {
         board[x] = [];
 
         for (y = 0; y < this.board[x].length; y++) {
-          board[x][y] = f(new Pointer(this.board, new Pos(x, y)));
+          board[x][y] = fn(new Pointer(this.board, new Pos(x, y)));
         }
       }
 
@@ -72,7 +74,7 @@ var SIZE = 100,
     return new Pos(pointer.pos.x + offset.x, pointer.pos.y + offset.y);
   }, offsets));
   return (0, _fjl.map)(function (pos) {
-    return pointer.updatePos(pos).extract();
+    return pointer.map(pos).extract();
   }, positions);
 },
     liveNeighbours = function liveNeighbours(pointer) {
@@ -104,7 +106,7 @@ var SIZE = 100,
   }));
 },
     drawBoard = function drawBoard(canvas, board) {
-  return _IO.default.do(_IO.default.of(function () {
+  return _IO.default.do(function () {
     var x, y;
 
     for (x = 0; x < board.length; x++) {
@@ -116,7 +118,7 @@ var SIZE = 100,
         }
       }
     }
-  }));
+  });
 },
     loop = function loop(canvas, board) {
   return drawBoard(canvas, board).flatMap(function () {
@@ -128,13 +130,13 @@ var SIZE = 100,
     main = function main() {
   var element = document.getElementById('game-of-comonads'),
       canvas = element.getContext('2d');
-  return _IO.default.do(_IO.default.of(function () {
+  return _IO.default.do(function () {
     element.width = SIZE * SCALE;
     element.height = SIZE * SCALE;
     canvas.scale(SCALE, SCALE);
   }).flatMap(generateBoard).flatMap(function (board) {
     return loop(canvas, board);
-  }));
+  });
 };
 
 window.addEventListener('load', main);

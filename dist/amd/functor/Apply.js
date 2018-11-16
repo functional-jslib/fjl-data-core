@@ -31,7 +31,7 @@ define(["exports", "fjl", "./Functor"], function (_exports, _fjl, _Functor2) {
    * Apply construct.
    * @class module:functor.Apply
    * @param fn {Function|*}
-   * @property value {any}
+   * @property value {*}
    * @extends module:functor.Functor
    */
   var Apply =

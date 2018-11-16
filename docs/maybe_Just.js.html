@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Module: fjlDataCore | Module: fjlDataCore</title>
+    <title>Source: maybe/Just.js | Source: maybe/Just.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -26,7 +28,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Module: fjlDataCore</a></h1>
+        <h1><a href="index.html" class="link">Source: maybe/Just.js</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -43,125 +45,84 @@
 
 
 
-
-<section>
-
-<header>
     
-        <h2>fjlDataCore</h2>
-        
-            
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Contains `Just` constructor and associated methods.
+ */
+import Nothing, {isNothing} from './Nothing';
+import Monad from '../monad/Monad';
+import {isset} from 'fjl';
 
-<article>
-    
-        <div class="container-overview">
-        
-            
-                <div class="description"><p>Makes all module members in library accessible via itself (is also the main export of the library).
-Created by elydelacruz on 2/19/2017.</p></div>
-            
+export const
 
-            
-                
+    /**
+     * Checks for `Just`.
+     * @function module:maybe.isJust
+     * @param x {*}
+     * @returns {boolean}
+     */
+    isJust = x => x instanceof Just,
 
-<dt>
-    
-</dt>
-<dd>
+    /**
+     * Functional constructor (function that returns an instance) for `Just` -
+     * Same as `new Just(...)` (just shorter and can be used as a function).
+     * @function module:maybe.just
+     * @param x {Just|*}
+     * @returns {Just}
+     */
+    just = x => new Just(x),
 
-    
+    /**
+     * Ensures `Just`
+     * @function module:maybe.toJust
+     * @param x {Just|*}
+     * @returns {Just}
+     */
+    toJust = x => isJust(x) ? x : just(x)
 
-    
+;
 
-    
+/**
+ * @class maybe.Just
+ * @param x {*}
+ * @property value {*}
+ * @extends module:monad.Monad
+ */
+export default class Just extends Monad {
+    /**
+     * Maps incoming function over contained value and
+     * returns result wrapped in `Just`.
+     * @method module:maybe.Just#map
+     * @param fn {Function} - Unary operation.
+     * @returns {Just|Nothing}
+     */
+    map (fn) {
+        const {constructor} = this,
+            value = this.valueOf();
+        return isset(value) &amp;&amp; !isNothing(value) ? constructor.of(fn(value)) :
+            constructor.counterConstructor.of(value);
+    }
 
-    
+    /**
+     * Applicative pure - Same as `new Just(...)`.
+     * @memberOf maybe.Just
+     * @static
+     * @param x {*}
+     * @returns {Just}
+     */
+    static of (x) { return just(x); }
+}
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-            
-        
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+/**
+ * @static
+ * @property maybe.Just.counterConstructor {Functor}
+ */
+Just.counterConstructor = Nothing;
+</code></pre>
+        </article>
+    </section>
 
 
 
@@ -178,7 +139,7 @@ Created by elydelacruz on 2/19/2017.</p></div>
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'module:fjlDataCore_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

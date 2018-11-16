@@ -66,26 +66,69 @@ var _getMonadUnWrapper = (0, _Monad.getMonadUnWrapper)(_Just.default),
 
 var
 /**
+ * The maybe function takes a `replacement` value, a function (unary operation), and a Maybe value. If the Maybe value is `Nothing`, the function returns the `replacement` value. Otherwise, it applies the function to the value contained  by the `Just` and returns the result.
+ * @function module:maybe.maybe
  * @param replacement {*}
- * @param fn {Function} - Some operation.
- * @param maybeInst {(Nothing|Just|*)} - Maybe instance or non
+ * @param fn {Function} - Unary operation.
+ * @param maybeInst {(Nothing|Just|*)} - Maybe instance or non-maybe value.
+ * @returns {*}
  */
 maybe = (0, _fjl.curry)(function (replacement, fn, maybeInst) {
-  var subject = (0, _fjl.isset)(maybeInst) && isMaybe(maybeInst) ? maybeInst.map(_fjl.id) : _Nothing.default.of();
+  var subject = (0, _fjl.isset)(maybeInst) && isMaybe(maybeInst) ? maybeInst.map(_fjl.id) : (0, _Nothing.nothing)();
   return (0, _Nothing.isNothing)(subject) ? replacement : subject.map(fn).join();
 }),
-    unWrapJust = (0, _fjl.trampoline)(justUnWrapper, justUnWrapperTailCallName),
-    unWrapMaybe = function unWrapMaybe(x) {
+
+/**
+ * Unwraps just (recursively).
+ * @function module:maybe.unWrapJust
+ * @param x {*} - Expected `Just`.
+ * @returns {*}
+ */
+unWrapJust = (0, _fjl.trampoline)(justUnWrapper, justUnWrapperTailCallName),
+
+/**
+ * Unwraps maybe (recursively).
+ * @function module:maybe.unWrapMaybe
+ * @param x {*} - Expected `Maybe`.
+ * @returns {*}
+ */
+unWrapMaybe = function unWrapMaybe(x) {
   return (0, _Nothing.isNothing)(x) ? (0, _Nothing.nothing)() : unWrapJust(x);
 },
-    maybeEqual = (0, _fjl.curry)(function (a, b) {
+
+/**
+ * Equality operator for maybes.
+ * @function module:maybe.maybeEqual
+ * @param a {*} - Maybe 1.
+ * @param b {*} - Maybe 2.
+ * @returns {boolean}
+ */
+maybeEqual = (0, _fjl.curry)(function (a, b) {
   return unWrapMaybe(a) === unWrapMaybe(b);
 }),
-    isMaybe = function isMaybe(x) {
+
+/**
+ * Checks for maybe.
+ * @function module:maybe.isMaybe
+ *  @param x {*}.
+ * @returns {boolean}
+ */
+isMaybe = function isMaybe(x) {
   return (0, _Nothing.isNothing)(x) || (0, _Just.isJust)(x);
 },
-    toMaybe = function toMaybe(x) {
-  return (0, _fjl.isset)(x) ? (0, _Just.just)(x) : (0, _Nothing.nothing)();
+
+/**
+ * Creates maybe from value.
+ * @function module:maybe.toMaybe
+ * @param x {*}
+ * @returns {Maybe} - `Just` or `Nothing` based on value.
+ */
+toMaybe = function toMaybe(x) {
+  if (!(0, _fjl.isset)(x)) {
+    return (0, _Nothing.nothing)();
+  }
+
+  return isMaybe(x) ? x : (0, _Just.just)(x);
 };
 
 exports.toMaybe = toMaybe;

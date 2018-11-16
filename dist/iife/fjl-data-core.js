@@ -217,25 +217,25 @@ function _nonIterableRest() {
 
 /**
  * Always returns a functor;  If given value is not
- * a functor creates one and passes given value to it.
- * @function module:functor.alwaysFunctor
- * @param x {{map: Function}|any} - Functor or any.
- * @returns {any}
+ * a functor creates one from given value to it.
+ * @function module:functor.toFunctor
+ * @param x {{map: Function}|*} - Functor or any.
+ * @returns {*}
  */
 
 /**
  * Plain old functor class.
  * @class module:functor.Functor
- * @param value {any}
- * @property value {any}
+ * @param value {*}
+ * @property value {*}
  */
 
 var Functor =
 /*#__PURE__*/
 function () {
   /**
-   * @memberOf module:functor.Functor
-   * @param value {any}
+   * @constructor
+   * @param value {*}
    */
   function Functor(value) {
     _classCallCheck(this, Functor);
@@ -244,8 +244,8 @@ function () {
   }
   /**
    * Extracts value of functor (same as monadic `join`).
-   * @memberOf module:functor.Functor
-   * @returns {any}
+   * @method module:functor.Functor#valueOf
+   * @returns {*}
    */
 
 
@@ -256,7 +256,7 @@ function () {
     }
     /**
      * Maps a function over contents of functor.
-     * @memberOf module:functor.Functor
+     * @method module:functor.Functor#map
      * @param fn {Function} - Function that takes one `any` and returns one `any`.
      * @returns {Functor}
      */
@@ -268,7 +268,7 @@ function () {
     }
     /**
      * Same as `#Functor.map`.
-     * @memberOf module:functor.Functor
+     * @method module:functor.Functor#fmap
      * @param fn {Function}
      * @returns {Functor}
      */
@@ -292,7 +292,7 @@ function () {
  * Apply construct.
  * @class module:functor.Apply
  * @param fn {Function|*}
- * @property value {any}
+ * @property value {*}
  * @extends module:functor.Functor
  */
 
@@ -352,7 +352,7 @@ function (_Apply) {
      * Constructs an applicative with given `value`.
      * @function module:functor.Applicative.of
      * @static
-     * @param value {any}
+     * @param value {*}
      * @returns {Applicative}
      */
     value: function of(value) {
@@ -367,11 +367,26 @@ function (_Apply) {
  * Created by edlc on 12/9/16.
  * @memberOf module:functor
  */
+/**
+ * Bifunctor class;  Mostly useful for eithers and/or maybes.
+ * @class module:functor.Bifunctor
+ * @param value1 {*}
+ * @param value2 {*}
+ * @property value {*}
+ * @property value2 {*}
+ */
+
 var Bifunctor =
 /*#__PURE__*/
 function (_Functor) {
   _inherits(Bifunctor, _Functor);
 
+  /**
+   * @param value1 {*}
+   * @param value2 {*}
+   * @private
+   * @returns {Bifunctor}
+   */
   function Bifunctor(value1, value2) {
     var _this;
 
@@ -381,22 +396,50 @@ function (_Functor) {
     _this.value2 = value2;
     return _this;
   }
+  /**
+   * Returns wrapped 'second' value.
+   * @method module:functor.Bifunctor#value2Of
+   * @returns {*}
+   */
+
 
   _createClass(Bifunctor, [{
     key: "value2Of",
     value: function value2Of() {
       return this.value2;
     }
+    /**
+     * Allows you to map over first 'contained' value.
+     * @method module:functor.Bifunctor#first
+     * @param fn {Function} - Unary operation.
+     * @returns {Bifunctor}
+     */
+
   }, {
     key: "first",
     value: function first(fn) {
       return new this.constructor(fn(this.valueOf()), this.value2Of());
     }
+    /**
+     * Allows you to map over second 'contained' value.
+     * @method module:functor.Bifunctor#second
+     * @param fn {Function} - Unary operation.
+     * @returns {Bifunctor}
+     */
+
   }, {
     key: "second",
     value: function second(fn) {
       return new this.constructor(this.valueOf(), fn(this.value2Of()));
     }
+    /**
+     * Allows you to map 2 functions over contained values - One function over each value.
+     * @method module:functor.Bifunctor#bimap
+     * @param fn1 {Function} - Unary op.
+     * @param fn2 {Function} - Unary op.
+     * @returns {Bifunctor}
+     */
+
   }, {
     key: "bimap",
     value: function bimap(fn1, fn2) {
@@ -415,11 +458,8 @@ function (_Functor) {
  * @see `Either` reference: [http://hackage.haskell.org/package/base-4.10.1.0/docs/Data-Either.html](http://hackage.haskell.org/package/base-4.10.1.0/docs/Data-Either.html)
  * @module monad
  */
-var _isMonad = function isMonad(value) {
+var isMonad = function isMonad(value) {
   return value && value instanceof Monad;
-};
-var alwaysMonad = function alwaysMonad(x) {
-  return !x.map ? new Monad(x) : x;
 };
 var valueOf = function valueOf(x) {
   return x.valueOf();
@@ -441,6 +481,26 @@ var getMonadUnWrapper = function getMonadUnWrapper(Type) {
     } : monad;
   }, 'trampolineCall'];
 };
+var unWrapMonadByType = function unWrapMonadByType(Type, monad) {
+  if (!fjl.isset(monad)) {
+    return monad;
+  }
+
+  var _getMonadUnWrapper = getMonadUnWrapper(Type),
+      _getMonadUnWrapper2 = _slicedToArray(_getMonadUnWrapper, 2),
+      unWrapper = _getMonadUnWrapper2[0],
+      tailCallName = _getMonadUnWrapper2[1],
+      unwrap = fjl.trampoline(unWrapper, tailCallName);
+
+  return unwrap(monad);
+};
+/**
+ * @class module:monad.Monad
+ * @param x {*}
+ * @property value {*}
+ * @extends module:functor.Applicative
+ */
+
 var Monad =
 /*#__PURE__*/
 function (_Applicative) {
@@ -458,7 +518,7 @@ function (_Applicative) {
     /**
      * Monadic join - Removes one layer of monadic structure from value.
      * @memberOf module:monad.Monad
-     * @returns {any}
+     * @returns {*}
      */
     value: function join() {
       return this.valueOf();
@@ -473,7 +533,7 @@ function (_Applicative) {
   }, {
     key: "flatMap",
     value: function flatMap(fn) {
-      var out = Monad.unWrapMonadByType(this.constructor, fn(this.join()));
+      var out = unWrapMonadByType(this.constructor, fn(this.join()));
       return this.constructor.of(out);
     }
     /**
@@ -493,42 +553,14 @@ function (_Applicative) {
      * format.
      * @memberOf module:monad.Monad
      * @static
-     * @param x {any}
+     * @param x {*}
      * @returns {Monad}
      */
 
   }], [{
-    key: "unWrapMonadByType",
-    value: function unWrapMonadByType(Type, monad) {
-      if (!fjl.isset(monad)) {
-        return monad;
-      }
-
-      var _getMonadUnWrapper = getMonadUnWrapper(Type),
-          _getMonadUnWrapper2 = _slicedToArray(_getMonadUnWrapper, 2),
-          unWrapper = _getMonadUnWrapper2[0],
-          tailCallName = _getMonadUnWrapper2[1],
-          unwrap = fjl.trampoline(unWrapper, tailCallName);
-
-      return unwrap(monad);
-    }
-  }, {
     key: "of",
     value: function of(x) {
       return new Monad(x);
-    }
-    /**
-     * Checks for monad.
-     * @memberOf module:monad.Monad
-     * @static
-     * @param x {any}
-     * @returns {boolean}
-     */
-
-  }, {
-    key: "isMonad",
-    value: function isMonad(x) {
-      return _isMonad(x);
     }
   }]);
 
@@ -537,7 +569,17 @@ function (_Applicative) {
 
 /**
  * Created by elydelacruz on 2/19/2017.
+ * Io module - Contains `IO` class.
+ * Fore more on io class
+ * @see http://learnyouahaskell.com/input-and-output
+ * @module io
  */
+/**
+ * @class io.IO
+ * @param fn {Function} - Operation to contain within `IO`
+ * @property `value` {*} - `IO` however wraps non-function values to `function` on construction.
+ */
+
 var IO =
 /*#__PURE__*/
 function (_Monad) {
@@ -545,23 +587,56 @@ function (_Monad) {
 
   _createClass(IO, null, [{
     key: "unWrapIO",
+
+    /**
+     * Unwraps an `IO`.
+     * @function module:io.IO.unWrapIO
+     * @static
+     * @param io {IO}
+     * @returns {*}
+     */
     value: function unWrapIO(io) {
       if (!IO.isIO(io)) {
         return io;
       }
 
-      return Monad.unWrapMonadByType(IO, io);
+      return unWrapMonadByType(IO, io);
     }
+    /**
+     * Applicative pure;  Same as `new IO(...)`.
+     * @function module:io.IO.of
+     * @static
+     * @param fn {Function} - Unary operation.
+     * @returns {IO}
+     */
+
   }, {
     key: "of",
     value: function of(fn) {
       return new IO(fn);
     }
+    /**
+     * Checks for `IO`.
+     * @function module:io.IO.isIO
+     * @static
+     * @param x {*}.
+     * @returns {boolean}
+     */
+
   }, {
     key: "isIO",
     value: function isIO(x) {
       return x instanceof IO;
     }
+    /**
+     * Performs io.
+     * @function module:io.IO.isIO
+     * @static
+     * @param io {IO}.
+     * @param args {...*} {IO}.
+     * @returns {boolean}
+     */
+
   }, {
     key: "do",
     value: function _do(io) {
@@ -580,12 +655,28 @@ function (_Monad) {
 
     return _possibleConstructorReturn(this, _getPrototypeOf(IO).call(this, fjl.toFunction(fn)));
   }
+  /**
+   * Maps incoming function onto contained, innermost, value
+   * and returns a new `IO` which will containe the result of calling incoming function on originally contained value - A.k.a - flat-map operation.
+   * @memberOf module:io.IO
+   * @param fn {Function} - Unary operation.
+   * @returns {IO}
+   */
+
 
   _createClass(IO, [{
     key: "flatMap",
     value: function flatMap$$1(fn) {
       return fjl.compose(this.constructor.of, IO.unWrapIO, fn, IO.unWrapIO)(fjl.toFunction(this.join())());
     }
+    /**
+     * Maps incoming function on contained value and returns
+     * a new `IO` container containing result of unary operation (incoming-function's result).
+     * @memberOf module:io.IO
+     * @param fn {Function}
+     * @returns {IO}
+     */
+
   }, {
     key: "map",
     value: function map(fn) {
@@ -597,6 +688,16 @@ function (_Monad) {
 }(Monad);
 
 var NothingSingleton;
+/**
+ * Constructor and function for creating/fetching `Nothing`.
+ * @note Nothing always returns a singleton instance of `Nothing` (whether calling `Nothing` with new or as a
+ * function.
+ * @function module:maybe.Nothing
+ * @param [x=undefined]{*} - Ignored.
+ * @returns {Nothing}
+ * @constructor
+ * @memberOf module:maybe
+ */
 
 function Nothing() {
   if (NothingSingleton) {
@@ -607,7 +708,8 @@ function Nothing() {
 
   NothingSingleton = this;
   Object.freeze(NothingSingleton);
-}
+} // Documented further below
+
 
 var isNothing = function isNothing(x) {
   return x === NothingSingleton;
@@ -615,24 +717,58 @@ var isNothing = function isNothing(x) {
 var nothing = function nothing() {
   return new Nothing();
 };
-var returnThis = function returnThis() {
+var returnThis = function returnThis(x) {
   return this;
-};
-var prototype = Nothing.prototype; // Methods
+}; // Methods
+
+/**
+ * Returns `Nothing`.
+ * @method module:maybe.Nothing#valueOf
+ * @returns {Nothing}
+ */
 
 
-prototype.valueOf = returnThis;
-prototype.join = returnThis;
-prototype.map = returnThis;
-prototype.ap = returnThis;
-prototype.flatMap = returnThis; // Set statics
+Nothing.prototype.valueOf = returnThis;
+/**
+ * Returns `Nothing`.
+ * @method module:maybe.Nothing#join
+ * @returns {Nothing}
+ */
 
-Nothing.of = function () {
+Nothing.prototype.join = returnThis;
+/**
+ * Returns `Nothing`.
+ * @method module:maybe.Nothing#map
+ * @returns {Nothing}
+ */
+
+Nothing.prototype.map = returnThis;
+/**
+ * Returns `Nothing`.
+ * @method module:maybe.Nothing#ap
+ * @returns {Nothing}
+ */
+
+Nothing.prototype.ap = returnThis;
+/**
+ * Returns `Nothing`.
+ * @method module:maybe.Nothing#flatMap
+ * @returns {Nothing}
+ */
+
+Nothing.prototype.flatMap = returnThis; // Set statics
+
+/**
+ * Applicative `pure` - Same as `new Nothing()`, `Nothing()`, and `nothing()`.
+ * @memberOf module:maybe.Nothing
+ * @function module:maybe.Nothing.of
+ * @static
+ * @returns {Nothing}
+ */
+
+Nothing.of = function (x) {
   return new Nothing();
-};
-
-Nothing.isNothing = isNothing;
-Nothing.nothing = nothing; // Object.freeze makes properties on object immutable
+}; // Object.freeze makes properties on object immutable
 // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
 // Saves us from having to do the following (great!):
 // Object.defineProperties(Nothing, {
@@ -640,14 +776,24 @@ Nothing.nothing = nothing; // Object.freeze makes properties on object immutable
 //     isNothing: {value: isNothing, enumerable: true}
 // });
 
+
 Object.freeze(Nothing);
 
-var _isJust = function isJust(x) {
+/**
+ * Contains `Just` constructor and associated methods.
+ */
+var isJust = function isJust(x) {
   return x instanceof Just;
 };
 var just = function just(x) {
   return new Just(x);
 };
+/**
+ * @class maybe.Just
+ * @param x {*}
+ * @property value {*}
+ * @extends module:monad.Monad
+ */
 
 var Just =
 /*#__PURE__*/
@@ -662,35 +808,48 @@ function (_Monad) {
 
   _createClass(Just, [{
     key: "map",
+
+    /**
+     * Maps incoming function over contained value and
+     * returns result wrapped in `Just`.
+     * @method module:maybe.Just#map
+     * @param fn {Function} - Unary operation.
+     * @returns {Just|Nothing}
+     */
     value: function map(fn) {
       var constructor = this.constructor,
           value = this.valueOf();
       return fjl.isset(value) && !isNothing(value) ? constructor.of(fn(value)) : constructor.counterConstructor.of(value);
     }
+    /**
+     * Applicative pure - Same as `new Just(...)`.
+     * @memberOf maybe.Just
+     * @static
+     * @param x {*}
+     * @returns {Just}
+     */
+
   }], [{
     key: "of",
     value: function of(x) {
       return just(x);
     }
-  }, {
-    key: "isJust",
-    value: function isJust(x) {
-      return _isJust(x);
-    }
   }]);
 
   return Just;
 }(Monad);
-
 Just.counterConstructor = Nothing;
 
+/**
+ * @module maybe
+ */
 var _getMonadUnWrapper = getMonadUnWrapper(Just);
 var _getMonadUnWrapper2 = _slicedToArray(_getMonadUnWrapper, 2);
 var justUnWrapper = _getMonadUnWrapper2[0];
 var justUnWrapperTailCallName = _getMonadUnWrapper2[1];
 
 var maybe = fjl.curry(function (replacement, fn, maybeInst) {
-  var subject = fjl.isset(maybeInst) && isMaybe(maybeInst) ? maybeInst.map(fjl.id) : Nothing.of();
+  var subject = fjl.isset(maybeInst) && isMaybe(maybeInst) ? maybeInst.map(fjl.id) : nothing();
   return isNothing(subject) ? replacement : subject.map(fn).join();
 });
 var unWrapJust = fjl.trampoline(justUnWrapper, justUnWrapperTailCallName);
@@ -701,10 +860,14 @@ var maybeEqual = fjl.curry(function (a, b) {
   return unWrapMaybe(a) === unWrapMaybe(b);
 });
 var isMaybe = function isMaybe(x) {
-  return isNothing(x) || _isJust(x);
+  return isNothing(x) || isJust(x);
 };
 var toMaybe = function toMaybe(x) {
-  return fjl.isset(x) ? just(x) : nothing();
+  if (!fjl.isset(x)) {
+    return nothing();
+  }
+
+  return isMaybe(x) ? x : just(x);
 };
 
 /**
@@ -714,9 +877,10 @@ var toMaybe = function toMaybe(x) {
  */
 /**
  * `Left` representation of `Either` construct.
- * @class Left
- * @param x {any}
- * @property value {any}
+ * @class module:either.Left
+ * @param x {*}
+ * @property value {*}
+ * @extends module:monad.Monad
  */
 
 var Left =
@@ -732,6 +896,14 @@ function (_Monad) {
 
   _createClass(Left, null, [{
     key: "of",
+
+    /**
+     * Same as `new Left(...)`.
+     * @memberOf module:either.Left
+     * @static
+     * @param x {*}
+     * @returns {Left}
+     */
     value: function of(x) {
       return new Left(x);
     }
@@ -740,9 +912,10 @@ function (_Monad) {
   return Left;
 }(Monad);
 /**
- * @class Right
- * @param x {any}
- * @property value {any}
+ * @class module:either.Right
+ * @param x {*}
+ * @property value {*}
+ * @extends module:maybe.Just
  */
 
 var Right =
@@ -758,6 +931,13 @@ function (_Just) {
 
   _createClass(Right, [{
     key: "map",
+
+    /**
+     * Maps a function over contained value and returns result wrapped.
+     * @function module:either.Right#map
+     * @param fn {Function} - Unary operation.
+     * @returns {Either}
+     */
     value: function map(fn) {
       var value = this.valueOf();
 
@@ -769,6 +949,14 @@ function (_Just) {
 
       return Right.of(fn(value));
     }
+    /**
+     * Same as `new Right(...)`.
+     * @memberOf module:either.Right
+     * @static
+     * @param x {*}
+     * @returns {Right}
+     */
+
   }], [{
     key: "of",
     value: function of(x) {
@@ -778,23 +966,32 @@ function (_Just) {
 
   return Right;
 }(Just);
+var left = function left(x) {
+  return new Left(x);
+};
+var right = function right(x) {
+  return new Right(x);
+};
 var isRight = function isRight(x) {
   return x instanceof Right;
 };
 var isLeft = function isLeft(x) {
   return x instanceof Left;
 };
-var either = fjl.curry(function (leftCallback, rightCallback, monad) {
-  var identity = alwaysMonad(monad).flatMap(fjl.id),
-      out = isRight(monad) ? identity.flatMap(fjl.toFunction(rightCallback)) : Left.of(identity).flatMap(leftCallback);
-  return fjl.isset(out) ? out.join() : out;
-});
 var toRight = function toRight(x) {
-  return isRight(x) ? x : new Right(x);
+  return isRight(x) ? x : right(x);
 };
 var toLeft = function toLeft(x) {
-  return isLeft(x) ? x : new Left(x);
+  return isLeft(x) ? x : left(x);
 };
+var toEither = function toEither(x) {
+  return isLeft(x) || isRight(x) ? x : right(x).map(fjl.id);
+};
+var either = fjl.curry(function (leftCallback, rightCallback, _either_) {
+  var identity = toEither(_either_).flatMap(fjl.id),
+      out = isRight(_either_) ? identity.flatMap(fjl.toFunction(rightCallback)) : identity.flatMap(leftCallback);
+  return fjl.isset(out) ? out.join() : out;
+});
 
 /**
  * Makes all module members in library accessible via itself (is also the main export of the library).
@@ -812,13 +1009,21 @@ var toLeft = function toLeft(x) {
  * @typedef {Function} UnaryOperation
  */
 
+/**
+ * @typedef {Just|Nothing} Maybe
+ */
+
+/**
+ * @typedef {Left|Right} Either
+ */
+
 exports.Functor = Functor;
 exports.Apply = Apply;
 exports.Applicative = Applicative;
 exports.Bifunctor = Bifunctor;
 exports.IO = IO;
 exports.Monad = Monad;
-exports.isMonad = _isMonad;
+exports.isMonad = isMonad;
 exports.valueOf = valueOf;
 exports.join = join;
 exports.fmap = fmap;
@@ -826,7 +1031,7 @@ exports.ap = ap;
 exports.flatMap = flatMap;
 exports.getMonadUnWrapper = getMonadUnWrapper;
 exports.Just = Just;
-exports.isJust = _isJust;
+exports.isJust = isJust;
 exports.isNothing = isNothing;
 exports.Nothing = Nothing;
 exports.just = just;
@@ -839,11 +1044,14 @@ exports.isMaybe = isMaybe;
 exports.toMaybe = toMaybe;
 exports.Left = Left;
 exports.Right = Right;
+exports.left = left;
+exports.right = right;
 exports.isRight = isRight;
 exports.isLeft = isLeft;
-exports.either = either;
 exports.toRight = toRight;
 exports.toLeft = toLeft;
+exports.toEither = toEither;
+exports.either = either;
 
 return exports;
 

@@ -17,9 +17,9 @@
     value: true
   });
   _exports.default = void 0;
-  _Monad2 = _interopRequireDefault(_Monad2);
+  _Monad2 = _interopRequireWildcard(_Monad2);
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
   function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -39,6 +39,11 @@
 
   function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+  /**
+   * @class io.IO
+   * @param fn {Function} - Operation to contain within `IO`
+   * @property `value` {*} - `IO` however wraps non-function values to `function` on construction.
+   */
   var IO =
   /*#__PURE__*/
   function (_Monad) {
@@ -46,23 +51,56 @@
 
     _createClass(IO, null, [{
       key: "unWrapIO",
+
+      /**
+       * Unwraps an `IO`.
+       * @function module:io.IO.unWrapIO
+       * @static
+       * @param io {IO}
+       * @returns {*}
+       */
       value: function unWrapIO(io) {
         if (!IO.isIO(io)) {
           return io;
         }
 
-        return _Monad2.default.unWrapMonadByType(IO, io);
+        return (0, _Monad2.unWrapMonadByType)(IO, io);
       }
+      /**
+       * Applicative pure;  Same as `new IO(...)`.
+       * @function module:io.IO.of
+       * @static
+       * @param fn {Function} - Unary operation.
+       * @returns {IO}
+       */
+
     }, {
       key: "of",
       value: function of(fn) {
         return new IO(fn);
       }
+      /**
+       * Checks for `IO`.
+       * @function module:io.IO.isIO
+       * @static
+       * @param x {*}.
+       * @returns {boolean}
+       */
+
     }, {
       key: "isIO",
       value: function isIO(x) {
         return x instanceof IO;
       }
+      /**
+       * Performs io.
+       * @function module:io.IO.isIO
+       * @static
+       * @param io {IO}.
+       * @param args {...*} {IO}.
+       * @returns {boolean}
+       */
+
     }, {
       key: "do",
       value: function _do(io) {
@@ -81,12 +119,28 @@
 
       return _possibleConstructorReturn(this, _getPrototypeOf(IO).call(this, (0, _fjl.toFunction)(fn)));
     }
+    /**
+     * Maps incoming function onto contained, innermost, value
+     * and returns a new `IO` which will containe the result of calling incoming function on originally contained value - A.k.a - flat-map operation.
+     * @memberOf module:io.IO
+     * @param fn {Function} - Unary operation.
+     * @returns {IO}
+     */
+
 
     _createClass(IO, [{
       key: "flatMap",
       value: function flatMap(fn) {
         return (0, _fjl.compose)(this.constructor.of, IO.unWrapIO, fn, IO.unWrapIO)((0, _fjl.toFunction)(this.join())());
       }
+      /**
+       * Maps incoming function on contained value and returns
+       * a new `IO` container containing result of unary operation (incoming-function's result).
+       * @memberOf module:io.IO
+       * @param fn {Function}
+       * @returns {IO}
+       */
+
     }, {
       key: "map",
       value: function map(fn) {

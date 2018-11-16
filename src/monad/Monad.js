@@ -16,25 +16,25 @@ export const
      * Returns boolean indicating whether given value is an
      * instance of monad or not.
      * @function module:monad.isMonad
-     * @param value {any}
+     * @param value {*}
      * @returns {boolean}
      */
     isMonad = value => value && value instanceof Monad,
 
     /**
      * Always returns a monad;  If given value is not
-     * a monad creates using given value.
-     * @function module:functor.alwaysMonad
-     * @param x {Monad|any} - Monad or any.
-     * @returns {any}
+     * a monad creates one using given value.
+     * @function module:monad.toMonad
+     * @param x {Monad|*} - Monad or any.
+     * @returns {*}
      */
-    alwaysMonad = x => !x.map ? new Monad(x) : x,
+    toMonad = x => !x.map ? new Monad(x) : x,
 
     /**
      * Calls `valueOf` on value (use for functional composition).
-     * @function module.fjlDataCore.valueOf
-     * @param x {any}
-     * @returns {any}
+     * @function module:monad.valueOf
+     * @param x {*}
+     * @returns {*}
      */
     valueOf = x => x.valueOf(),
 
@@ -42,15 +42,15 @@ export const
      * Calls `valueOf` on given value.  Same as
      * monadic `join` operation (extracts inner value of
      * container/object).
-     * @function module.fjlDataCore.join
-     * @param x {any}
-     * @returns {any}
+     * @function module:monad.join
+     * @param x {*}
+     * @returns {*}
      */
     join = valueOf,
 
     /**
      * Maps given function over given functor.
-     * @function module.fjlDataCore.fmap
+     * @function module:monad.fmap
      * @param fn {Function}
      * @param x {Functor}
      * @returns {Functor}
@@ -60,7 +60,7 @@ export const
     /**
      * Applies function contained by applicative to contents of given functor.
      * (Same as functional applicative `apply`).
-     * @function module.fjlDataCore.ap
+     * @function module:monad.ap
      * @param applicative {Applicative}
      * @param functor {Functor}
      * @returns {Applicative}
@@ -69,7 +69,7 @@ export const
 
     /**
      * Flat maps a function over given monad's contained value.
-     * @function module.fjlDataCore.flatMap
+     * @function module:monad.flatMap
      * @param fn {Function}
      * @param monad {Monad}
      * @returns {Monad}
@@ -77,10 +77,10 @@ export const
     flatMap = curry((fn, monad) => monad.flatMap(fn)),
 
     /**
-     * A recursive monad un-wrapper (doesn't work on promises (for promises use `async` `await` (to unwrap))).  Unwraps monad to most inner contents (final inner value).
+     * A recursive monad un-wrapper - Returns monad's unwrapped, inner-mostly, contained value (recursively).
      * @function module:monad.getMonadUnWrapper
      * @param Type {Function}
-     * @returns {Array.<any>} - [unWrapFunction, tailCallFuncName (used by `trampoline` @see module:fjl.trampoline)]
+     * @returns {Array.<*>} - [unWrapFunction, tailCallFuncName (used by `trampoline` @see module:fjl.trampoline)]
      */
     getMonadUnWrapper = Type => {
         return [ function unWrapMonadByType(monad) {
@@ -90,25 +90,35 @@ export const
                     } :
                     monad;
             }, 'trampolineCall' ];
+    },
+
+    /**
+     * Unwraps monad by type.
+     * @function module:monad.unWrapMonadByType
+     * @param Type {Function}
+     * @param monad {Monad}
+     * @returns {*}
+     */
+    unWrapMonadByType = (Type, monad) => {
+        if (!isset(monad)) {
+            return monad;
+        }
+        const [unWrapper, tailCallName] = getMonadUnWrapper(Type),
+            unwrap = trampoline(unWrapper, tailCallName);
+        return unwrap(monad);
     };
 
 /**
  * @class module:monad.Monad
- * @param x {any}
- * @property value {any}
+ * @param x {*}
+ * @property value {*}
+ * @extends module:functor.Applicative
  */
 export default class Monad extends Applicative {
-    static unWrapMonadByType (Type, monad) {
-        if (!isset(monad)) { return monad; }
-        const [unWrapper, tailCallName] = getMonadUnWrapper(Type),
-            unwrap = trampoline(unWrapper, tailCallName);
-        return unwrap(monad);
-    }
-
     /**
      * Monadic join - Removes one layer of monadic structure from value.
      * @memberOf module:monad.Monad
-     * @returns {any}
+     * @returns {*}
      */
     join () {
         return this.valueOf();
@@ -121,7 +131,7 @@ export default class Monad extends Applicative {
      * @returns {Monad}
      */
     flatMap (fn) {
-        const out = Monad.unWrapMonadByType(this.constructor, fn(this.join()));
+        const out = unWrapMonadByType(this.constructor, fn(this.join()));
         return this.constructor.of(out);
     }
 
@@ -140,17 +150,8 @@ export default class Monad extends Applicative {
      * format.
      * @memberOf module:monad.Monad
      * @static
-     * @param x {any}
+     * @param x {*}
      * @returns {Monad}
      */
     static of (x) { return new Monad(x); }
-
-    /**
-     * Checks for monad.
-     * @memberOf module:monad.Monad
-     * @static
-     * @param x {any}
-     * @returns {boolean}
-     */
-    static isMonad (x) { return isMonad(x); }
 }

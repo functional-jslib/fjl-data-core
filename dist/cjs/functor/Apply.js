@@ -33,7 +33,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Apply construct.
  * @class module:functor.Apply
  * @param fn {Function|*}
- * @property value {any}
+ * @property value {*}
  * @extends module:functor.Functor
  */
 var Apply =

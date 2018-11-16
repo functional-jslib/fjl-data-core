@@ -1,4 +1,4 @@
-### `toFunctor`
+### `toEither`
 
 @todo - Added documentation here.
 

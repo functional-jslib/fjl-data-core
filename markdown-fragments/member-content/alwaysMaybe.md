@@ -1,4 +1,4 @@
-### `toFunctor`
+### `alwaysMaybe`
 
 @todo - Added documentation here.
 

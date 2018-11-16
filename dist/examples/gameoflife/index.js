@@ -1456,7 +1456,7 @@ var Pointer = function () {
     }
 
     createClass(Pointer, [{
-        key: 'updatePos',
+        key: 'map',
         value: function updatePos(pos) {
             return new Pointer(this.board, pos);
         }
@@ -1494,7 +1494,7 @@ var pointerNeighbours = function pointerNeighbours(pointer) {
         return new Pos(pointer.pos.x + offset.x, pointer.pos.y + offset.y);
     }, offsets));
     return map$1(function (pos) {
-        return pointer.updatePos(pos).extract();
+        return pointer.map(pos).extract();
     }, positions);
 };
 var liveNeighbours = function liveNeighbours(pointer) {

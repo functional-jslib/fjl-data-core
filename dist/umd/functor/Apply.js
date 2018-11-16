@@ -43,7 +43,7 @@
    * Apply construct.
    * @class module:functor.Apply
    * @param fn {Function|*}
-   * @property value {any}
+   * @property value {*}
    * @extends module:functor.Functor
    */
   var Apply =

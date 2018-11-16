@@ -25,3 +25,11 @@ export * from './either/Either';
 /**
  * @typedef {Function} UnaryOperation
  */
+
+/**
+ * @typedef {Just|Nothing} Maybe
+ */
+
+/**
+ * @typedef {Left|Right} Either
+ */

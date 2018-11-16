@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Module: fjlDataCore | Module: fjlDataCore</title>
+    <title>Source: io/IO.js | Source: io/IO.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -26,7 +28,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Module: fjlDataCore</a></h1>
+        <h1><a href="index.html" class="link">Source: io/IO.js</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -43,125 +45,118 @@
 
 
 
-
-<section>
-
-<header>
     
-        <h2>fjlDataCore</h2>
-        
-            
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Created by elydelacruz on 2/19/2017.
+ * Io module - Contains `IO` class.
+ * Fore more on io class
+ * @see http://learnyouahaskell.com/input-and-output
+ * @module io
+ */
 
-<article>
-    
-        <div class="container-overview">
-        
-            
-                <div class="description"><p>Makes all module members in library accessible via itself (is also the main export of the library).
-Created by elydelacruz on 2/19/2017.</p></div>
-            
+import Monad, {unWrapMonadByType} from '../monad/Monad';
+import {compose, toFunction} from 'fjl';
 
-            
-                
+/**
+ * @class io.IO
+ * @param fn {Function} - Operation to contain within `IO`
+ * @property `value` {*} - `IO` however wraps non-function values to `function` on construction.
+ */
+export default class IO extends Monad {
+    /**
+     * Unwraps an `IO`.
+     * @function module:io.IO.unWrapIO
+     * @static
+     * @param io {IO}
+     * @returns {*}
+     */
+    static unWrapIO (io) {
+        if (!IO.isIO(io)) { return io; }
+        return unWrapMonadByType(IO, io);
+    }
 
-<dt>
-    
-</dt>
-<dd>
+    /**
+     * Applicative pure;  Same as `new IO(...)`.
+     * @function module:io.IO.of
+     * @static
+     * @param fn {Function} - Unary operation.
+     * @returns {IO}
+     */
+    static of(fn) {
+        return new IO(fn);
+    }
 
-    
+    /**
+     * Checks for `IO`.
+     * @function module:io.IO.isIO
+     * @static
+     * @param x {*}.
+     * @returns {boolean}
+     */
+    static isIO (x) {
+        return x instanceof IO;
+    }
 
-    
+    /**
+     * Performs io.
+     * @function module:io.IO.isIO
+     * @static
+     * @param io {IO}.
+     * @param args {...*} {IO}.
+     * @returns {boolean}
+     */
+    static do (io, ...args) {
+        const instance = !IO.isIO(io) ? new IO(io) : io;
+        return compose(
+            IO.of,
+            IO.unWrapIO
+        )(
+            toFunction(instance.join())(...args)
+        );
+    }
 
-    
+    constructor(fn) {
+        super(toFunction(fn));
+    }
 
-    
+    /**
+     * Maps incoming function onto contained, innermost, value
+     * and returns a new `IO` which will containe the result of calling incoming function on originally contained value - A.k.a - flat-map operation.
+     * @memberOf module:io.IO
+     * @param fn {Function} - Unary operation.
+     * @returns {IO}
+     */
+    flatMap (fn) {
+        return compose(
+            this.constructor.of,
+            IO.unWrapIO, fn,
+            IO.unWrapIO
+        )(
+            toFunction(this.join())()
+        );
+    }
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-            
-        
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    /**
+     * Maps incoming function on contained value and returns
+     * a new `IO` container containing result of unary operation (incoming-function's result).
+     * @memberOf module:io.IO
+     * @param fn {Function}
+     * @returns {IO}
+     */
+    map (fn) {
+        return compose(
+            this.constructor.of,
+            fn
+        )(
+            toFunction(this.valueOf())()
+        );
+    }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 
@@ -178,7 +173,7 @@ Created by elydelacruz on 2/19/2017.</p></div>
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'module:fjlDataCore_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

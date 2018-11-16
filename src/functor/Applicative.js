@@ -14,7 +14,7 @@ export default class Applicative extends Apply {
      * Constructs an applicative with given `value`.
      * @function module:functor.Applicative.of
      * @static
-     * @param value {any}
+     * @param value {*}
      * @returns {Applicative}
      */
     static of (value) {

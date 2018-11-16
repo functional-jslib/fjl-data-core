@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.just = exports.isJust = void 0;
+exports.default = exports.toJust = exports.just = exports.isJust = void 0;
 
 var _Nothing = _interopRequireWildcard(require("./Nothing"));
 
@@ -33,15 +33,48 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var _isJust = function isJust(x) {
+var
+/**
+ * Checks for `Just`.
+ * @function module:maybe.isJust
+ * @param x {*}
+ * @returns {boolean}
+ */
+isJust = function isJust(x) {
   return x instanceof Just;
 },
-    just = function just(x) {
-  return new Just(x);
-};
 
+/**
+ * Functional constructor (function that returns an instance) for `Just` -
+ * Same as `new Just(...)` (just shorter and can be used as a function).
+ * @function module:maybe.just
+ * @param x {Just|*}
+ * @returns {Just}
+ */
+just = function just(x) {
+  return new Just(x);
+},
+
+/**
+ * Ensures `Just`
+ * @function module:maybe.toJust
+ * @param x {Just|*}
+ * @returns {Just}
+ */
+toJust = function toJust(x) {
+  return isJust(x) ? x : just(x);
+};
+/**
+ * @class maybe.Just
+ * @param x {*}
+ * @property value {*}
+ * @extends module:monad.Monad
+ */
+
+
+exports.toJust = toJust;
 exports.just = just;
-exports.isJust = _isJust;
+exports.isJust = isJust;
 
 var Just =
 /*#__PURE__*/
@@ -56,25 +89,41 @@ function (_Monad) {
 
   _createClass(Just, [{
     key: "map",
+
+    /**
+     * Maps incoming function over contained value and
+     * returns result wrapped in `Just`.
+     * @method module:maybe.Just#map
+     * @param fn {Function} - Unary operation.
+     * @returns {Just|Nothing}
+     */
     value: function map(fn) {
       var constructor = this.constructor,
           value = this.valueOf();
       return (0, _fjl.isset)(value) && !(0, _Nothing.isNothing)(value) ? constructor.of(fn(value)) : constructor.counterConstructor.of(value);
     }
+    /**
+     * Applicative pure - Same as `new Just(...)`.
+     * @memberOf maybe.Just
+     * @static
+     * @param x {*}
+     * @returns {Just}
+     */
+
   }], [{
     key: "of",
     value: function of(x) {
       return just(x);
     }
-  }, {
-    key: "isJust",
-    value: function isJust(x) {
-      return _isJust(x);
-    }
   }]);
 
   return Just;
 }(_Monad2.default);
+/**
+ * @static
+ * @property maybe.Just.counterConstructor {Functor}
+ */
+
 
 exports.default = Just;
 Just.counterConstructor = _Nothing.default;

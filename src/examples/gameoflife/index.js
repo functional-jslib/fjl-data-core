@@ -1,5 +1,4 @@
-import {curry, isset, map, filter, length, id} from 'fjl';
-
+import {isset, map, filter, length, id} from 'fjl';
 import IO from '../../io/IO';
 
 class Pos {
@@ -14,18 +13,18 @@ class Pointer {
         this.board = board || [];
         this.pos = pos || new Pos();
     }
-    updatePos (pos) {
+    map (pos) {
         return new Pointer(this.board, pos);
     }
     extract () {
         return this.board[this.pos.x][this.pos.y];
     }
-    extend (f) {
+    extend (fn) {
         let board = [], x, y;
         for (x = 0; x < this.board.length; x++) {
             board[x] = [];
             for (y = 0; y < this.board[x].length; y++) {
-                board[x][y] = f(new Pointer(this.board, new Pos(x, y)));
+                board[x][y] = fn(new Pointer(this.board, new Pos(x, y)));
             }
         }
         return new Pointer(board, this.pos);
@@ -60,7 +59,7 @@ const
                     offsets
                 )
             );
-        return map(pos => pointer.updatePos(pos).extract(), positions);
+        return map(pos => pointer.map(pos).extract(), positions);
     },
 
     liveNeighbours = pointer =>
@@ -90,7 +89,7 @@ const
         })),
 
     drawBoard = (canvas, board) =>
-        IO.do(IO.of(() => {
+        IO.do(() => {
             let x, y;
             for (x = 0; x < board.length; x++) {
                 for (y = 0; y < board[x].length; y++) {
@@ -101,7 +100,7 @@ const
                     }
                 }
             }
-        })),
+        }),
 
     loop = (canvas, board) =>
         drawBoard(canvas, board)
@@ -112,15 +111,13 @@ const
             element = document.getElementById('game-of-comonads'),
             canvas = element.getContext('2d');
 
-        return IO.do(
-            IO.of(() => {
+        return IO.do(() => {
                 element.width = SIZE * SCALE;
                 element.height = SIZE * SCALE;
                 canvas.scale(SCALE, SCALE);
             })
             .flatMap(generateBoard)
-            .flatMap(board => loop(canvas, board))
-        );
+            .flatMap(board => loop(canvas, board));
     };
 
 window.addEventListener('load', main);

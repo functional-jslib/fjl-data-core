@@ -7,8 +7,19 @@ import Functor from './Functor';
 /**
  * Bifunctor class;  Mostly useful for eithers and/or maybes.
  * @class module:functor.Bifunctor
+ * @param value1 {*}
+ * @param value2 {*}
+ * @property value {*}
+ * @property value2 {*}
  */
 export default class Bifunctor extends Functor {
+
+    /**
+     * @param value1 {*}
+     * @param value2 {*}
+     * @private
+     * @returns {Bifunctor}
+     */
     constructor(value1, value2) {
         super(value1);
         this.value2 = value2;
@@ -16,8 +27,8 @@ export default class Bifunctor extends Functor {
 
     /**
      * Returns wrapped 'second' value.
-     * @memberOf module:functor.Bifunctor
-     * @returns {any}
+     * @method module:functor.Bifunctor#value2Of
+     * @returns {*}
      */
     value2Of() {
         return this.value2;
@@ -25,7 +36,7 @@ export default class Bifunctor extends Functor {
 
     /**
      * Allows you to map over first 'contained' value.
-     * @memberOf module:functor.Bifunctor
+     * @method module:functor.Bifunctor#first
      * @param fn {Function} - Unary operation.
      * @returns {Bifunctor}
      */
@@ -35,7 +46,7 @@ export default class Bifunctor extends Functor {
 
     /**
      * Allows you to map over second 'contained' value.
-     * @memberOf module:functor.Bifunctor
+     * @method module:functor.Bifunctor#second
      * @param fn {Function} - Unary operation.
      * @returns {Bifunctor}
      */
@@ -45,7 +56,7 @@ export default class Bifunctor extends Functor {
 
     /**
      * Allows you to map 2 functions over contained values - One function over each value.
-     * @memberOf module:functor.Bifunctor
+     * @method module:functor.Bifunctor#bimap
      * @param fn1 {Function} - Unary op.
      * @param fn2 {Function} - Unary op.
      * @returns {Bifunctor}

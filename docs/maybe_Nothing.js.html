@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Module: fjlDataCore | Module: fjlDataCore</title>
+    <title>Source: maybe/Nothing.js | Source: maybe/Nothing.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -26,7 +28,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Module: fjlDataCore</a></h1>
+        <h1><a href="index.html" class="link">Source: maybe/Nothing.js</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -43,125 +45,109 @@
 
 
 
-
-<section>
-
-<header>
     
-        <h2>fjlDataCore</h2>
-        
-            
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>let NothingSingleton;
 
-<article>
-    
-        <div class="container-overview">
-        
-            
-                <div class="description"><p>Makes all module members in library accessible via itself (is also the main export of the library).
-Created by elydelacruz on 2/19/2017.</p></div>
-            
+/**
+ * Constructor and function for creating/fetching `Nothing`.
+ * @note Nothing always returns a singleton instance of `Nothing` (whether calling `Nothing` with new or as a
+ * function.
+ * @function module:maybe.Nothing
+ * @param [x=undefined]{*} - Ignored.
+ * @returns {Nothing}
+ * @constructor
+ * @memberOf module:maybe
+ */
+function Nothing (x = undefined) {
+    if (NothingSingleton) {
+        return NothingSingleton;
+    }
+    else if (!(this instanceof Nothing)) {
+        return new Nothing();
+    }
+    NothingSingleton = this;
+    Object.freeze(NothingSingleton);
+}
 
-            
-                
+// Documented further below
+const
 
-<dt>
-    
-</dt>
-<dd>
+    /**
+     * Checks for `Nothing`.
+     * @function module:maybe.isNothing
+     * @param x {*}
+     * @returns {boolean}
+     */
+    isNothing = x => x === NothingSingleton,
 
-    
+    /**
+     * Returns `Nothing`.
+     * @function module:maybe.nothing
+     * @returns {Nothing}
+     */
+    nothing = () => new Nothing(),
+    returnThis = function (x) { return this; }
+    ;
 
-    
+// Methods
+/**
+ * Returns `Nothing`.
+ * @method module:maybe.Nothing#valueOf
+ * @returns {Nothing}
+ */
+Nothing.prototype.valueOf   = returnThis;
+/**
+ * Returns `Nothing`.
+ * @method module:maybe.Nothing#join
+ * @returns {Nothing}
+ */
+Nothing.prototype.join      = returnThis;
+/**
+ * Returns `Nothing`.
+ * @method module:maybe.Nothing#map
+ * @returns {Nothing}
+ */
+Nothing.prototype.map       = returnThis;
+/**
+ * Returns `Nothing`.
+ * @method module:maybe.Nothing#ap
+ * @returns {Nothing}
+ */
+Nothing.prototype.ap        = returnThis;
+/**
+ * Returns `Nothing`.
+ * @method module:maybe.Nothing#flatMap
+ * @returns {Nothing}
+ */
+Nothing.prototype.flatMap   = returnThis;
 
-    
+// Set statics
+/**
+ * Applicative `pure` - Same as `new Nothing()`, `Nothing()`, and `nothing()`.
+ * @memberOf module:maybe.Nothing
+ * @function module:maybe.Nothing.of
+ * @static
+ * @returns {Nothing}
+ */
+Nothing.of  = x => new Nothing();
 
-    
+// Object.freeze makes properties on object immutable
+// @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
+// Saves us from having to do the following (great!):
+// Object.defineProperties(Nothing, {
+//     of: {value: () => new Nothing(), enumerable: true},
+//     isNothing: {value: isNothing, enumerable: true}
+// });
+Object.freeze(Nothing);
 
-    
+export {isNothing, nothing};
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-</dd>
-
-            
-        
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+export default Nothing;
+</code></pre>
+        </article>
+    </section>
 
 
 
@@ -178,7 +164,7 @@ Created by elydelacruz on 2/19/2017.</p></div>
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'module:fjlDataCore_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

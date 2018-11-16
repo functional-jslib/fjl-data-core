@@ -16,7 +16,7 @@
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.toLeft = _exports.toRight = _exports.either = _exports.isLeft = _exports.isRight = _exports.Right = _exports.Left = void 0;
+  _exports.either = _exports.toEither = _exports.toLeft = _exports.toRight = _exports.isLeft = _exports.isRight = _exports.right = _exports.left = _exports.Right = _exports.Left = void 0;
   _Monad2 = _interopRequireWildcard(_Monad2);
 
   function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
@@ -41,9 +41,10 @@
 
   /**
    * `Left` representation of `Either` construct.
-   * @class Left
-   * @param x {any}
-   * @property value {any}
+   * @class module:either.Left
+   * @param x {*}
+   * @property value {*}
+   * @extends module:monad.Monad
    */
   var Left =
   /*#__PURE__*/
@@ -58,6 +59,14 @@
 
     _createClass(Left, null, [{
       key: "of",
+
+      /**
+       * Same as `new Left(...)`.
+       * @memberOf module:either.Left
+       * @static
+       * @param x {*}
+       * @returns {Left}
+       */
       value: function of(x) {
         return new Left(x);
       }
@@ -66,9 +75,10 @@
     return Left;
   }(_Monad2.default);
   /**
-   * @class Right
-   * @param x {any}
-   * @property value {any}
+   * @class module:either.Right
+   * @param x {*}
+   * @property value {*}
+   * @extends module:maybe.Just
    */
 
 
@@ -87,6 +97,13 @@
 
     _createClass(Right, [{
       key: "map",
+
+      /**
+       * Maps a function over contained value and returns result wrapped.
+       * @function module:either.Right#map
+       * @param fn {Function} - Unary operation.
+       * @returns {Either}
+       */
       value: function map(fn) {
         var value = this.valueOf();
 
@@ -98,6 +115,14 @@
 
         return Right.of(fn(value));
       }
+      /**
+       * Same as `new Right(...)`.
+       * @memberOf module:either.Right
+       * @static
+       * @param x {*}
+       * @returns {Right}
+       */
+
     }], [{
       key: "of",
       value: function of(x) {
@@ -112,9 +137,29 @@
 
   var
   /**
+   * Returns a new `Left`
+   * @function module:either.left
+   * @param x {*}
+   * @returns {Left}
+   */
+  left = function left(x) {
+    return new Left(x);
+  },
+
+  /**
+   * Returns a `Right`.
+   * @function module:either.right
+   * @param x {*}
+   * @returns {Right}
+   */
+  right = function right(x) {
+    return new Right(x);
+  },
+
+  /**
    * Checks for instance of `Right` constructor.
    * @function module:either.isRight
-   * @param x {any}
+   * @param x {*}
    * @returns {boolean}
    */
   isRight = function isRight(x) {
@@ -124,7 +169,7 @@
   /**
    * Checks for instance of `Left` constructor.
    * @function module:either.isLeft
-   * @param x {any}
+   * @param x {*}
    * @returns {boolean}
    */
   isLeft = function isLeft(x) {
@@ -132,33 +177,62 @@
   },
 
   /**
-   * Calls matching callback on incoming `Either`'s type;  If is a `Left` (after mapping identity func on it) then calls left-callback and unwraps result
+   * Returns a `Right` - if not a `Right` creates one from given, else returns given.
+   * @function module:either.toRight
+   * @param x {*}
+   * @returns {Right}
+   */
+  toRight = function toRight(x) {
+    return isRight(x) ? x : right(x);
+  },
+
+  /**
+   * Returns a `Left` - if not a `Left` creates one from given, else returns given.
+   * @function module:either.toLeft
+   * @param x {*}
+   * @returns {Left}
+   */
+  toLeft = function toLeft(x) {
+    return isLeft(x) ? x : left(x);
+  },
+
+  /**
+   * Converts given to an either (`Right`|`Left`)
+   * @function module:either.toEither
+   * @param x {*}
+   * @returns {Left|Right}
+   */
+  toEither = function toEither(x) {
+    return isLeft(x) || isRight(x) ? x : right(x).map(_fjl.id);
+  },
+
+  /**
+   * Calls matching callback on incoming `Either`'s type;  If is a `Left`
+   * (after mapping identity func on it) then calls left-callback and unwraps result
    * else calls right-callback and does the same.  Think of it like a functional
    * ternary statement (lol).
    * @function module:either.either
    * @param leftCallback {Function} - Mapped over value of `monad`'s identity.
    * @param rightCallback {Function} - "".
-   * @return {any} - Value of unwrapped resulting value of `flatMap`ped, passed-in callback's on passed in monad.
+   * @param _either_ {Either|*}
+   * @return {*} - Value of unwrapped resulting value of `flatMap`ped, passed-in callback's on passed in monad.
    * @example
    * expect(
        either(() => 404, () => 200, compose(right, right, right, right)(true))
      ).toEqual(undefined);
    */
-  either = (0, _fjl.curry)(function (leftCallback, rightCallback, monad) {
-    var identity = (0, _Monad2.alwaysMonad)(monad).flatMap(_fjl.id),
-        out = isRight(monad) ? identity.flatMap((0, _fjl.toFunction)(rightCallback)) : Left.of(identity).flatMap(leftCallback);
+  either = (0, _fjl.curry)(function (leftCallback, rightCallback, _either_) {
+    var identity = toEither(_either_).flatMap(_fjl.id),
+        out = isRight(_either_) ? identity.flatMap((0, _fjl.toFunction)(rightCallback)) : identity.flatMap(leftCallback);
     return (0, _fjl.isset)(out) ? out.join() : out;
-  }),
-      toRight = function toRight(x) {
-    return isRight(x) ? x : new Right(x);
-  },
-      toLeft = function toLeft(x) {
-    return isLeft(x) ? x : new Left(x);
-  };
+  });
 
+  _exports.either = either;
+  _exports.toEither = toEither;
   _exports.toLeft = toLeft;
   _exports.toRight = toRight;
-  _exports.either = either;
   _exports.isLeft = isLeft;
   _exports.isRight = isRight;
+  _exports.right = right;
+  _exports.left = left;
 });
