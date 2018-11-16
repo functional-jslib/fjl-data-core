@@ -57,7 +57,7 @@ export default class Just extends Monad {
 
     /**
      * Applicative pure - Same as `new Just(...)`.
-     * @memberOf maybe.Just
+     * @method module:maybe.Just.of
      * @static
      * @param x {*}
      * @returns {Just}
@@ -67,6 +67,6 @@ export default class Just extends Monad {
 
 /**
  * @static
- * @property maybe.Just.counterConstructor {Functor}
+ * @property module:maybe.Just.counterConstructor {Functor}
  */
 Just.counterConstructor = Nothing;
