@@ -67,6 +67,6 @@ export default class Just extends Monad {
 
 /**
  * @static
- * @property module:maybe.Just.counterConstructor {Functor}
+ * @member {Functor} module:maybe.Just.counterConstructor
  */
 Just.counterConstructor = Nothing;

@@ -5,7 +5,7 @@
  */
 import {isset, curry, id, toFunction} from 'fjl';
 import {Just} from '../maybe/Maybe';
-import Monad, {toMonad} from '../monad/Monad';
+import Monad from '../monad/Monad';
 
 /**
  * `Left` representation of `Either` construct.
@@ -17,7 +17,7 @@ import Monad, {toMonad} from '../monad/Monad';
 export class Left extends Monad {
     /**
      * Same as `new Left(...)`.
-     * @memberOf module:either.Left
+     * @method module:either.Left.of
      * @static
      * @param x {*}
      * @returns {Left}
@@ -34,7 +34,7 @@ export class Left extends Monad {
 export class Right extends Just {
     /**
      * Maps a function over contained value and returns result wrapped.
-     * @function module:either.Right#map
+     * @method module:either.Right#map
      * @param fn {Function} - Unary operation.
      * @returns {Either}
      */
@@ -53,7 +53,7 @@ export class Right extends Just {
 
     /**
      * Same as `new Right(...)`.
-     * @memberOf module:either.Right
+     * @method module:either.Right.of
      * @static
      * @param x {*}
      * @returns {Right}

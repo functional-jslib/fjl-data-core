@@ -28,7 +28,7 @@ export const
      * @param x {Monad|*} - Monad or any.
      * @returns {*}
      */
-    toMonad = x => !x.map ? new Monad(x) : x,
+    toMonad = x => !isMonad(x) ? new Monad(x) : x,
 
     /**
      * Calls `valueOf` on value (use for functional composition).

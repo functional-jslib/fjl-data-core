@@ -13,6 +13,7 @@ import {compose, toFunction} from 'fjl';
  * @class io.IO
  * @param fn {Function} - Operation to contain within `IO`
  * @property `value` {*} - `IO` however wraps non-function values to `function` on construction.
+ * @extends module:monad.Monad
  */
 export default class IO extends Monad {
     /**

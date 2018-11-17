@@ -11,6 +11,7 @@ import Functor from './Functor';
  * @param value2 {*}
  * @property value {*}
  * @property value2 {*}
+ * @extends module:functor.Functor
  */
 export default class Bifunctor extends Functor {
 

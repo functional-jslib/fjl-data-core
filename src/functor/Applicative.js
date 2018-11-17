@@ -12,12 +12,39 @@ import Apply from './Apply';
 export default class Applicative extends Apply {
     /**
      * Constructs an applicative with given `value`.
-     * @function module:functor.Applicative.of
-     * @static
+     * @method module:functor.Applicative.of
      * @param value {*}
      * @returns {Applicative}
+     * @static
      */
     static of (value) {
         return new Applicative(value);
     }
+
+    static liftA2 (fn, appA, appB) {
+        return appA.constructor.of(
+            fn(appA.valueOf(), appB.valueOf)
+        );
+    }
+
+    static apRight (appA, appB) {
+        return appB;
+    }
+
+    static apLeft (appA, appB) {
+        return appA;
+    }
 }
+
+export const
+
+    pureApp = Applicative.of,
+
+    liftA2 = Applicative.liftA2,
+
+    apLeft = Applicative.apLeft,
+
+    apRight = Applicative.apRight
+
+;
+
