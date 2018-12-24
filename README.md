@@ -3,7 +3,7 @@
 [![NPM version](https://badge.fury.io/js/fjl-data-core.svg)](http://badge.fury.io/js/fjl-data-core)
 [![Dependencies](https://david-dm.org/functional-jslib/fjl-data-core.png)](https://david-dm.org/functional-jslib/fjl-data-core)
 # fjl-data-core (W.I.P. (work-in-progress))
-Haskell's `data Maybe a`, `data Either a b`, and `data IO a * -> *` implementations in javascript.
+General versions of Haskell's `data Maybe a`, `data Either a b`, and `data IO a * -> *` implementations in javascript (note these implementations are monadic implementations that include their functor counter parts as part of said monadic structures).
 
 ## Sections in Readme:
 - [Requirements](#requirements)
