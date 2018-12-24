@@ -34,6 +34,7 @@ define(["exports", "./Functor"], function (_exports, _Functor2) {
    * @param value2 {*}
    * @property value {*}
    * @property value2 {*}
+   * @extends module:functor.Functor
    */
   var Bifunctor =
   /*#__PURE__*/

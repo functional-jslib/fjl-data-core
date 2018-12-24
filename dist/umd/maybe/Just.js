@@ -113,7 +113,7 @@
       }
       /**
        * Applicative pure - Same as `new Just(...)`.
-       * @memberOf maybe.Just
+       * @method module:maybe.Just.of
        * @static
        * @param x {*}
        * @returns {Just}
@@ -130,7 +130,7 @@
   }(_Monad2.default);
   /**
    * @static
-   * @property maybe.Just.counterConstructor {Functor}
+   * @member {Functor} module:maybe.Just.counterConstructor
    */
 
 

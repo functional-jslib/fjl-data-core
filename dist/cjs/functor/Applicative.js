@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.apRight = exports.apLeft = exports.liftA2 = exports.pureApp = exports.default = void 0;
 
 var _Apply2 = _interopRequireDefault(require("./Apply"));
 
@@ -47,13 +47,28 @@ function (_Apply) {
 
     /**
      * Constructs an applicative with given `value`.
-     * @function module:functor.Applicative.of
-     * @static
+     * @method module:functor.Applicative.of
      * @param value {*}
      * @returns {Applicative}
+     * @static
      */
     value: function of(value) {
       return new Applicative(value);
+    }
+  }, {
+    key: "liftA2",
+    value: function liftA2(fn, appA, appB) {
+      return appA.constructor.of(fn(appA.valueOf(), appB.valueOf));
+    }
+  }, {
+    key: "apRight",
+    value: function apRight(appA, appB) {
+      return appB;
+    }
+  }, {
+    key: "apLeft",
+    value: function apLeft(appA, appB) {
+      return appA;
     }
   }]);
 
@@ -61,3 +76,11 @@ function (_Apply) {
 }(_Apply2.default);
 
 exports.default = Applicative;
+var pureApp = Applicative.of,
+    liftA2 = Applicative.liftA2,
+    apLeft = Applicative.apLeft,
+    apRight = Applicative.apRight;
+exports.apRight = apRight;
+exports.apLeft = apLeft;
+exports.liftA2 = liftA2;
+exports.pureApp = pureApp;

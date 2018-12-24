@@ -1,4 +1,4 @@
-define(["fjl", "../../functor/Bifunctor", "../../io/IO"], function (_fjl, _Bifunctor, _IO) {
+define(["fjl", "../../io/IO"], function (_fjl, _IO) {
   "use strict";
 
   _IO = _interopRequireDefault(_IO);

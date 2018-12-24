@@ -33,6 +33,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * @class io.IO
  * @param fn {Function} - Operation to contain within `IO`
  * @property `value` {*} - `IO` however wraps non-function values to `function` on construction.
+ * @extends module:monad.Monad
  */
 var IO =
 /*#__PURE__*/

@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(["fjl", "../../functor/Bifunctor", "../../io/IO"], factory);
+    define(["fjl", "../../io/IO"], factory);
   } else if (typeof exports !== "undefined") {
-    factory(require("fjl"), require("../../functor/Bifunctor"), require("../../io/IO"));
+    factory(require("fjl"), require("../../io/IO"));
   } else {
     var mod = {
       exports: {}
     };
-    factory(global.fjl, global.Bifunctor, global.IO);
+    factory(global.fjl, global.IO);
     global.index = mod.exports;
   }
-})(this, function (_fjl, _Bifunctor, _IO) {
+})(this, function (_fjl, _IO) {
   "use strict";
 
   _IO = _interopRequireDefault(_IO);

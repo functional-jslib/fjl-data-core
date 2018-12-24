@@ -55,7 +55,7 @@ define(["exports", "fjl", "../functor/Applicative"], function (_exports, _fjl, _
    * @returns {*}
    */
   toMonad = function toMonad(x) {
-    return !x.map ? new Monad(x) : x;
+    return !isMonad(x) ? new Monad(x) : x;
   },
 
   /**

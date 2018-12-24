@@ -9,9 +9,9 @@ var _fjl = require("fjl");
 
 var _Maybe = require("../maybe/Maybe");
 
-var _Monad2 = _interopRequireWildcard(require("../monad/Monad"));
+var _Monad2 = _interopRequireDefault(require("../monad/Monad"));
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -54,7 +54,7 @@ function (_Monad) {
 
     /**
      * Same as `new Left(...)`.
-     * @memberOf module:either.Left
+     * @method module:either.Left.of
      * @static
      * @param x {*}
      * @returns {Left}
@@ -92,7 +92,7 @@ function (_Just) {
 
     /**
      * Maps a function over contained value and returns result wrapped.
-     * @function module:either.Right#map
+     * @method module:either.Right#map
      * @param fn {Function} - Unary operation.
      * @returns {Either}
      */
@@ -109,7 +109,7 @@ function (_Just) {
     }
     /**
      * Same as `new Right(...)`.
-     * @memberOf module:either.Right
+     * @method module:either.Right.of
      * @static
      * @param x {*}
      * @returns {Right}

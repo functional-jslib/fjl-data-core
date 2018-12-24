@@ -2,8 +2,6 @@
 
 var _fjl = require("fjl");
 
-var _Bifunctor = require("../../functor/Bifunctor");
-
 var _IO = _interopRequireDefault(require("../../io/IO"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

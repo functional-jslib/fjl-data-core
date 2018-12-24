@@ -312,7 +312,7 @@ function (_Functor) {
 
     /**
      * Applicative apply operation - applies contained function over passed in functor.
-     * @memberOf module:functor.Apply
+     * @method module:functor.Apply#ap
      * @param x {Functor}
      * @returns {Apply}
      */
@@ -350,13 +350,28 @@ function (_Apply) {
 
     /**
      * Constructs an applicative with given `value`.
-     * @function module:functor.Applicative.of
-     * @static
+     * @method module:functor.Applicative.of
      * @param value {*}
      * @returns {Applicative}
+     * @static
      */
     value: function of(value) {
       return new Applicative(value);
+    }
+  }, {
+    key: "liftA2",
+    value: function liftA2(fn, appA, appB) {
+      return appA.constructor.of(fn(appA.valueOf(), appB.valueOf));
+    }
+  }, {
+    key: "apRight",
+    value: function apRight(appA, appB) {
+      return appB;
+    }
+  }, {
+    key: "apLeft",
+    value: function apLeft(appA, appB) {
+      return appA;
     }
   }]);
 
@@ -374,6 +389,7 @@ function (_Apply) {
  * @param value2 {*}
  * @property value {*}
  * @property value2 {*}
+ * @extends module:functor.Functor
  */
 
 var Bifunctor =
@@ -578,6 +594,7 @@ function (_Applicative) {
  * @class io.IO
  * @param fn {Function} - Operation to contain within `IO`
  * @property `value` {*} - `IO` however wraps non-function values to `function` on construction.
+ * @extends module:monad.Monad
  */
 
 var IO =
@@ -823,7 +840,7 @@ function (_Monad) {
     }
     /**
      * Applicative pure - Same as `new Just(...)`.
-     * @memberOf maybe.Just
+     * @method module:maybe.Just.of
      * @static
      * @param x {*}
      * @returns {Just}
@@ -899,7 +916,7 @@ function (_Monad) {
 
     /**
      * Same as `new Left(...)`.
-     * @memberOf module:either.Left
+     * @method module:either.Left.of
      * @static
      * @param x {*}
      * @returns {Left}
@@ -934,7 +951,7 @@ function (_Just) {
 
     /**
      * Maps a function over contained value and returns result wrapped.
-     * @function module:either.Right#map
+     * @method module:either.Right#map
      * @param fn {Function} - Unary operation.
      * @returns {Either}
      */
@@ -951,7 +968,7 @@ function (_Just) {
     }
     /**
      * Same as `new Right(...)`.
-     * @memberOf module:either.Right
+     * @method module:either.Right.of
      * @static
      * @param x {*}
      * @returns {Right}

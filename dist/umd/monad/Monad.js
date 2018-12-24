@@ -67,7 +67,7 @@
    * @returns {*}
    */
   toMonad = function toMonad(x) {
-    return !x.map ? new Monad(x) : x;
+    return !isMonad(x) ? new Monad(x) : x;
   },
 
   /**

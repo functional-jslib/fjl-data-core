@@ -34,6 +34,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * @param value2 {*}
  * @property value {*}
  * @property value2 {*}
+ * @extends module:functor.Functor
  */
 var Bifunctor =
 /*#__PURE__*/

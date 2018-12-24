@@ -52,7 +52,7 @@ function (_Functor) {
 
     /**
      * Applicative apply operation - applies contained function over passed in functor.
-     * @memberOf module:functor.Apply
+     * @method module:functor.Apply#ap
      * @param x {Functor}
      * @returns {Apply}
      */

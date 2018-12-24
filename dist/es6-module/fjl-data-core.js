@@ -80,7 +80,7 @@ class Functor {
 class Apply extends Functor {
   /**
    * Applicative apply operation - applies contained function over passed in functor.
-   * @memberOf module:functor.Apply
+   * @method module:functor.Apply#ap
    * @param x {Functor}
    * @returns {Apply}
    */
@@ -103,13 +103,25 @@ class Apply extends Functor {
 class Applicative extends Apply {
   /**
    * Constructs an applicative with given `value`.
-   * @function module:functor.Applicative.of
-   * @static
+   * @method module:functor.Applicative.of
    * @param value {*}
    * @returns {Applicative}
+   * @static
    */
   static of(value) {
     return new Applicative(value);
+  }
+
+  static liftA2(fn, appA, appB) {
+    return appA.constructor.of(fn(appA.valueOf(), appB.valueOf));
+  }
+
+  static apRight(appA, appB) {
+    return appB;
+  }
+
+  static apLeft(appA, appB) {
+    return appA;
   }
 
 }
@@ -125,6 +137,7 @@ class Applicative extends Apply {
  * @param value2 {*}
  * @property value {*}
  * @property value2 {*}
+ * @extends module:functor.Functor
  */
 
 class Bifunctor extends Functor {
@@ -281,6 +294,7 @@ class Monad extends Applicative {
  * @class io.IO
  * @param fn {Function} - Operation to contain within `IO`
  * @property `value` {*} - `IO` however wraps non-function values to `function` on construction.
+ * @extends module:monad.Monad
  */
 
 class IO extends Monad {
@@ -482,7 +496,7 @@ class Just extends Monad {
   }
   /**
    * Applicative pure - Same as `new Just(...)`.
-   * @memberOf maybe.Just
+   * @method module:maybe.Just.of
    * @static
    * @param x {*}
    * @returns {Just}
@@ -496,7 +510,7 @@ class Just extends Monad {
 }
 /**
  * @static
- * @property maybe.Just.counterConstructor {Functor}
+ * @member {Functor} module:maybe.Just.counterConstructor
  */
 
 Just.counterConstructor = Nothing;
@@ -537,7 +551,7 @@ const toMaybe = x => {
 class Left extends Monad {
   /**
    * Same as `new Left(...)`.
-   * @memberOf module:either.Left
+   * @method module:either.Left.of
    * @static
    * @param x {*}
    * @returns {Left}
@@ -557,7 +571,7 @@ class Left extends Monad {
 class Right extends Just {
   /**
    * Maps a function over contained value and returns result wrapped.
-   * @function module:either.Right#map
+   * @method module:either.Right#map
    * @param fn {Function} - Unary operation.
    * @returns {Either}
    */
@@ -574,7 +588,7 @@ class Right extends Just {
   }
   /**
    * Same as `new Right(...)`.
-   * @memberOf module:either.Right
+   * @method module:either.Right.of
    * @static
    * @param x {*}
    * @returns {Right}
