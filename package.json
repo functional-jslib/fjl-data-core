@@ -1,6 +1,6 @@
 {
   "name": "fjl-data-core",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Fjl data core constructors (`Monad`, `Maybe`, `Either`, and other associated methods/operations).",
   "main": "dist/cjs/fjl-data-core.js",
   "module": "./dist/es6-module/fjl-data-core.js",
