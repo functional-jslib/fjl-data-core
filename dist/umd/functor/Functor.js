@@ -10,13 +10,13 @@
     factory(mod.exports);
     global.Functor = mod.exports;
   }
-})(this, function (_exports) {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = _exports.toFunctor = void 0;
+  _exports["default"] = _exports.toFunctor = void 0;
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -50,9 +50,7 @@
 
   _exports.toFunctor = toFunctor;
 
-  var Functor =
-  /*#__PURE__*/
-  function () {
+  var Functor = /*#__PURE__*/function () {
     /**
      * @constructor
      * @param value {*}
@@ -103,5 +101,5 @@
     return Functor;
   }();
 
-  _exports.default = Functor;
+  _exports["default"] = Functor;
 });

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.toFunctor = void 0;
+exports["default"] = exports.toFunctor = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37,9 +37,7 @@ var toFunctor = function toFunctor(x) {
 
 exports.toFunctor = toFunctor;
 
-var Functor =
-/*#__PURE__*/
-function () {
+var Functor = /*#__PURE__*/function () {
   /**
    * @constructor
    * @param value {*}
@@ -90,4 +88,4 @@ function () {
   return Functor;
 }();
 
-exports.default = Functor;
+exports["default"] = Functor;

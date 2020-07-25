@@ -19,9 +19,7 @@ var Pos = function Pos(x, y) {
   this.y = (0, _fjl.isset)(y) ? y : 0;
 };
 
-var Pointer =
-/*#__PURE__*/
-function () {
+var Pointer = /*#__PURE__*/function () {
   function Pointer(board, pos) {
     _classCallCheck(this, Pointer);
 
@@ -87,7 +85,7 @@ var SIZE = 100,
   return new Pointer(board, new Pos(0, 0)).extend(rules).board;
 },
     generateBoard = function generateBoard() {
-  return _IO.default.do(_IO.default.of(function () {
+  return _IO["default"]["do"](_IO["default"].of(function () {
     var board = [],
         x,
         y;
@@ -104,7 +102,7 @@ var SIZE = 100,
   }));
 },
     drawBoard = function drawBoard(canvas, board) {
-  return _IO.default.do(function () {
+  return _IO["default"]["do"](function () {
     var x, y;
 
     for (x = 0; x < board.length; x++) {
@@ -128,7 +126,7 @@ var SIZE = 100,
     main = function main() {
   var element = document.getElementById('game-of-comonads'),
       canvas = element.getContext('2d');
-  return _IO.default.do(function () {
+  return _IO["default"]["do"](function () {
     element.width = SIZE * SCALE;
     element.height = SIZE * SCALE;
     canvas.scale(SCALE, SCALE);

@@ -4,7 +4,7 @@ define(["exports"], function (_exports) {
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = _exports.nothing = _exports.isNothing = void 0;
+  _exports["default"] = _exports.nothing = _exports.isNothing = void 0;
   var NothingSingleton;
   /**
    * Constructor and function for creating/fetching `Nothing`.
@@ -114,5 +114,5 @@ define(["exports"], function (_exports) {
 
   Object.freeze(Nothing);
   var _default = Nothing;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });

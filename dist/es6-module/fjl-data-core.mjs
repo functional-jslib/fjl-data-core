@@ -1,19 +1,10 @@
-import { compose, curry, id, instanceOf, isset, toFunction, trampoline } from 'fjl';
+import { toFunction, curry, instanceOf, isset, trampoline, compose, id } from 'fjl';
 
 /**
  * Functor class and associated operations.
  * Created by edlc on 12/9/16.
  * @module functor
  */
-
-/**
- * Always returns a functor;  If given value is not
- * a functor creates one from given value to it.
- * @function module:functor.toFunctor
- * @param x {{map: Function}|*} - Functor or any.
- * @returns {*}
- */
-
 /**
  * Plain old functor class.
  * @class module:functor.Functor
@@ -206,20 +197,84 @@ class Bifunctor extends Functor {
  * @see `Either` reference: [http://hackage.haskell.org/package/base-4.10.1.0/docs/Data-Either.html](http://hackage.haskell.org/package/base-4.10.1.0/docs/Data-Either.html)
  * @module monad
  */
-const isMonad = value => value && value instanceof Monad;
-const valueOf = x => x.valueOf();
-const join = valueOf;
-const fmap = curry((fn, x) => x.map(fn));
-const ap = curry((applicative, functor) => applicative.ap(functor));
-const flatMap = curry((fn, monad) => monad.flatMap(fn));
-const getMonadUnWrapper = Type => {
+const 
+/**
+ * Returns boolean indicating whether given value is an
+ * instance of monad or not.
+ * @function module:monad.isMonad
+ * @param value {*}
+ * @returns {boolean}
+ */
+isMonad = value => value && value instanceof Monad,
+
+/**
+ * Calls `valueOf` on value (use for functional composition).
+ * @function module:monad.valueOf
+ * @param x {*}
+ * @returns {*}
+ */
+valueOf = x => x.valueOf(),
+
+/**
+ * Calls `valueOf` on given value.  Same as
+ * monadic `join` operation (extracts inner value of
+ * container/object).
+ * @function module:monad.join
+ * @param x {*}
+ * @returns {*}
+ */
+join = valueOf,
+
+/**
+ * Maps given function over given functor.
+ * @function module:monad.fmap
+ * @param fn {Function}
+ * @param x {Functor}
+ * @returns {Functor}
+ */
+fmap = curry((fn, x) => x.map(fn)),
+
+/**
+ * Applies function contained by applicative to contents of given functor.
+ * (Same as functional applicative `apply`).
+ * @function module:monad.ap
+ * @param applicative {Applicative}
+ * @param functor {Functor}
+ * @returns {Applicative}
+ */
+ap = curry((applicative, functor) => applicative.ap(functor)),
+
+/**
+ * Flat maps a function over given monad's contained value.
+ * @function module:monad.flatMap
+ * @param fn {Function}
+ * @param monad {Monad}
+ * @returns {Monad}
+ */
+flatMap = curry((fn, monad) => monad.flatMap(fn)),
+
+/**
+ * A recursive monad un-wrapper - Returns monad's unwrapped, inner-mostly, contained value (recursively).
+ * @function module:monad.getMonadUnWrapper
+ * @param Type {Function}
+ * @returns {Array.<*>} - [unWrapFunction, tailCallFuncName (used by `trampoline` @see module:fjl.trampoline)]
+ */
+getMonadUnWrapper = Type => {
   return [function unWrapMonadByType(monad) {
     return instanceOf(Type, monad) ? function trampolineCall() {
       return unWrapMonadByType(monad.valueOf());
     } : monad;
   }, 'trampolineCall'];
-};
-const unWrapMonadByType = (Type, monad) => {
+},
+
+/**
+ * Unwraps monad by type.
+ * @function module:monad.unWrapMonadByType
+ * @param Type {Function}
+ * @param monad {Monad}
+ * @returns {*}
+ */
+unWrapMonadByType = (Type, monad) => {
   if (!isset(monad)) {
     return monad;
   }
@@ -405,9 +460,22 @@ function Nothing(x = undefined) {
 } // Documented further below
 
 
-const isNothing = x => x === NothingSingleton;
-const nothing = () => new Nothing();
-const returnThis = function (x) {
+const 
+/**
+ * Checks for `Nothing`.
+ * @function module:maybe.isNothing
+ * @param x {*}
+ * @returns {boolean}
+ */
+isNothing = x => x === NothingSingleton,
+
+/**
+ * Returns `Nothing`.
+ * @function module:maybe.nothing
+ * @returns {Nothing}
+ */
+nothing = () => new Nothing(),
+      returnThis = function (x) {
   return this;
 }; // Methods
 
@@ -470,8 +538,23 @@ Object.freeze(Nothing);
 /**
  * Contains `Just` constructor and associated methods.
  */
-const isJust = x => x instanceof Just;
-const just = x => new Just(x);
+const 
+/**
+ * Checks for `Just`.
+ * @function module:maybe.isJust
+ * @param x {*}
+ * @returns {boolean}
+ */
+isJust = x => x instanceof Just,
+
+/**
+ * Functional constructor (function that returns an instance) for `Just` -
+ * Same as `new Just(...)` (just shorter and can be used as a function).
+ * @function module:maybe.just
+ * @param x {Just|*}
+ * @returns {Just}
+ */
+just = x => new Just(x);
 /**
  * @class maybe.Just
  * @param x {*}
@@ -518,16 +601,65 @@ Just.counterConstructor = Nothing;
 /**
  * @module maybe
  */
-const [justUnWrapper, justUnWrapperTailCallName] = getMonadUnWrapper(Just);
-const maybe = curry((replacement, fn, maybeInst) => {
+const
+/**
+ * @private
+ */
+[justUnWrapper, justUnWrapperTailCallName] = getMonadUnWrapper(Just);
+const 
+/**
+ * The maybe function takes a `replacement` value, a function (unary operation), and a Maybe value. If the Maybe value is `Nothing`, the function returns the `replacement` value. Otherwise, it applies the function to the value contained  by the `Just` and returns the result.
+ * @function module:maybe.maybe
+ * @param replacement {*}
+ * @param fn {Function} - Unary operation.
+ * @param maybeInst {(Nothing|Just|*)} - Maybe instance or non-maybe value.
+ * @returns {*}
+ */
+maybe = curry((replacement, fn, maybeInst) => {
   const subject = isset(maybeInst) && isMaybe(maybeInst) ? maybeInst.map(id) : nothing();
   return isNothing(subject) ? replacement : subject.map(fn).join();
-});
-const unWrapJust = trampoline(justUnWrapper, justUnWrapperTailCallName);
-const unWrapMaybe = x => isNothing(x) ? nothing() : unWrapJust(x);
-const maybeEqual = curry((a, b) => unWrapMaybe(a) === unWrapMaybe(b));
-const isMaybe = x => isNothing(x) || isJust(x);
-const toMaybe = x => {
+}),
+
+/**
+ * Unwraps just (recursively).
+ * @function module:maybe.unWrapJust
+ * @param x {*} - Expected `Just`.
+ * @returns {*}
+ */
+unWrapJust = trampoline(justUnWrapper, justUnWrapperTailCallName),
+
+/**
+ * Unwraps maybe (recursively).
+ * @function module:maybe.unWrapMaybe
+ * @param x {*} - Expected `Maybe`.
+ * @returns {*}
+ */
+unWrapMaybe = x => isNothing(x) ? nothing() : unWrapJust(x),
+
+/**
+ * Equality operator for maybes.
+ * @function module:maybe.maybeEqual
+ * @param a {*} - Maybe 1.
+ * @param b {*} - Maybe 2.
+ * @returns {boolean}
+ */
+maybeEqual = curry((a, b) => unWrapMaybe(a) === unWrapMaybe(b)),
+
+/**
+ * Checks for maybe.
+ * @function module:maybe.isMaybe
+ *  @param x {*}.
+ * @returns {boolean}
+ */
+isMaybe = x => isNothing(x) || isJust(x),
+
+/**
+ * Creates maybe from value.
+ * @function module:maybe.toMaybe
+ * @param x {*}
+ * @returns {Maybe} - `Just` or `Nothing` based on value.
+ */
+toMaybe = x => {
   if (!isset(x)) {
     return nothing();
   }
@@ -600,42 +732,83 @@ class Right extends Just {
   }
 
 }
-const left = x => new Left(x);
-const right = x => new Right(x);
-const isRight = x => x instanceof Right;
-const isLeft = x => x instanceof Left;
-const toRight = x => isRight(x) ? x : right(x);
-const toLeft = x => isLeft(x) ? x : left(x);
-const toEither = x => isLeft(x) || isRight(x) ? x : right(x).map(id);
-const either = curry((leftCallback, rightCallback, _either_) => {
+const 
+/**
+ * Returns a new `Left`
+ * @function module:either.left
+ * @param x {*}
+ * @returns {Left}
+ */
+left = x => new Left(x),
+
+/**
+ * Returns a `Right`.
+ * @function module:either.right
+ * @param x {*}
+ * @returns {Right}
+ */
+right = x => new Right(x),
+
+/**
+ * Checks for instance of `Right` constructor.
+ * @function module:either.isRight
+ * @param x {*}
+ * @returns {boolean}
+ */
+isRight = x => x instanceof Right,
+
+/**
+ * Checks for instance of `Left` constructor.
+ * @function module:either.isLeft
+ * @param x {*}
+ * @returns {boolean}
+ */
+isLeft = x => x instanceof Left,
+
+/**
+ * Returns a `Right` - if not a `Right` creates one from given, else returns given.
+ * @function module:either.toRight
+ * @param x {*}
+ * @returns {Right}
+ */
+toRight = x => isRight(x) ? x : right(x),
+
+/**
+ * Returns a `Left` - if not a `Left` creates one from given, else returns given.
+ * @function module:either.toLeft
+ * @param x {*}
+ * @returns {Left}
+ */
+toLeft = x => isLeft(x) ? x : left(x),
+
+/**
+ * Converts given to an either (`Right`|`Left`)
+ * @function module:either.toEither
+ * @param x {*}
+ * @returns {Left|Right}
+ */
+toEither = x => isLeft(x) || isRight(x) ? x : right(x).map(id),
+
+/**
+ * Calls matching callback on incoming `Either`'s type;  If is a `Left`
+ * (after mapping identity func on it) then calls left-callback and unwraps result
+ * else calls right-callback and does the same.  Think of it like a functional
+ * ternary statement (lol).
+ * @function module:either.either
+ * @param leftCallback {Function} - Mapped over value of `monad`'s identity.
+ * @param rightCallback {Function} - "".
+ * @param _either_ {Either|*}
+ * @return {*} - Value of unwrapped resulting value of `flatMap`ped, passed-in callback's on passed in monad.
+ * @example
+ * expect(
+     either(() => 404, () => 200, compose(right, right, right, right)(true))
+   ).toEqual(undefined);
+ */
+either = curry((leftCallback, rightCallback, _either_) => {
   const identity = toEither(_either_).flatMap(id),
         out = isRight(_either_) ? identity.flatMap(toFunction(rightCallback)) : identity.flatMap(leftCallback);
   return isset(out) ? out.join() : out;
 });
 
-/**
- * Makes all module members in library accessible via itself (is also the main export of the library).
- * Created by elydelacruz on 2/19/2017.
- * @module fjlDataCore
- */
-
-/* ==================================== */
-
-/* Virtual types */
-
-/* ==================================== */
-
-/**
- * @typedef {Function} UnaryOperation
- */
-
-/**
- * @typedef {Just|Nothing} Maybe
- */
-
-/**
- * @typedef {Left|Right} Either
- */
-
-export { Functor, Apply, Applicative, Bifunctor, IO, Monad, isMonad, valueOf, join, fmap, ap, flatMap, getMonadUnWrapper, Just, isJust, isNothing, Nothing, just, nothing, maybe, unWrapJust, unWrapMaybe, maybeEqual, isMaybe, toMaybe, Left, Right, left, right, isRight, isLeft, toRight, toLeft, toEither, either };
+export { Applicative, Apply, Bifunctor, Functor, IO, Just, Left, Monad, Nothing, Right, ap, either, flatMap, fmap, getMonadUnWrapper, isJust, isLeft, isMaybe, isMonad, isNothing, isRight, join, just, left, maybe, maybeEqual, nothing, right, toEither, toLeft, toMaybe, toRight, unWrapJust, unWrapMaybe, valueOf };
 //# sourceMappingURL=fjl-data-core.mjs.map

@@ -10,12 +10,12 @@
     factory(global.fjl, global.IO);
     global.index = mod.exports;
   }
-})(this, function (_fjl, _IO) {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_fjl, _IO) {
   "use strict";
 
   _IO = _interopRequireDefault(_IO);
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
   function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -30,9 +30,7 @@
     this.y = (0, _fjl.isset)(y) ? y : 0;
   };
 
-  var Pointer =
-  /*#__PURE__*/
-  function () {
+  var Pointer = /*#__PURE__*/function () {
     function Pointer(board, pos) {
       _classCallCheck(this, Pointer);
 
@@ -98,7 +96,7 @@
     return new Pointer(board, new Pos(0, 0)).extend(rules).board;
   },
       generateBoard = function generateBoard() {
-    return _IO.default.do(_IO.default.of(function () {
+    return _IO["default"]["do"](_IO["default"].of(function () {
       var board = [],
           x,
           y;
@@ -115,7 +113,7 @@
     }));
   },
       drawBoard = function drawBoard(canvas, board) {
-    return _IO.default.do(function () {
+    return _IO["default"]["do"](function () {
       var x, y;
 
       for (x = 0; x < board.length; x++) {
@@ -139,7 +137,7 @@
       main = function main() {
     var element = document.getElementById('game-of-comonads'),
         canvas = element.getContext('2d');
-    return _IO.default.do(function () {
+    return _IO["default"]["do"](function () {
       element.width = SIZE * SCALE;
       element.height = SIZE * SCALE;
       canvas.scale(SCALE, SCALE);

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.nothing = exports.isNothing = void 0;
+exports["default"] = exports.nothing = exports.isNothing = void 0;
 var NothingSingleton;
 /**
  * Constructor and function for creating/fetching `Nothing`.
@@ -113,4 +113,4 @@ Nothing.of = function (x) {
 
 Object.freeze(Nothing);
 var _default = Nothing;
-exports.default = _default;
+exports["default"] = _default;

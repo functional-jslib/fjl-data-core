@@ -3,7 +3,7 @@ define(["fjl", "../../io/IO"], function (_fjl, _IO) {
 
   _IO = _interopRequireDefault(_IO);
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
   function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -18,9 +18,7 @@ define(["fjl", "../../io/IO"], function (_fjl, _IO) {
     this.y = (0, _fjl.isset)(y) ? y : 0;
   };
 
-  var Pointer =
-  /*#__PURE__*/
-  function () {
+  var Pointer = /*#__PURE__*/function () {
     function Pointer(board, pos) {
       _classCallCheck(this, Pointer);
 
@@ -86,7 +84,7 @@ define(["fjl", "../../io/IO"], function (_fjl, _IO) {
     return new Pointer(board, new Pos(0, 0)).extend(rules).board;
   },
       generateBoard = function generateBoard() {
-    return _IO.default.do(_IO.default.of(function () {
+    return _IO["default"]["do"](_IO["default"].of(function () {
       var board = [],
           x,
           y;
@@ -103,7 +101,7 @@ define(["fjl", "../../io/IO"], function (_fjl, _IO) {
     }));
   },
       drawBoard = function drawBoard(canvas, board) {
-    return _IO.default.do(function () {
+    return _IO["default"]["do"](function () {
       var x, y;
 
       for (x = 0; x < board.length; x++) {
@@ -127,7 +125,7 @@ define(["fjl", "../../io/IO"], function (_fjl, _IO) {
       main = function main() {
     var element = document.getElementById('game-of-comonads'),
         canvas = element.getContext('2d');
-    return _IO.default.do(function () {
+    return _IO["default"]["do"](function () {
       element.width = SIZE * SCALE;
       element.height = SIZE * SCALE;
       canvas.scale(SCALE, SCALE);

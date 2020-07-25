@@ -61,8 +61,10 @@
 <a href="http://badge.fury.io/gh/functional-jslib%2Ffjl-data-core"><img src="https://badge.fury.io/gh/functional-jslib%2Ffjl-data-core.svg" alt="GitHub version"></a>
 <a href="http://badge.fury.io/js/fjl-data-core"><img src="https://badge.fury.io/js/fjl-data-core.svg" alt="NPM version"></a>
 <a href="https://david-dm.org/functional-jslib/fjl-data-core"><img src="https://david-dm.org/functional-jslib/fjl-data-core.png" alt="Dependencies"></a></p>
-<h1>fjl-data-core (W.I.P. (work-in-progress))</h1><p>General versions of Haskell's <code>data Maybe a</code>, <code>data Either a b</code>, and <code>data IO a * -&gt; *</code> implementations in javascript (note these implementations are monadic implementations that include their functor counter parts as part of said monadic structures).</p>
-<h2>Sections in Readme:</h2><ul>
+<h1>fjl-data-core (W.I.P. (work-in-progress))</h1>
+<p>General versions of Haskell's <code>data Maybe a</code>, <code>data Either a b</code>, and <code>data IO a * -&gt; *</code> implementations in javascript (note these implementations are monadic implementations that include their functor counter parts as part of said monadic structures).</p>
+<h2>Sections in Readme:</h2>
+<ul>
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#getting-started">Getting Started</a></li>
 <li><a href="#docs">Docs</a></li>
@@ -73,16 +75,29 @@
 <li><a href="#resources">Resources</a></li>
 <li><a href="#change-log">Change log</a></li>
 </ul>
-<h2>Requirements:</h2><ul>
+<h2>Requirements:</h2>
+<ul>
 <li>Javascript Ecmascript 5+.</li>
 </ul>
-<h3>Supported Platforms:</h3><h4>Browsers</h4><ul>
+<h3>Supported Platforms:</h3>
+<h4>Browsers</h4>
+<ul>
 <li>IE9+, and all other modern day browsers.</li>
 </ul>
-<h4>NodeJs</h4><ul>
+<h4>NodeJs</h4>
+<ul>
 <li>8+</li>
 </ul>
-<h2>Getting Started:</h2><h3>In NodeJs:</h3><h4>Using es2015 modules:</h4><pre class="prettyprint source"><code>import {...} from 'fjl-data-core';</code></pre><h4>Using CommonJs modules:</h4><pre class="prettyprint source"><code>const {...} = require('fjl-data-core');</code></pre><h3>In Browser:</h3><p>See desired export type below:</p>
+<h2>Getting Started:</h2>
+<h3>In NodeJs:</h3>
+<h4>Using es2015 modules:</h4>
+<pre class="prettyprint source"><code>import {...} from 'fjl-data-core';
+</code></pre>
+<h4>Using CommonJs modules:</h4>
+<pre class="prettyprint source"><code>const {...} = require('fjl-data-core');
+</code></pre>
+<h3>In Browser:</h3>
+<p>See desired export type below:</p>
 <ul>
 <li>'./dist/amd/' - Asynchronous module format.</li>
 <li>'./dist/cjs/' - CommonJs module format.</li>
@@ -90,130 +105,202 @@
 <li>'./dist/iife/' - Immediately Invoked Function Execution - (exports <code>fjlMutable</code> as a global).</li>
 <li>'./dist/es6-module/' - Ecmascript 6 module format.</li>
 </ul>
-<h2>Docs</h2><p><strong>JSDocs</strong> are here (https://functional-jslib.github.io/fjl-data-core/) [https://functional-jslib.github.io/fjl-data-core/].</p>
-<h3><code>fjlDataCore</code> members</h3><pre class="prettyprint source"><code>Functor, [Apply](#apply), [Applicative](#applicative), [Bifunctor](#bifunctor), [Monad](#monad), [isMonad](#ismonad), [valueOf](#valueof), [join](#join),
+<h2>Docs</h2>
+<p><strong>JSDocs</strong> are here (https://functional-jslib.github.io/fjl-data-core/) [https://functional-jslib.github.io/fjl-data-core/].</p>
+<h3><code>fjlDataCore</code> members</h3>
+<pre class="prettyprint source"><code>Functor, [Apply](#apply), [Applicative](#applicative), [Bifunctor](#bifunctor), [Monad](#monad), [isMonad](#ismonad), [valueOf](#valueof), [join](#join),
 [fmap](#fmap), [ap](#ap), [flatMap](#flatmap), [getMonadUnWrapper](#getmonadunwrapper), [IO](#io), [Just](#just), [isJust](#isjust), [just](#just), [Nothing](#nothing),
 [isNothing](#isnothing), [nothing](#nothing), [maybe](#maybe), [unWrapJust](#unwrapjust), [unWrapMaybe](#unwrapmaybe), [maybeEqual](#maybeequal), [isMaybe](#ismaybe),
 [toMaybe](#tomaybe), [Left](#left), [Right](#right), [left](#left), [right](#right), [isRight](#isright), [isLeft](#isleft), [toRight](#toright), [toLeft](#toleft),
-[toEither](#toeither), [either](#either)</code></pre><h3><code>toFunctor</code></h3><p>@todo - Added documentation here.</p>
+[toEither](#toeither), [either](#either)
+</code></pre>
+<h3><code>toFunctor</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>alwaysMaybe</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>alwaysMaybe</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>ap</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>ap</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>Applicative</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>Applicative</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>Apply</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>Apply</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>Bifunctor</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>Bifunctor</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>either</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>either</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>flatMap</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>flatMap</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>fmap</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>fmap</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>Functor</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>Functor</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>getMonadUnWrapper</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>getMonadUnWrapper</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>IO</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>IO</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>isJust</code></h3><p><strong>Signature</strong>: <code>isJust(x: any): boolean</code></p>
+<h3><code>isJust</code></h3>
+<p><strong>Signature</strong>: <code>isJust(x: any): boolean</code></p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>isLeft</code></h3><p><strong>Signature</strong>: <code>isLeft(x: any): boolean</code></p>
+<h3><code>isLeft</code></h3>
+<p><strong>Signature</strong>: <code>isLeft(x: any): boolean</code></p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>isMaybe</code></h3><p><strong>Signature</strong>: <code>isMaybe(x: any): boolean</code></p>
+<h3><code>isMaybe</code></h3>
+<p><strong>Signature</strong>: <code>isMaybe(x: any): boolean</code></p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>isMonad</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>isMonad</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>isNothing</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>isNothing</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>isRight</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>isRight</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>join</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>join</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>Just</code></h3><p><strong>Signature</strong>: <code>class Just(x): Just&lt;x&gt;</code></p>
-<p><code>Just</code> monad - Wraps given value in a <code>Just</code> and gives 
+<h3><code>Just</code></h3>
+<p><strong>Signature</strong>: <code>class Just(x): Just&lt;x&gt;</code></p>
+<p><code>Just</code> monad - Wraps given value in a <code>Just</code> and gives
 you a monad interface (functor + apply + applicative + monad);</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>just</code></h3><p><strong>Signature</strong>: <code>just (x: any): Just&lt;x&gt;</code></p>
+<h3><code>just</code></h3>
+<p><strong>Signature</strong>: <code>just (x: any): Just&lt;x&gt;</code></p>
 <p>Wraps given value in a <code>Just</code> (same as <code>Just</code> except in method form); E.g.:</p>
 <pre class="prettyprint source lang-javascript"><code>import {just} from 'fjl-data-core';
 console.log(
     just(99).map(x => x * 2).value === 99 * 2
-); // `true`</code></pre><p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>Left</code></h3><p>@todo - Added documentation here.</p>
+); // `true`
+</code></pre>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>maybe</code></h3><p><strong>Signature:</strong> <code>maybe(replacement :*, a =&gt; b, Maybe(a)) :(b|replacement)</code></p>
+<h3><code>Left</code></h3>
+<p>@todo - Added documentation here.</p>
+<p><a href="#fjldatacore-members">Back to members list</a></p>
+<h3><code>maybe</code></h3>
+<p><strong>Signature:</strong> <code>maybe(replacement :*, a =&gt; b, Maybe(a)) :(b|replacement)</code></p>
 <p>Returns <code>replacment</code> value if <code>Maybe(a)</code> is a <code>Nothing</code> else maps
 <code>a =&gt; b</code> operation on <code>Maybe(a)</code>;</p>
 <p><strong>Haskell Type (fyi):</strong>
 <code>maybe :: b -&gt; (a -&gt; b) -&gt; Maybe a -&gt; b</code></p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>maybeEqual</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>maybeEqual</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>Monad</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>Monad</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>Nothing</code></h3><p><strong>Signature</strong>: <code>Nothing(): Nothing</code></p>
+<h3><code>Nothing</code></h3>
+<p><strong>Signature</strong>: <code>Nothing(): Nothing</code></p>
 <p>Always returns <code>Nothing</code> singleton; Even when called with <code>new</code>; E.g.:</p>
 <pre class="prettyprint source lang-javascript"><code>import {Nothing} from 'fjl-data-core';
 import {log} from 'fjl';
 log(
     Nothing() === new Nothing()
-) // `true`</code></pre><p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>nothing(): Nothing</code></h3><p>Same as <code>Nothing</code> except in method form; E.g.:</p>
+) // `true`
+</code></pre>
+<p><a href="#fjldatacore-members">Back to members list</a></p>
+<h3><code>nothing(): Nothing</code></h3>
+<p>Same as <code>Nothing</code> except in method form; E.g.:</p>
 <pre class="prettyprint source lang-javascript"><code>import {nothing} from 'fjl-data-core';
 import {log} from 'fjl';
 log(
     nothing() === Nothing() && nothing() === new Nothing()
-) // `true`</code></pre><p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>Right</code></h3><p>@todo - Added documentation here.</p>
+) // `true`
+</code></pre>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>toEither</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>Right</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>toLeft</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>toEither</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>toMaybe</code></h3><p>Gives you a <code>Maybe</code> if value is already a <code>Maybe</code> else gives you a Right<code>if value is not</code>null<code>or</code>undefined<code>.  Else gives you a</code>Left`.</p>
+<h3><code>toLeft</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>toRight</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>toMaybe</code></h3>
+<p>Gives you a <code>Maybe</code> if value is already a <code>Maybe</code> else gives you a Right<code>if value is not</code>null<code>or</code>undefined<code>.  Else gives you a </code>Left`.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>justUnWrapper(x: Just): (Just|*)</code></h3><p>Removes one layer of structure from a <code>Just</code>.</p>
+<h3><code>toRight</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>unWrapMaybe</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>justUnWrapper(x: Just): (Just|*)</code></h3>
+<p>Removes one layer of structure from a <code>Just</code>.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>valueOf</code></h3><p>@todo - Added documentation here.</p>
+<h3><code>unWrapMaybe</code></h3>
+<p>@todo - Added documentation here.</p>
 <p><a href="#fjldatacore-members">Back to members list</a></p>
-<h3><code>isMaybe(x) :boolean</code></h3><h3><code>isMonad(x) :boolean</code></h3><h3><code>toMaybe(x) :(Just&lt;x&gt;|Nothing)</code></h3><p>Wraps given value in a maybe;  Value gets wrapped in a <code>Just</code> if 
+<h3><code>valueOf</code></h3>
+<p>@todo - Added documentation here.</p>
+<p><a href="#fjldatacore-members">Back to members list</a></p>
+<h3><code>isMaybe(x) :boolean</code></h3>
+<h3><code>isMonad(x) :boolean</code></h3>
+<h3><code>toMaybe(x) :(Just&lt;x&gt;|Nothing)</code></h3>
+<p>Wraps given value in a maybe;  Value gets wrapped in a <code>Just</code> if
 it is non-empty (not equal to <code>undefined</code> or <code>null</code>), else returns <code>Nothing</code>.</p>
-<h3><code>join(m :Monad) :Monad</code></h3><p>Removes one layer of structure from monad.</p>
+<h3><code>join(m :Monad) :Monad</code></h3>
+<p>Removes one layer of structure from monad.</p>
 <pre class="prettyprint source lang-javascript"><code>import {join, just, maybeEqual} from 'fjl-data-core';
 import {compose, log} from 'fjl';
 
-compose(log, maybeEqual(just(99)), join, just, just)(99); // `true` </code></pre><h3><code>fmap(x =&gt; y, f :Functor) :Functor&lt;y&gt;</code></h3><h3><code>ap(x :Applicative, f :Functor) :Applicative</code></h3><h3><code>flatMap(fn: (x) =&gt; y, m :Monad&lt;x&gt;) :Monad&lt;y&gt;</code></h3><h3><code>getMonadUnWrapper(Type: Function) :(m: Monad) =&gt; *</code></h3><h3><code>trampoline(fn: Function) :*</code></h3><h3><code>class Monad (x) {}</code></h3><h3>Old docs below</h3><ul>
-<li><code>Maybe</code> - Gives you an either of <code>Just a</code> or a <code>Nothing</code>.  Example:<pre class="prettyprint source"><code>log(Maybe(99)) // Just(99)
-log(Maybe(undefined)) // Nothing()</code></pre></li>
-<li><code>Maybe.Nothing</code> - Always gives you a <code>Nothing</code> whether you're <code>flatMap</code>ing <code>map</code>ing or other etc. you'll always 
-get a <code>Nothing</code> on <code>Nothing</code>.  Example:<pre class="prettyprint source"><code>Nothing.map(x => (console.log('Hello World Big Bird'), 99)) === Nothing // true</code></pre></li>
+compose(log, maybeEqual(just(99)), join, just, just)(99); // `true` 
+</code></pre>
+<h3><code>fmap(x =&gt; y, f :Functor) :Functor&lt;y&gt;</code></h3>
+<h3><code>ap(x :Applicative, f :Functor) :Applicative</code></h3>
+<h3><code>flatMap(fn: (x) =&gt; y, m :Monad&lt;x&gt;) :Monad&lt;y&gt;</code></h3>
+<h3><code>getMonadUnWrapper(Type: Function) :(m: Monad) =&gt; *</code></h3>
+<h3><code>trampoline(fn: Function) :*</code></h3>
+<h3><code>class Monad (x) {}</code></h3>
+<h3>Old docs below</h3>
+<ul>
+<li><code>Maybe</code> - Gives you an either of <code>Just a</code> or a <code>Nothing</code>.  Example:</li>
+</ul>
+<pre class="prettyprint source"><code>log(Maybe(99)) // Just(99)
+log(Maybe(undefined)) // Nothing()
+</code></pre>
+<ul>
+<li><code>Maybe.Nothing</code> - Always gives you a <code>Nothing</code> whether you're <code>flatMap</code>ing <code>map</code>ing or other etc. you'll always
+get a <code>Nothing</code> on <code>Nothing</code>.  Example:</li>
+</ul>
+<pre class="prettyprint source"><code>Nothing.map(x => (console.log('Hello World Big Bird'), 99)) === Nothing // true
+</code></pre>
+<ul>
 <li><code>Maybe.Just</code> - @todo add description</li>
 <li><code>Either.Right</code> - @todo add description</li>
 <li><code>Either.Left</code> - @todo add description</li>
 <li><code>IO</code> - Functions similarly to es6 <code>Promise</code>s but currently, they do not have <code>bimap</code> (<code>then</code>) functionality
 and/or <code>catch</code> functionality (will add functionality later).</li>
-<li><code>Monad</code> - Class for easily creating other monads (inherits <code>Applicative</code>, <code>Apply</code> and <code>Functor</code> from './src/...'). </li>
+<li><code>Monad</code> - Class for easily creating other monads (inherits <code>Applicative</code>, <code>Apply</code> and <code>Functor</code> from './src/...').</li>
 <li>@todo add other members</li>
 </ul>
-<h2>Development:</h2><ul>
+<h2>Development:</h2>
+<ul>
 <li>For commands see './package.json' scripts.</li>
 </ul>
-<h3>Dir structure</h3><ul>
+<h3>Dir structure</h3>
+<ul>
 <li>Everything is in './src'.</li>
 <li>Distribution is in './dist'.</li>
 <li>Docs are in './docs'.</li>
 </ul>
-<h3>Testing</h3><p>Using <code>jest</code> (see './package.json' scripts).</p>
-<h2>License:</h2><p>BSD 3 Clause - Included in sources.</p>
-<h2>Resources:</h2><h2>Change log</h2><h3>0.1.0</h3></article>
+<h3>Testing</h3>
+<p>Using <code>jest</code> (see './package.json' scripts).</p>
+<h2>License:</h2>
+<p>BSD 3 Clause - Included in sources.</p>
+<h2>Resources:</h2>
+<h2>Change log</h2>
+<h3>0.1.0</h3></article>
     </section>
 
 

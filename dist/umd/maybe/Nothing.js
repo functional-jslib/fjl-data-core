@@ -10,13 +10,13 @@
     factory(mod.exports);
     global.Nothing = mod.exports;
   }
-})(this, function (_exports) {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = _exports.nothing = _exports.isNothing = void 0;
+  _exports["default"] = _exports.nothing = _exports.isNothing = void 0;
   var NothingSingleton;
   /**
    * Constructor and function for creating/fetching `Nothing`.
@@ -126,5 +126,5 @@
 
   Object.freeze(Nothing);
   var _default = Nothing;
-  _exports.default = _default;
+  _exports["default"] = _default;
 });
